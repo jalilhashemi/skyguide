@@ -1,2 +1,2 @@
 # skyguide
-contributors: Jalil Hashemi & Marco Ghilardelli
+Contributors: Jalil Hashemi & Marco Ghilardelli
