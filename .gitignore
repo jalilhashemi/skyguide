@@ -1,5 +1,5 @@
-
 .gradle/
 .idea/
-skyguide.iml
+*.iml
 out/
+build/
