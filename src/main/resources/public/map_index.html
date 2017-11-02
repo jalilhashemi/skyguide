@@ -1,0 +1,43 @@
+<html>
+<head>
+    <title>OpenLayers 2 Example</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script src="http://api3.geo.admin.ch/loader.js"></script>
+<script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="script.js"></script>
+
+<div id="map" class="map"></div>
+
+<div>
+    <a href="#" class="viewer-new-rectangle">New rectangle</a>
+    <a href="#" class="viewer-delete-rectangle">Delete rectangle</a>
+</div>
+<h3>Box coordinates: </h3>
+<div class="coordinates">
+    <div>
+        <label>North: <input type="text" id="north"></label>
+    </div>
+    <div>
+        <label>West: <input type="text" id="west"></label>
+        <label>East: <input type="text" id="east"></label>
+    </div>
+    <div>
+        <label>South: <input type="text" id="south"> </label>
+    </div>
+</div>
+
+<h3>Layers:</h3>
+<div class="layers">
+    <label><input type="radio" name="layer" value="1"> 1:25000</label>
+    <label><input type="radio" name="layer" value="2"> 1:50000</label>
+    <label><input type="radio" name="layer" value="3"> 1:100000</label>
+    <label><input type="radio" name="layer" value="4"> 1:200000</label>
+    <label><input type="radio" name="layer" value="5"> 1:500000</label>
+    <label><input type="radio" name="layer" value="0" checked=""> Multiscale</label>
+</div>
+
+</body>
+</html>
