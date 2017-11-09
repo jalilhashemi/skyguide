@@ -21,7 +21,7 @@ public class SpecialflightCpntroller {
 //    }
 
 
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.GET)
     public String findById() {
         return "redirect:/index";
     }
