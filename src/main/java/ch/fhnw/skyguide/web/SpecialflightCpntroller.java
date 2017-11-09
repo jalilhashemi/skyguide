@@ -15,9 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class SpecialflightCpntroller {
     private static final Log logger = LogFactory.getLog(SpecialflightCpntroller.class);
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public Specialflight findById(@PathVariable String id, Model model) {
-        return new Specialflight(Integer.parseInt(id), "content");
+//    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+//    public Specialflight findById(@PathVariable String id, Model model) {
+//        return new Specialflight(Integer.parseInt(id), "content");
+//    }
+
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String findById() {
+        return "redirect:/index";
     }
+
 
 }
