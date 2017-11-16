@@ -3,11 +3,11 @@ package ch.fhnw.skyguide;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AircraftType {
+public class ActivityType {
     private String name;
     private List<Field> fieldList;
 
-    public AircraftType(String name) {
+    public ActivityType(String name) {
         this.name = name;
         fieldList = new ArrayList<>();
     }

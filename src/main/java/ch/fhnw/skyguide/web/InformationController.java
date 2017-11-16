@@ -1,16 +1,13 @@
 package ch.fhnw.skyguide.web;
 
-import ch.fhnw.skyguide.AircraftType;
-import ch.fhnw.skyguide.AircraftTypeService;
-import ch.fhnw.skyguide.Field;
+import ch.fhnw.skyguide.ActivityType;
+import ch.fhnw.skyguide.ActivityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,22 +15,22 @@ import java.util.List;
 public class InformationController {
 
     @Autowired
-    private AircraftTypeService aircraftTypeService;
+    private ActivityTypeService aircraftTypeService;
 
     @CrossOrigin(origins = "http://localhost:63342")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<AircraftType> getInformations(HttpServletResponse response,
+    public List<ActivityType> getInformations(HttpServletResponse response,
                                               HttpServletRequest request) throws IOException {
-   /*     List<AircraftType> list = new ArrayList<>();
-        AircraftType a = new AircraftType("Sky Latern");
+   /*     List<ActivityType> list = new ArrayList<>();
+        ActivityType a = new ActivityType("Sky Latern");
         Field f = new Field();
         f.setActive(true);
         f.setMandatory(true);
         f.setName("date");
         a.getFieldList().add(f);
         list.add(a);*/
-   List<AircraftType> list = aircraftTypeService.getAllAircraftTypes();
+   List<ActivityType> list = aircraftTypeService.getAllAircraftTypes();
         return list;
             /*    "information = {" +
                 "'name': 'Sky Latern'" +
