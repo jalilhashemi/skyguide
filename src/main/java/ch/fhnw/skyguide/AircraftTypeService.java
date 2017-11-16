@@ -23,7 +23,7 @@ public class AircraftTypeService {
 
     {
         Field dateField = new Field("date", true, true);
-        Field timeField = new Field("time", true, false);
+        Field timeField = new Field("time", true, true);
 
         AircraftType a = new AircraftType("Sky Latern");
         a.getFieldList().add(dateField);
