@@ -20,7 +20,6 @@ public class SpecialflightCpntroller {
 //        return new Specialflight(Integer.parseInt(id), "content");
 //    }
 
-
     @RequestMapping(method = RequestMethod.GET)
     public String findById() {
         return "redirect:/index";
