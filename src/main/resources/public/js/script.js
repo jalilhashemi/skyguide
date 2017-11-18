@@ -3,7 +3,7 @@ $(document).ready(function () {
 
     $.ajax({
         crossOrigin: true,
-        url: 'http://86.119.39.142:8080/information',
+        url: 'http://86.119.39.142/information',
         type: 'GET',
         dataType: 'json'
     })
