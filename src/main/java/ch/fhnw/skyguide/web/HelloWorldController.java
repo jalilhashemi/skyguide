@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/hello")
 public class HelloWorldController {
 
     @RequestMapping(method = RequestMethod.GET)
