@@ -17,7 +17,7 @@ public class InformationController {
     @Autowired
     private ActivityTypeService aircraftTypeService;
 
-    @CrossOrigin(origins = "http://localhost:63342")
+    @CrossOrigin(origins = "http://localhost:8080")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<ActivityType> getInformations(HttpServletResponse response,
