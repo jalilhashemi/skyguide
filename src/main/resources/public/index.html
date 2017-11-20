@@ -15,140 +15,63 @@
                 <h2>Request for coordination of special aerial activities </h2>
                 <ol type="1">
                     <li><p class="ordered_list_title">Applicant information</p>
-                        <div class='fieldset mandatory'>
-                            <label>Company (if available)</label>
-                            <input type="text" class="field" name="date_of_request"/>
+                        <div class='fieldset mandatory' id="div_company">
+                            <label id="label_company">Company (if available)</label>
+                            <input type="text" class="field" name="input_company" id="input_company"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Applicant name</label>
-                            <input type="text" class="field" name="name"/>
+                        <div class='fieldset mandatory' id="div_applicant_name">
+                            <label id="label_applicant_name">Applicant name</label>
+                            <input type="text" class="field" name="name" id="input_applicant_name"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Applicant phone</label>
-                            <input type="tel" class="field" name="address"/>
+                        <div class='fieldset mandatory' id="div_applicant_phone">
+                            <label id="label_applicant_phone">Applicant phone</label>
+                            <input type="tel" class="field" name="address" id="input_applicant_phone"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Applicant email</label>
-                            <input type="email" class="field" name="phone"/>
+                        <div class='fieldset mandatory' id="div_applicant_email">
+                            <label id="label_applicant_email">Applicant email</label>
+                            <input type="email" class="field" name="phone" id="input_applicant_email"/>
                         </div>
                     </li>
                     <li><p class="ordered_list_title">Activity information</p>
                         <div class='fieldset mandatory'>
                             <label>Type of activity</label>
-                            <select class='field' name='service' id='type_of_activity'>
-                                <option value='-1'>
-                                    Select the activity type
-                                </option>
-                                <!--option>
-                                    Sky Latern
-                                </option>
-                                <option>
-                                    Weather balloon
-                                </option>
-                                <option>
-                                    Toy balloon
-                                </option>
-                                <option>
-                                    Captive balloon
-                                </option>
-                                <option>
-                                    Hor air balloon
-                                </option>
-                                <option>
-                                    Gas balloon
-                                </option>
-                                <option>
-                                    Sky light / Laser
-                                </option>
-                                <option>
-                                    Kite
-                                </option>
-                                <option>
-                                    Firework
-                                </option>
-                                <option>
-                                    Flight with hang glider
-                                </option>
-                                <option>
-                                    Photo flight
-                                </option>
-                                <option>
-                                    transport flight
-                                </option>
-                                <option>
-                                    Taxi / Passenger flight
-                                </option>
-                                <option>
-                                    Parachute
-                                </option>
-                                <option>
-                                    Military mission
-                                </option>
-                                <option>
-                                    Police mission
-                                </option>
-                                <option>
-                                    ext.
-                                </option>-->
+                            <select class='field' name='type_of_activity' id='type_of_activity'>
+                                <option value='-1'>Select the activity type</option>
                             </select>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="localTimeField">
-                            <label>Time(s), (local time)</label>
-                            <input type="time" class="field" name="local_time"/>
-                        </div>
-                        <div class='displayNone fieldset mandatory'>
-                            <label>Exact location</label>
-                            <input type="text" class="field" name="exact_location"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone'>
-                            <label>Date(s)</label>
-                            <input type="date" class="field" name="date"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone'>
-                            <label>Duration</label>
-                            <input type="text" class="field" name="duraion"/>
-                        </div>
-                    </li>
-                    <li class="displayNone"><p class="ordered_list_title">Details about special flights with manned
-                        aircraft</p>
-                        <div class='fieldset mandatory'>
-                            <label>Registration / Call sign</label>
-                            <input type="text" class="field" name="registration"/>
-                        </div>
-
-                        <div class='fieldset mandatory'>
-                            <label>Flight rules</label>
-                        </div>
-                        <div>
-                            <label class="container">IFR
-                                <input type="radio" name="flight_rules" value="ifr">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="container">VFR
-                                <input type="radio" name="flight_rules" value="vfr">
-                                <span class="checkmark"></span>
-                            </label>
                         </div>
                         <div class='fieldset mandatory'>
                             <label>Type of aircraft</label>
-                            <select class='field' name='service' id='type_of_aircraft'>
-                                <option value='-1'>
-                                    Select the aircraft type
-                                </option>
-                                <option value=''>
-                                    Fixed wing aircraft
-                                </option>
-                                <option value=''>
-                                    Rotary wing aircraft
-                                </option>
-                                <option value=''>
-                                    RPAS
-                                </option>
+                            <select class='field' name='type_of_activity' id='type_of_aircraft'>
+                                <option value='-1'>Select the aircraft type</option>
                             </select>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Altitude</label>
-                            <select class='field' name='service' id='altitude'>
+                        <div class='fieldset mandatory' id="div_callsign">
+                            <label id="label_callsign">Call sign</label>
+                            <input type="text" class="field" name="registration" id="input_callsign"/>
+                        </div>
+                        <div class='fieldset mandatory' id="div_dep_dest">
+                            <label id="label_dep_dest">DEP / DEST </label>
+                            <input type="text" class="field" name="dep_dest" id="input_dep_dest"/>
+                        </div>
+                        <div class='fieldset mandatory displayNone' id="div_date_from_until">
+                            <label id="label_date_from_until">Date from / until</label>
+                            <input type="time" class="field" name="date_from_untel" id="input_date_from_until"/>
+                        </div>
+                        <div class='fieldset mandatory displayNone' id="div_time_schedule">
+                            <label id="label_time_schedule">Time / Schedule</label>
+                            <input type="date" class="field" name="time_schedule" id="input_time_schedule"/>
+                        </div>
+                        <div class='fieldset mandatory displayNone' id="div_duration">
+                            <label id="label_duration">Duration</label>
+                            <input type="text" class="field" name="duraion" id="input_duration"/>
+                        </div>
+                        <div class='displayNone fieldset mandatory' id="div_exact_location">
+                            <label id="label_exact_location">Exact location</label>
+                            <input type="text" class="field" name="exact_location" id="input_exact_location"/>
+                        </div>
+                        <div class='fieldset mandatory' id="div_height_altitude">
+                            <label id="label_height_altitude">Height / Altitude</label>
+                            <select class='field' name='height_altitude' id='altitude'>
                                 <option value='-1'>
                                     Select an altitude
                                 </option>
@@ -163,127 +86,35 @@
                                 </option>
                             </select>
                         </div>
-                    </li>
-                    <li class="displayNone"><p class="ordered_list_title">Details about sky lanterns (with a volume of
-                        1m3 or less), toy balloons, fireworks and sky laser</p>
-                        (For sky lanterns and balloons with a volume of more than 1m3, paragraph 5 must be used)
-                        <div class='fieldset mandatory'>
-                            <label>Amount</label>
-                            <input type="text" class="field" name="amount"/>
+                        <div class='fieldset' id="div_beam_direction">
+                            <label id="label_beam_direction">Beam direction</label>
+                            <input type="text" class="field" name="beam_direction" id="input_beam_direction"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Launch</label>
-                            <select class='field' name='service' id='launch'>
-                                <option value='-1'>
-                                    Select the launch
-                                </option>
-                                <option value='single'>
-                                    Single
-                                </option>
-                                <option value='staggered'>
-                                    Staggered
-                                </option>
-                                <option value='mass'>
-                                    Mass
-                                </option>
-                            </select>
+                        <div class='fieldset' id="div_payload_attached_obj">
+                            <label id="label_payload_attached_obj">Payload / Attached objects</label>
+                            <input type="text" class="field" name="payload" id="input_payload_attached_obj"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Payload (attached objects)</label>
-                            <input type="text" class="field" name="payload"/>
+                        <div class='fieldset' id="div_amount">
+                            <label id="label_amount">Amount</label>
+                            <input type="text" class="field" name="amount" id="input_amount"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Are the balloons bunched together? (Balloon grapes)</label>
+                        <div class='fieldset mandatory' id="div_gps_coord">
+                            <label id="label_gps_coord">GPS coord.</label>
+                            <input type="text" class="field" name="gps_coord" id="input_gps_coord"/>
                         </div>
-                        <div>
-                            <label class="container">Yes
-                                <input type="radio" name="are_bunched" value="yes">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="container">No
-                                <input type="radio" name="are_bunched" value="no">
-                                <span class="checkmark"></span>
-                            </label>
+                        <div class='fieldset mandatory' id="div_radius_plus">
+                            <label id="label_radius_plus">Radius+</label>
+                            <input type="text" class="field" name="radius" id="input_radius_plus"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Beam direction of sky laser</label>
-                            <input type="text" class="field" name="beam_direction"/>
+                        <div class='fieldset mandatory' id="div_height_altitude_plus">
+                            <label id="label_height_altitude_plus">Height / Altitude+</label>
+                            <input type="text" class="field" name="height_altitude_plus"
+                                   id="input_height_altitude_plus"/>
                         </div>
-                        <div class='fieldset mandatory'>
-                            <label>Altitude of the firework (in meters)</label>
-                            <input type="text" class="field" name="altitude_firework"/>
+                        <div class='fieldset mandatory' id="div_self_declaration">
+                            <label id="label_self_declaration">Self declaration</label>
+                            <textarea class="field" name="message" id="input_self_declaration"></textarea>
                         </div>
-                    </li>
-                    <li class="displayNone"><p class="ordered_list_title">Details about unmanned aerial activities</p>
-                        <div class='fieldset mandatory'>
-                            <label>Type of unmanned aircraft</label>
-                            <select class='field' name='service' id='type_of_unmannd_aircraft'>
-                                <option value='-1'>
-                                    Select the type
-                                </option>
-                                <option value='mini_drone'>
-                                    Mini-drone
-                                </option>
-                                <option value='model_aircraft'>
-                                    Model aircraft
-                                </option>
-                                <option value='manned_kite'>
-                                    Manned kite
-                                </option>
-                                <option value='paragliders'>
-                                    Paragliders
-                                </option>
-                                <option value='tethered_balloon'>
-                                    Tethered balloon
-                                </option>
-                                <option value='free_flying_balloon'>
-                                    Free flying balloon
-                                </option>
-                                <option value='sky_interns_with'>
-                                    Sky interns with a volume of more than 1m3
-                                </option>
-                            </select>
-                        </div>
-                        <label class="information ordered_list_title">
-                            Legal basis</label>
-                        <p class="information">The self declaration below does only apply for applicants of activities
-                            that fall under the Swiss ordinance on aircraft of special categories1, article 15, 16 and
-                            17: model aircraft (including mini drones); kites and unmanned tethered balloons/blimps;
-                            unmanned free balloons and sky lanterns with a volume of more than 1m3.</p>
-                        <div class='fieldset mandatory'>
-                            <label>Centre coordinates of the activity area</label>
-                            <textarea class="field" name="message"></textarea>
-                        </div>
-                        <div class='fieldset mandatory'>
-                            <label>Radius around the centre (in meters)</label>
-                            <textarea class="field" name="message"></textarea>
-                        </div>
-
-                        <div class='fieldset mandatory'>
-                            <label>Altitude (in meters above ground level)</label>
-                            <input type="text" class="field" name="altitude_in_meter"></input>
-                        </div>
-                        <label class="information ordered_list_title">Self-declaration regarding safety of third parties
-                            on ground </label>
-                        <p>
-                        <ul class="information">By filing this request, the applicant for unmanned aircraft operations
-                            or other unmanned aerial activities, declares that:
-                            <div class="adding_apace">
-                                <li>she/he is familiar with the rules and regulations in the ordinance on aircraft of
-                                    special categories particularly with the possible requirement for a third party
-                                    liability insurance according to article 20 and with possible cantonal rules and
-                                    regulations which are based on article 19
-                                </li>
-                                <li>these aerial activities do not conflict with current national laws and regulations
-                                    regarding protection of data privacy, as well as regarding protection of military
-                                    installations.
-                                </li>
-                                <li>she/he has taken actions necessary so that no third parties on ground are endangered
-                                    by aerial activities under her/his control.
-                                </li>
-                            </div>
-                        </ul>
-                        </p>
                     </li>
                 </ol>
                 <div class='return errors'>
