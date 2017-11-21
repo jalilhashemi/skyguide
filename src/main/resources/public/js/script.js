@@ -21,11 +21,20 @@ $(document).ready(function () {
 
     $(document).on('change', '#type_of_activity', function () {
         // what happens on change of the activity type dropdown
-        if ($('#type_of_activity').val() == informationJSON[0].name) {
-            alert(informationJSON[0].fieldList[1].active);
-            if (informationJSON[0].fieldList[1].active)
-                $('#localTimeField').show();
-        }
+        console.log(informationJSON);
+        $.each(informationJSON, function (j, item) {
+            if ($('#type_of_activity').val() == item.name) {
+                $.each(informationJSON[0].fieldList, function (i, item) {
+                    if(item.active)
+                        $("#" + item.name).show();
+                });
+
+
+                if (informationJSON[0].fieldList[1].active)
+                    $('#localTimeField').show();
+            }
+        });
+
     });
 });
 
