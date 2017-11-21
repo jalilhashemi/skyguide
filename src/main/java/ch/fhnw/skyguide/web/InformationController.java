@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/information")
 public class InformationController {
@@ -17,7 +18,7 @@ public class InformationController {
     @Autowired
     private ActivityTypeService aircraftTypeService;
 
-    @CrossOrigin(origins = "http://localhost")
+    //@CrossOrigin(origins = "http://localhost")
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<ActivityType> getInformations(HttpServletResponse response,
