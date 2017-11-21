@@ -15,7 +15,7 @@ import java.util.List;
 public class InformationController {
 
     @Autowired
-    private ActivityTypeService aircraftTypeService;
+    private ActivityTypeService activityTypeService;
 
     @CrossOrigin(origins = "http://localhost")
     @RequestMapping(method = RequestMethod.GET)
@@ -30,7 +30,7 @@ public class InformationController {
         f.setName("date");
         a.getFieldList().add(f);
         list.add(a);*/
-   List<ActivityType> list = aircraftTypeService.getAllAircraftTypes();
+   List<ActivityType> list = activityTypeService.getAllActivityTypes();
         return list;
             /*    "information = {" +
                 "'name': 'Sky Latern'" +

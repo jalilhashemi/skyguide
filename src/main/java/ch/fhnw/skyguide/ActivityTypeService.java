@@ -9,16 +9,28 @@ import java.util.function.Predicate;
 @Service
 public class ActivityTypeService {
 
-    private List<ActivityType> list = new ArrayList<>();
+    private List<ActivityType> listActivityType = new ArrayList<>();
 
-    public ActivityType getAircraftTypeByName(String name) {
-        Predicate<ActivityType> aircraftTypePredicate = a -> a.getName().equals(name);
-        ActivityType obj = list.stream().filter(aircraftTypePredicate).findFirst().get();
+    public ActivityType getActivityTypeByName(String name) {
+        Predicate<ActivityType> activityTypePredicate = a -> a.getName().equals(name);
+        ActivityType obj = listActivityType.stream().filter(activityTypePredicate).findFirst().get();
         return obj;
     }
 
-    public List<ActivityType> getAllAircraftTypes() {
-        return list;
+    public List<ActivityType> getAllActivityTypes() {
+        return listActivityType;
+    }
+
+    private List<AircraftType> listAircraftType = new ArrayList<>();
+
+    public AircraftType getAircraftTypeByName(String name) {
+        Predicate<AircraftType> aircraftTypePredicate = a -> a.getName().equals(name);
+        AircraftType obj = listAircraftType.stream().filter(aircraftTypePredicate).findFirst().get();
+        return obj;
+    }
+
+    public List<AircraftType> getAllAircraftTypes() {
+        return listAircraftType;
     }
 
     {
@@ -89,7 +101,7 @@ public class ActivityTypeService {
         skyLaternActivityType.getFieldList().add(beamDirectionFieldInactive);
         skyLaternActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         skyLaternActivityType.getFieldList().add(amountFieldActive);
-        list.add(skyLaternActivityType);
+        listActivityType.add(skyLaternActivityType);
 
         ActivityType weatherBalloonActivityType = new ActivityType("Weather Balloon");
         weatherBalloonActivityType.getFieldList().add(callsignFieldInactive);
@@ -102,7 +114,7 @@ public class ActivityTypeService {
         weatherBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         weatherBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         weatherBalloonActivityType.getFieldList().add(amountFieldActive);
-        list.add(weatherBalloonActivityType);
+        listActivityType.add(weatherBalloonActivityType);
 
         ActivityType toyBalloonActivityType = new ActivityType("Toy Balloon");
         toyBalloonActivityType.getFieldList().add(callsignFieldInactive);
@@ -115,7 +127,7 @@ public class ActivityTypeService {
         toyBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         toyBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         toyBalloonActivityType.getFieldList().add(amountFieldActive);
-        list.add(toyBalloonActivityType);
+        listActivityType.add(toyBalloonActivityType);
 
         ActivityType captiveBalloonActivityType = new ActivityType("Captive Balloon");
         captiveBalloonActivityType.getFieldList().add(callsignFieldInactive);
@@ -128,7 +140,7 @@ public class ActivityTypeService {
         captiveBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         captiveBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         captiveBalloonActivityType.getFieldList().add(amountFieldActive);
-        list.add(captiveBalloonActivityType);
+        listActivityType.add(captiveBalloonActivityType);
 
         ActivityType hotAirBalloonActivityType = new ActivityType("Hot Air Balloon");
         hotAirBalloonActivityType.getFieldList().add(callsignFieldMandatory);
@@ -141,7 +153,7 @@ public class ActivityTypeService {
         hotAirBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         hotAirBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         hotAirBalloonActivityType.getFieldList().add(amountFieldActive);
-        list.add(hotAirBalloonActivityType);
+        listActivityType.add(hotAirBalloonActivityType);
 
         ActivityType gasBalloonActivityType = new ActivityType("Gas Balloon");
         gasBalloonActivityType.getFieldList().add(callsignFieldMandatory);
@@ -154,7 +166,7 @@ public class ActivityTypeService {
         gasBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         gasBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         gasBalloonActivityType.getFieldList().add(amountFieldActive);
-        list.add(gasBalloonActivityType);
+        listActivityType.add(gasBalloonActivityType);
 
         ActivityType skyLightLaseActivityType = new ActivityType("Sky Light / Lase");
         skyLightLaseActivityType.getFieldList().add(callsignFieldInactive);
@@ -167,7 +179,7 @@ public class ActivityTypeService {
         skyLightLaseActivityType.getFieldList().add(beamDirectionFieldActive);
         skyLightLaseActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         skyLightLaseActivityType.getFieldList().add(amountFieldInactive);
-        list.add(skyLightLaseActivityType);
+        listActivityType.add(skyLightLaseActivityType);
 
         ActivityType kiteActivityType = new ActivityType("Kite");
         kiteActivityType.getFieldList().add(callsignFieldInactive);
@@ -180,7 +192,7 @@ public class ActivityTypeService {
         kiteActivityType.getFieldList().add(beamDirectionFieldInactive);
         kiteActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         kiteActivityType.getFieldList().add(amountFieldInactive);
-        list.add(kiteActivityType);
+        listActivityType.add(kiteActivityType);
 
         ActivityType fireworkActivityType = new ActivityType("Firework");
         fireworkActivityType.getFieldList().add(callsignFieldInactive);
@@ -191,9 +203,10 @@ public class ActivityTypeService {
         fireworkActivityType.getFieldList().add(exactLocationFieldMandatory);
         fireworkActivityType.getFieldList().add(heightAltitudeFieldMandatory);
         fireworkActivityType.getFieldList().add(beamDirectionFieldInactive);
-        fireworkActivityType.getFieldList().add(payloadAttachedObjFieldInactive);;
+        fireworkActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
+        ;
         fireworkActivityType.getFieldList().add(amountFieldInactive);
-        list.add(fireworkActivityType);
+        listActivityType.add(fireworkActivityType);
 
         ActivityType flightWithHangGliderActivityType = new ActivityType("Flight With Hang Glider");
         flightWithHangGliderActivityType.getFieldList().add(callsignFieldInactive);
@@ -206,27 +219,31 @@ public class ActivityTypeService {
         flightWithHangGliderActivityType.getFieldList().add(beamDirectionFieldInactive);
         flightWithHangGliderActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         flightWithHangGliderActivityType.getFieldList().add(amountFieldInactive);
-        list.add(flightWithHangGliderActivityType);
+        listActivityType.add(flightWithHangGliderActivityType);
+
+        AircraftType fixedWingAircraftType = new AircraftType("Fixed Wing Aircraft");
+        AircraftType rotaryWingAircraftType = new AircraftType("Rotary Wing Aircraft");
+        AircraftType pras = new AircraftType("PRAS");
 
         ActivityType photoFlightActivityType = new ActivityType("Photo Flight");
-        list.add(photoFlightActivityType);
+        listActivityType.add(photoFlightActivityType);
 
         ActivityType transportFlightActivityType = new ActivityType("Transport Flight");
-        list.add(transportFlightActivityType);
+        listActivityType.add(transportFlightActivityType);
 
         ActivityType taxiPassengerFlightActivityType = new ActivityType("Taxi Passenger Flight");
-        list.add(taxiPassengerFlightActivityType);
+        listActivityType.add(taxiPassengerFlightActivityType);
 
         ActivityType parachuteActivityType = new ActivityType("Parachute");
-        list.add(parachuteActivityType);
+        listActivityType.add(parachuteActivityType);
 
         ActivityType militaryMissionActivityType = new ActivityType("Military Mission");
-        list.add(militaryMissionActivityType);
+        listActivityType.add(militaryMissionActivityType);
 
         ActivityType policeMissionActivityType = new ActivityType("Police Mission");
-        list.add(policeMissionActivityType);
+        listActivityType.add(policeMissionActivityType);
 
         ActivityType etcActivityType = new ActivityType("etc.");
-        list.add(etcActivityType);
+        listActivityType.add(etcActivityType);
     }
 }
