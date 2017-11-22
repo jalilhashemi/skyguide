@@ -5,13 +5,11 @@ import java.util.List;
 
 public class ActivityType {
     private String name;
-    //private List<Field> fieldList;
-    private List<AircraftType> aircraftTypesList;
+    private List<AircraftType> aircraftTypeList;
 
     public ActivityType(String name) {
         this.name = name;
-        //fieldList = new ArrayList<>();
-        aircraftTypesList = new ArrayList<>();
+        aircraftTypeList = new ArrayList<>();
     }
 
     public String getName() {
@@ -22,19 +20,11 @@ public class ActivityType {
         this.name = name;
     }
 
-//    public List<Field> getFieldList() {
-//        return fieldList;
-//    }
-//
-//    public void setFieldList(List<Field> fieldList) {
-//        this.fieldList = fieldList;
-//    }
-
-    public List<AircraftType> getAircraftTypesList() {
-        return aircraftTypesList;
+    public List<AircraftType> getAircraftTypeList() {
+        return aircraftTypeList;
     }
 
-    public void setAircraftTypesList(List<AircraftType> aircraftTypesList) {
-        this.aircraftTypesList = aircraftTypesList;
+    public void setAircraftTypeList(List<AircraftType> aircraftTypeList) {
+        this.aircraftTypeList = aircraftTypeList;
     }
 }

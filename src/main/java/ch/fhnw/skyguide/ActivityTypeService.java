@@ -92,7 +92,7 @@ public class ActivityTypeService {
 
         ActivityType skyLaternActivityType = new ActivityType("Sky Lantern");
         AircraftType defaultAircraftType = new AircraftType("");
-        skyLaternActivityType.getAircraftTypesList().add(defaultAircraftType);
+        skyLaternActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -107,7 +107,7 @@ public class ActivityTypeService {
 
         ActivityType weatherBalloonActivityType = new ActivityType("Weather Balloon");
         defaultAircraftType.getFieldList().clear();
-        weatherBalloonActivityType.getAircraftTypesList().add(defaultAircraftType);
+        weatherBalloonActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -122,7 +122,7 @@ public class ActivityTypeService {
 
         ActivityType toyBalloonActivityType = new ActivityType("Toy Balloon");
         defaultAircraftType.getFieldList().clear();
-        toyBalloonActivityType.getAircraftTypesList().add(defaultAircraftType);
+        toyBalloonActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -137,7 +137,7 @@ public class ActivityTypeService {
 
         ActivityType captiveBalloonActivityType = new ActivityType("Captive Balloon");
         defaultAircraftType.getFieldList().clear();
-        captiveBalloonActivityType.getAircraftTypesList().add(defaultAircraftType);
+        captiveBalloonActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -152,7 +152,7 @@ public class ActivityTypeService {
 
         ActivityType hotAirBalloonActivityType = new ActivityType("Hot Air Balloon");
         defaultAircraftType.getFieldList().clear();
-        hotAirBalloonActivityType.getAircraftTypesList().add(defaultAircraftType);
+        hotAirBalloonActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldMandatory);
         defaultAircraftType.getFieldList().add(depDestFieldMandatory);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -167,7 +167,7 @@ public class ActivityTypeService {
 
         ActivityType gasBalloonActivityType = new ActivityType("Gas Balloon");
         defaultAircraftType.getFieldList().clear();
-        gasBalloonActivityType.getAircraftTypesList().add(defaultAircraftType);
+        gasBalloonActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldMandatory);
         defaultAircraftType.getFieldList().add(depDestFieldMandatory);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -182,7 +182,7 @@ public class ActivityTypeService {
 
         ActivityType skyLightLaserActivityType = new ActivityType("Sky Light / Lase");
         defaultAircraftType.getFieldList().clear();
-        skyLightLaserActivityType.getAircraftTypesList().add(defaultAircraftType);
+        skyLightLaserActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -197,7 +197,7 @@ public class ActivityTypeService {
 
         ActivityType kiteActivityType = new ActivityType("Kite");
         defaultAircraftType.getFieldList().clear();
-        kiteActivityType.getAircraftTypesList().add(defaultAircraftType);
+        kiteActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -212,7 +212,7 @@ public class ActivityTypeService {
 
         ActivityType fireworkActivityType = new ActivityType("Firework");
         defaultAircraftType.getFieldList().clear();
-        fireworkActivityType.getAircraftTypesList().add(defaultAircraftType);
+        fireworkActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -227,7 +227,7 @@ public class ActivityTypeService {
 
         ActivityType flightWithHangGliderActivityType = new ActivityType("Flight With Hang Glider");
         defaultAircraftType.getFieldList().clear();
-        flightWithHangGliderActivityType.getAircraftTypesList().add(defaultAircraftType);
+        flightWithHangGliderActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -245,7 +245,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftType = new AircraftType("PRAS");
 
         ActivityType photoFlightActivityType = new ActivityType("Photo Flight");
-        photoFlightActivityType.getAircraftTypesList().add(fixedWingAircraftType);
+        photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftType);
         fixedWingAircraftType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftType.getFieldList().add(depDestFieldMandatory);
         fixedWingAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -258,7 +258,7 @@ public class ActivityTypeService {
         fixedWingAircraftType.getFieldList().add(selfDeclarationFieldInactive);
         listActivityType.add(photoFlightActivityType);
 
-        photoFlightActivityType.getAircraftTypesList().add(rotaryWingAircraftType);
+        photoFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftType);
         rotaryWingAircraftType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftType.getFieldList().add(depDestFieldMandatory);
         rotaryWingAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -269,11 +269,11 @@ public class ActivityTypeService {
         rotaryWingAircraftType.getFieldList().add(radiusPlusFieldInactive);
         rotaryWingAircraftType.getFieldList().add(heightAltitudePlusFieldActive);
         rotaryWingAircraftType.getFieldList().add(selfDeclarationFieldInactive);
-        photoFlightActivityType.getAircraftTypesList().add(fixedWingAircraftType);
+        photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftType);
         listActivityType.add(photoFlightActivityType);
 
 
-        photoFlightActivityType.getAircraftTypesList().add(rpasAircraftType);
+        photoFlightActivityType.getAircraftTypeList().add(rpasAircraftType);
         rpasAircraftType.getFieldList().add(callsignFieldInactive);
         rpasAircraftType.getFieldList().add(depDestFieldInactive);
         rpasAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -284,12 +284,12 @@ public class ActivityTypeService {
         rpasAircraftType.getFieldList().add(radiusPlusFieldInactive);
         rpasAircraftType.getFieldList().add(heightAltitudePlusFieldActive);
         rpasAircraftType.getFieldList().add(selfDeclarationFieldActive);
-        photoFlightActivityType.getAircraftTypesList().add(fixedWingAircraftType);
+        photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftType);
         listActivityType.add(photoFlightActivityType);
 
         ActivityType transportFlightActivityType = new ActivityType("Transport Flight");
         defaultAircraftType.getFieldList().clear();
-        transportFlightActivityType.getAircraftTypesList().add(defaultAircraftType);
+        transportFlightActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
