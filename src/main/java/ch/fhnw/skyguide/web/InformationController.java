@@ -12,12 +12,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/information")
+@CrossOrigin
 public class InformationController {
 
     @Autowired
     private ActivityTypeService activityTypeService;
 
-    @CrossOrigin(origins = "http://localhost")
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<ActivityType> getInformations(HttpServletResponse response,
