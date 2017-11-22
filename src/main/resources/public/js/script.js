@@ -14,24 +14,18 @@ $(document).ready(function () {
         .fail(function (xhr, status, errorThrown) {
             alert("Fail!\nerror: " + errorThrown + "\nstatus: " + status);
         });
-    /* $('#type_of_activity').append($('<option>', {
-         text: 'text'
-     }));*/
-
 
     $(document).on('change', '#type_of_activity', function () {
-        // what happens on change of the activity type dropdown
-        console.log(informationJSON);
-        $.each(informationJSON, function (j, item) {
-            if ($('#type_of_activity').val() == item.name) {
-                $.each(informationJSON[0].fieldList, function (i, item) {
-                    if(item.active)
-                        $("#" + item.name).show();
+        $.each(informationJSON, function (j, activityType) {
+            if ($('#type_of_activity').val() == activityType.name) {
+                $.each(activityType.fieldList, function (i, field) {
+                    if(field.active){
+                        $("#" + field.name).show();
+                        }
+                    else {
+                        $("#" + field.name).hide();
+                    }
                 });
-
-
-                if (informationJSON[0].fieldList[1].active)
-                    $('#localTimeField').show();
             }
         });
 
