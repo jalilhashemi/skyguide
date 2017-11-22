@@ -90,9 +90,9 @@ public class ActivityTypeService {
         Field selfDeclarationFieldActive = new Field("div_self_declaration", false, true);
         Field selfDeclarationFieldInactive = new Field("div_self_declaration", false, false);
 
-        ActivityType skyLaternActivityType = new ActivityType("Sky Lantern");
+        ActivityType skyLanternActivityType = new ActivityType("Sky Lantern");
         AircraftType defaultAircraftType = new AircraftType("");
-        skyLaternActivityType.getAircraftTypeList().add(defaultAircraftType);
+        skyLanternActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
         defaultAircraftType.getFieldList().add(dateFromUntilFieldMandatory);
@@ -103,7 +103,7 @@ public class ActivityTypeService {
         defaultAircraftType.getFieldList().add(beamDirectionFieldInactive);
         defaultAircraftType.getFieldList().add(payloadAttachedObjFieldActive);
         defaultAircraftType.getFieldList().add(amountFieldActive);
-        listActivityType.add(skyLaternActivityType);
+        listActivityType.add(skyLanternActivityType);
 
         ActivityType weatherBalloonActivityType = new ActivityType("Weather Balloon");
         defaultAircraftType.getFieldList().clear();
