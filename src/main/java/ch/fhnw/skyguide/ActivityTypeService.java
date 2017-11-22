@@ -256,7 +256,6 @@ public class ActivityTypeService {
         fixedWingAircraftType.getFieldList().add(radiusPlusFieldInactive);
         fixedWingAircraftType.getFieldList().add(heightAltitudePlusFieldActive);
         fixedWingAircraftType.getFieldList().add(selfDeclarationFieldInactive);
-        listActivityType.add(photoFlightActivityType);
 
         photoFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftType);
         rotaryWingAircraftType.getFieldList().add(callsignFieldMandatory);
@@ -269,9 +268,6 @@ public class ActivityTypeService {
         rotaryWingAircraftType.getFieldList().add(radiusPlusFieldInactive);
         rotaryWingAircraftType.getFieldList().add(heightAltitudePlusFieldActive);
         rotaryWingAircraftType.getFieldList().add(selfDeclarationFieldInactive);
-        photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftType);
-        listActivityType.add(photoFlightActivityType);
-
 
         photoFlightActivityType.getAircraftTypeList().add(rpasAircraftType);
         rpasAircraftType.getFieldList().add(callsignFieldInactive);
@@ -284,7 +280,6 @@ public class ActivityTypeService {
         rpasAircraftType.getFieldList().add(radiusPlusFieldInactive);
         rpasAircraftType.getFieldList().add(heightAltitudePlusFieldActive);
         rpasAircraftType.getFieldList().add(selfDeclarationFieldActive);
-        photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftType);
         listActivityType.add(photoFlightActivityType);
 
         ActivityType transportFlightActivityType = new ActivityType("Transport Flight");
