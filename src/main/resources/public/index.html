@@ -69,22 +69,22 @@
                             <label id="label_exact_location">Exact location</label>
                             <input type="text" class="field" name="exact_location" id="input_exact_location"/>
                         </div>
-                        <div class='fieldset mandatory displayNone' id="div_height_altitude">
+                        <div class='fieldset displayNone' id="div_height_altitude">
                             <label id="label_height_altitude">Height / Altitude</label>
-                            <select class='field' name='height_altitude' id='altitude'>
-                                <option value='-1'>
-                                    Select an altitude
-                                </option>
-                                <option value='ft_amsl'>
-                                    ft AMSL
-                                </option>
-                                <option value='fl'>
-                                    FL
-                                </option>
-                                <option value='ft_agl'>
-                                    ft AGL
-                                </option>
-                            </select>
+                            <div>
+                                <label class="container">ft AMSL
+                                    <input type="radio" checked="checked">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">FL
+                                    <input type="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="container">ft AGL
+                                    <input type="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
                         </div>
                         <div class='fieldset displayNone' id="div_beam_direction">
                             <label id="label_beam_direction">Beam direction</label>

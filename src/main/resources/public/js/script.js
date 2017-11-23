@@ -29,7 +29,6 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
-    // .. what we have to initialize
 }
 
 function initializeChangeHandlers() {
