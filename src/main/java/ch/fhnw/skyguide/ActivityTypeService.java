@@ -92,6 +92,7 @@ public class ActivityTypeService {
 
         ActivityType skyLanternActivityType = new ActivityType("Sky Lantern");
         AircraftType defaultAircraftType = new AircraftType("");
+        defaultAircraftType.getFieldList().clear();
         skyLanternActivityType.getAircraftTypeList().add(defaultAircraftType);
         defaultAircraftType.getFieldList().add(callsignFieldInactive);
         defaultAircraftType.getFieldList().add(depDestFieldInactive);
