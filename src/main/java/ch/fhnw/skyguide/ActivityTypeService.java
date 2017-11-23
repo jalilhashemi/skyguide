@@ -395,7 +395,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(exactLocationFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(heightAltitudeFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(beamDirectionFieldInactive);
-        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(payloadAttachedObjFieldInactive;
+        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(gpsCoordFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(radiusFieldMandatory);
