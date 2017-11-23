@@ -33,12 +33,15 @@ function initializeForm() {
 
 function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
-        if($('#type_of_activity').val() == -1) {
+        $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
+            $("#" + field.name).hide();
+        });
+      /*  if($('#type_of_activity').val() == -1) {
             $('#type_of_aircraft').hide();
             $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
                 $("#" + field.name).hide();
             });
-        }
+        }*/
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.name) {
                 if (activityType.aircraftTypeList.length > 1) {

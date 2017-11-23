@@ -39,7 +39,6 @@
                                 <option value='-1'>Select the activity type</option>
                             </select>
                         </div>
-
                         <div class='fieldset mandatory displayNone' id='type_of_aircraft'>
                             <label>Type of aircraft</label>
                             <select class='field' name='type_of_aircraft' id='select_type_of_aircraft'>
@@ -77,15 +76,15 @@
                             <label id="label_height_altitude">Height / Altitude</label>
                             <div>
                                 <label class="container">ft AMSL
-                                    <input type="radio" checked="checked">
+                                    <input name="height_altitude" type="radio" value="ft AMSL">
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="container">FL
-                                    <input type="radio">
+                                    <input name="height_altitude"  type="radio" value="FL">
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="container">ft AGL
-                                    <input type="radio">
+                                    <input name="height_altitude" type="radio" value="ft AGL">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
