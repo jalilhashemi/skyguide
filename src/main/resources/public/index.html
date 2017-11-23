@@ -72,8 +72,9 @@
                             <label id="label_exact_location">Exact location</label>
                             <input type="text" class="field" name="exact_location" id="input_exact_location"/>
                         </div>
+                        <!--It is made to be run but need to be nice-->
                         <div class='fieldset displayNone' id="div_height_altitude">
-                            <label id="label_height_altitude">Height / Altitude</label>
+                            <label id="label_height_altitude">Height / Altitude*</label>
                             <div>
                                 <label class="container">ft AMSL
                                     <input name="height_altitude" type="radio" value="ft AMSL">
@@ -88,6 +89,7 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
+                            <input type="text" class="field" name="height_altitude" id="input_height_altitude" style="margin-top: 10px"/>
                         </div>
                         <div class='fieldset displayNone' id="div_beam_direction">
                             <label id="label_beam_direction">Beam direction</label>
@@ -109,7 +111,7 @@
                             <label id="label_radius">Radius</label>
                             <input type="text" class="field" name="radius" id="input_radius"/>
                         </div>
-                        <div class='fieldset mandatory displayNone' id="div_self_declaration">
+                        <div class='fieldset displayNone' id="div_self_declaration">
                             <label id="label_self_declaration">Self declaration</label>
                             <textarea class="field" name="message" id="input_self_declaration"></textarea>
                         </div>

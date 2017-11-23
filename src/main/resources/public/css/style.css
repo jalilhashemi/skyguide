@@ -76,7 +76,7 @@ input {
 label {
     /*display: block;*/
     margin-bottom: 5px;
-    content: '*';
+    /*content: '*';*/
     /*display: inline;*/
     cursor: default;
     line-height: 30px;
@@ -146,9 +146,11 @@ h2 {
 }
 
 .form .fieldset.mandatory label:after {
-    /*content: '*';*/
+    content: '*';
     /*display: inline;*/
 }
+
+
 
 .form .fieldset {
     margin-bottom: 10px;
@@ -228,11 +230,6 @@ div {
     padding-top: 15px;
     /*font-weight: 600;*/
 }
-
-
-
-
-
 
 .container {
     /*display: block;*/
