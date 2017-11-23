@@ -42,9 +42,13 @@ public class ActivityTypeService {
         Field depDestFieldActive = new Field("div_dep_dest", false, true);
         Field depDestFieldInactive = new Field("div_dep_dest", false, false);
 
-        Field dateFromUntilFieldMandatory = new Field("div_date_from_until", true, true);
-        Field dateFromUntilFieldActive = new Field("div_date_from_until", false, true);
-        Field dateFromUntilFieldInactive = new Field("div_date_from_until", false, false);
+        Field dateFromFieldMandatory = new Field("div_date_from", true, true);
+        Field dateFromFieldActive = new Field("div_date_from", false, true);
+        Field dateFromFieldInactive = new Field("div_date_from", false, false);
+
+        Field dateUntilFieldMandatory = new Field("div_date_until", true, true);
+        Field dateUntilFieldActive = new Field("div_date_until", false, true);
+        Field dateUntilFieldInactive = new Field("div_date_until", false, false);
 
         Field timeScheduleFieldMandatory = new Field("div_time_schedule", true, true);
         Field timeScheduleFieldActive = new Field("div_time_schedule", false, true);
@@ -91,7 +95,8 @@ public class ActivityTypeService {
         skyLanternActivityType.getAircraftTypeList().add(defaultSkyLanternActivityType);
         defaultSkyLanternActivityType.getFieldList().add(callsignFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(depDestFieldInactive);
-        defaultSkyLanternActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultSkyLanternActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultSkyLanternActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(durationFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -109,7 +114,8 @@ public class ActivityTypeService {
         weatherBalloonActivityType.getAircraftTypeList().add(defaultWeatherBalloonActivityType);
         defaultWeatherBalloonActivityType.getFieldList().add(callsignFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(depDestFieldInactive);
-        defaultWeatherBalloonActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultWeatherBalloonActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultWeatherBalloonActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -127,7 +133,8 @@ public class ActivityTypeService {
         toyBalloonActivityType.getAircraftTypeList().add(defaultToyBalloonActivityType);
         defaultToyBalloonActivityType.getFieldList().add(callsignFieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(depDestFieldInactive);
-        defaultToyBalloonActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultToyBalloonActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultToyBalloonActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultToyBalloonActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultToyBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultToyBalloonActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -145,7 +152,8 @@ public class ActivityTypeService {
         captiveBalloonActivityType.getAircraftTypeList().add(defaultCaptiveBalloonActivityType);
         defaultCaptiveBalloonActivityType.getFieldList().add(callsignFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(depDestFieldInactive);
-        defaultCaptiveBalloonActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultCaptiveBalloonActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultCaptiveBalloonActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultCaptiveBalloonActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultCaptiveBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultCaptiveBalloonActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -163,7 +171,8 @@ public class ActivityTypeService {
         hotAirBalloonActivityType.getAircraftTypeList().add(defaultHotAirBalloonActivityType);
         defaultHotAirBalloonActivityType.getFieldList().add(callsignFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(depDestFieldMandatory);
-        defaultHotAirBalloonActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultHotAirBalloonActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultHotAirBalloonActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -181,7 +190,8 @@ public class ActivityTypeService {
         gasBalloonActivityType.getAircraftTypeList().add(defaultGasBalloonActivityType);
         defaultGasBalloonActivityType.getFieldList().add(callsignFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(depDestFieldMandatory);
-        defaultGasBalloonActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultGasBalloonActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultGasBalloonActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -199,7 +209,8 @@ public class ActivityTypeService {
         skyLightLaserActivityType.getAircraftTypeList().add(defaultSkyLightLaserActivityType);
         defaultSkyLightLaserActivityType.getFieldList().add(callsignFieldInactive);
         defaultSkyLightLaserActivityType.getFieldList().add(depDestFieldInactive);
-        defaultSkyLightLaserActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultSkyLightLaserActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultSkyLightLaserActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultSkyLightLaserActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultSkyLightLaserActivityType.getFieldList().add(durationFieldMandatory);
         defaultSkyLightLaserActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -217,7 +228,8 @@ public class ActivityTypeService {
         kiteActivityType.getAircraftTypeList().add(defaultKiteActivityType);
         defaultKiteActivityType.getFieldList().add(callsignFieldInactive);
         defaultKiteActivityType.getFieldList().add(depDestFieldInactive);
-        defaultKiteActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultKiteActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultKiteActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultKiteActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultKiteActivityType.getFieldList().add(durationFieldMandatory);
         defaultKiteActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -235,7 +247,8 @@ public class ActivityTypeService {
         fireworkActivityType.getAircraftTypeList().add(defaultFireworkActivityType);
         defaultFireworkActivityType.getFieldList().add(callsignFieldInactive);
         defaultFireworkActivityType.getFieldList().add(depDestFieldInactive);
-        defaultFireworkActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultFireworkActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultFireworkActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultFireworkActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultFireworkActivityType.getFieldList().add(durationFieldMandatory);
         defaultFireworkActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -253,7 +266,8 @@ public class ActivityTypeService {
         flightWithHangGliderActivityType.getAircraftTypeList().add(defaultfLightWithHangGliderActivityType);
         defaultfLightWithHangGliderActivityType.getFieldList().add(callsignFieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(depDestFieldInactive);
-        defaultfLightWithHangGliderActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultfLightWithHangGliderActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultfLightWithHangGliderActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultfLightWithHangGliderActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultfLightWithHangGliderActivityType.getFieldList().add(durationFieldMandatory);
         defaultfLightWithHangGliderActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -271,7 +285,8 @@ public class ActivityTypeService {
         transportFlightActivityType.getAircraftTypeList().add(defaultTransportFlightActivityType);
         defaultTransportFlightActivityType.getFieldList().add(callsignFieldMandatory);
         defaultTransportFlightActivityType.getFieldList().add(depDestFieldMandatory);
-        defaultTransportFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        defaultTransportFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        defaultTransportFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         defaultTransportFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultTransportFlightActivityType.getFieldList().add(durationFieldMandatory);
         defaultTransportFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -289,7 +304,8 @@ public class ActivityTypeService {
         photoFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypePhotoFlightActivityType);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(depDestFieldMandatory);
-        rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(durationFieldMandatory);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -305,7 +321,8 @@ public class ActivityTypeService {
         photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypePhotoFlightActivityType);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(depDestFieldMandatory);
-        fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -321,7 +338,8 @@ public class ActivityTypeService {
         photoFlightActivityType.getAircraftTypeList().add(rpasAircraftTypePhotoFlightActivityType);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(depDestFieldInactive);
-        rpasAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rpasAircraftTypePhotoFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        rpasAircraftTypePhotoFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(durationFieldMandatory);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -339,7 +357,8 @@ public class ActivityTypeService {
         taxiPassengerFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeTaxiPassengerFlightActivityType);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(depDestFieldMandatory);
-        rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(durationFieldMandatory);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -355,7 +374,8 @@ public class ActivityTypeService {
         taxiPassengerFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeTaxiPassengerFlightActivityType);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(depDestFieldMandatory);
-        fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateFromFieldMandatory);
+        fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(dateUntilFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(timeScheduleFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -373,7 +393,8 @@ public class ActivityTypeService {
         parachuteActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeParachuteActivityType);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(depDestFieldMandatory);
-        rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(dateFromFieldMandatory);
+        rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(dateUntilFieldMandatory);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(durationFieldMandatory);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -389,7 +410,8 @@ public class ActivityTypeService {
         parachuteActivityType.getAircraftTypeList().add(fixedWingAircraftTypeParachuteActivityType);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(depDestFieldMandatory);
-        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(dateFromFieldMandatory);
+        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(dateUntilFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(timeScheduleFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -407,7 +429,8 @@ public class ActivityTypeService {
         militaryMissionActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeMilitaryMissionActivityType);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(depDestFieldMandatory);
-        rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(durationFieldMandatory);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -423,7 +446,8 @@ public class ActivityTypeService {
         militaryMissionActivityType.getAircraftTypeList().add(fixedWingAircraftTypeMilitaryMissionActivityType);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(depDestFieldMandatory);
-        fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -439,7 +463,8 @@ public class ActivityTypeService {
         militaryMissionActivityType.getAircraftTypeList().add(rpasAircraftTypeMilitaryMissionActivityType);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(callsignFieldMandatory);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(depDestFieldMandatory);
-        rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(durationFieldMandatory);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -457,7 +482,8 @@ public class ActivityTypeService {
         policeMissionActivityType.getAircraftTypeList().add(rotaryWingAircraftTypePoliceMissionActivityType);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(callsignFieldMandatory);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(depDestFieldMandatory);
-        rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(durationFieldMandatory);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -473,7 +499,8 @@ public class ActivityTypeService {
         policeMissionActivityType.getAircraftTypeList().add(fixedWingAircraftTypePoliceMissionActivityType);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(callsignFieldMandatory);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(depDestFieldMandatory);
-        fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
@@ -489,7 +516,8 @@ public class ActivityTypeService {
         policeMissionActivityType.getAircraftTypeList().add(rpasAircraftTypePoliceMissionActivityType);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(depDestFieldInactive);
-        rpasAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromUntilFieldMandatory);
+        rpasAircraftTypePoliceMissionActivityType.getFieldList().add(dateFromFieldMandatory);
+        rpasAircraftTypePoliceMissionActivityType.getFieldList().add(dateUntilFieldMandatory);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(timeScheduleFieldMandatory);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(durationFieldMandatory);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(exactLocationFieldMandatory);
