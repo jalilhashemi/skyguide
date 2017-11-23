@@ -36,6 +36,7 @@ function initializeChangeHandlers() {
         $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
             $("#" + field.name).hide();
         });
+        $('#type_of_aircraft').hide();
       /*  if($('#type_of_activity').val() == -1) {
             $('#type_of_aircraft').hide();
             $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
