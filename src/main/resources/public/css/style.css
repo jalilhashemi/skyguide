@@ -146,7 +146,7 @@ h2 {
 }
 
 .form .fieldset.mandatory label:after {
-    content: '*';
+    /*content: '*';*/
     /*display: inline;*/
 }
 

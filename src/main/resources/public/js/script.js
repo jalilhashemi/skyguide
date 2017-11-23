@@ -2,6 +2,7 @@ var informationJSON;
 var actualAircraftTypeList;
 $(document).ready(function () {
     initializeForm();
+    initializeChangeHandlers();
 
     $.ajax({
         crossOrigin: true,
@@ -14,11 +15,26 @@ $(document).ready(function () {
             informationJSON = json;
         })
         .fail(function (xhr, status, errorThrown) {
-            alert("Fail!\nerror: " + errorThrown + "\nstatus: " + status);
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
 
+});
+
+function appendSelection(data) {
+    $.each(data, function (i, item) {
+        $('#type_of_activity').append($('<option>', {
+            text: item.name
+        }));
+    });
+}
+
+function initializeForm() {
+}
+
+function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
         if($('#type_of_activity').val() == -1) {
+            $('#type_of_aircraft').hide();
             $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
                 $("#" + field.name).hide();
             });
@@ -69,18 +85,6 @@ $(document).ready(function () {
         });
 
     });
-});
-
-function appendSelection(data) {
-    $.each(data, function (i, item) {
-        $('#type_of_activity').append($('<option>', {
-            text: item.name
-        }));
-    });
-}
-
-function initializeForm() {
-    //$(':nth-child(2#fieldset_activity_information').nextAll().hide();
 }
 
 
