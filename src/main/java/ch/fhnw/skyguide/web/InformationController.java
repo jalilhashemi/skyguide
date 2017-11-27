@@ -3,6 +3,7 @@ package ch.fhnw.skyguide.web;
 import ch.fhnw.skyguide.ActivityType;
 import ch.fhnw.skyguide.ActivityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,27 +19,11 @@ public class InformationController {
     @Autowired
     private ActivityTypeService activityTypeService;
 
-
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
     public List<ActivityType> getInformations(HttpServletResponse response,
                                               HttpServletRequest request) throws IOException {
-   /*     List<ActivityType> list = new ArrayList<>();
-        ActivityType a = new ActivityType("Sky Latern");
-        Field f = new Field();
-        f.setActive(true);
-        f.setMandatory(true);
-        f.setName("date");
-        a.getFieldList().add(f);
-        list.add(a);*/
-   List<ActivityType> list = activityTypeService.getAllActivityTypes();
+        List<ActivityType> list = activityTypeService.getAllActivityTypes();
         return list;
-            /*    "information = {" +
-                "'name': 'Sky Latern'" +
-                "'fields': {" +
-                "'date': 'true'," +
-                "'duration': 'true'" +
-                "}" +
-                "}";*/
     }
 }
