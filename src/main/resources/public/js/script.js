@@ -1,6 +1,7 @@
 var informationJSON;
 var actualAircraftTypeList;
 var map;
+var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
@@ -31,14 +32,14 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
+    $('#type_of_aircraft').parent().hide();
+    $('#container_fields').empty();
 }
 
 function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
-        $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
-            $("#" + field.name).hide();
-        });
-        $('#type_of_aircraft').hide();
+        $('#container_fields').empty();
+        $('#type_of_aircraft').parent().hide();
         /*  if($('#type_of_activity').val() == -1) {
               $('#type_of_aircraft').hide();
               $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
@@ -48,22 +49,27 @@ function initializeChangeHandlers() {
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.name) {
                 if (activityType.aircraftTypeList.length > 1) {
-                    $('#type_of_aircraft').show();
-                    $('#select_type_of_aircraft').find('option').remove().end().append("<option value='-1'>Select the aircraft type</option>");
+                    $('#type_of_aircraft').parent().show();
+                    $('#type_of_aircraft').find('option').remove().end().append("<option value='-1'>Select the aircraft type</option>");
                     actualAircraftTypeList = activityType.aircraftTypeList;
                     $.each(activityType.aircraftTypeList, function (i, aircraftType) {
-                        $('#select_type_of_aircraft').append($('<option>', {
+                        $('#type_of_aircraft').append($('<option>', {
                             text: aircraftType.name
                         }));
                     });
                 }
                 else {
-                    $('#type_of_aircraft').hide();
+                    $('#type_of_aircraft').parent().hide();
+                    $('#container_fields').empty();
+
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
-                        if (field.active)
-                            $("#" + field.name).show();
-                        else
-                            $("#" + field.name).hide();
+                        if (field.active) {
+                            $('#container_fields').append('<div class="form-group">\n' +
+                                '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
+                                '    </div>'
+                            );
+                        }
                     });
                 }
             }
@@ -71,31 +77,31 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_aircraft', function () {
-        console.log($('#type_of_aircraft').val());
-        if ($('#type_of_aircraft').val() == "") {
-            $.each(actualAircraftTypeList[0].fieldList, function (j, field) {
-                $("#" + field.name).hide();
-            });
-        }
+        $('#container_fields').empty();
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
-                console.log(aircraftType.name);
-                $.each(aircraftType.fieldList, function (j, field) {
-                    if (field.active)
-                        $("#" + field.name).show();
-                    else
-                        $("#" + field.name).hide();
+                $.each(aircraftType.fieldList, function (i, field) {
+                    if (field.active) {
+                        $('#container_fields').append('<div class="form-group">\n' +
+                            '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                            '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
+                            '    </div>'
+                        );
+                    }
                 });
             }
         });
 
     });
 
-    $(document).on('click', '#btn-show-aviation', function (event) {
-        event.preventDefault();
-        var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
-        map.addLayer(lyr2);
+    $(document).on('change', '#check-layer-icao', function () {
+        if ($('#check-layer-icao').is(':checked')) {
+            map.addLayer(lyr2);
+        }
+        else {
+            map.removeLayer(lyr2);
+        }
     });
 }
 
@@ -107,7 +113,7 @@ function initializeMap() {
 
         // Define the layers to display
         layers: [
-            ga.layer.create('ch.swisstopo.pixelkarte-grau')
+            ga.layer.create('ch.swisstopo.pixelkarte-farbe')
         ],
         // Create a view
         view: new ol.View({
@@ -116,7 +122,7 @@ function initializeMap() {
             // 10 means that one pixel is 10m width and height
             // List of resolution of the WMTS layers:
             // 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1, 0.5, 0.25, 0.1
-            resolution: 10,
+            resolution: 250,
 
             // Define a coordinate CH1903 (EPSG:21781) for the center of the view
             center: [660000, 190000]
