@@ -79,21 +79,31 @@
                         <div class='fieldset displayNone' id="div_height_altitude">
                             <label id="label_height_altitude">Height / Altitude*</label>
                             <div>
+                                <span class="displayNone" id="span_height_ft_amsl">
                                 <label class="container">ft AMSL
                                     <input name="height_altitude" type="radio" value="ft AMSL">
                                     <span class="checkmark"></span>
                                 </label>
+                                    <br>
+                                </span>
+                                <span class="displayNone" id="span_height_fl">
                                 <label class="container">FL
                                     <input name="height_altitude" type="radio" value="FL">
                                     <span class="checkmark"></span>
-                                </label>
-                                <label class="container">ft AGL
-                                    <input name="height_altitude" type="radio" value="ft AGL">
+                                </label><br></span>
+                                <span class="displayNone" id="span_height_ft_gnd">
+                                <label class="container">ft GND
+                                    <input name="height_altitude" type="radio" value="ft GND">
                                     <span class="checkmark"></span>
-                                </label>
+                                </label><br></span>
+                                <span class="displayNone" id="span_height_m_gnd">
+                                <label class="container">m GND
+                                    <input name="height_altitude" type="radio" value="m GND">
+                                    <span class="checkmark"></span>
+                                </label></span>
                             </div>
-                            <input type="text" class="field" name="height_altitude" id="input_height_altitude"
-                                   style="margin-top: 10px"/>
+                            <input type="text" class="field displayNone" name="beam_direction" id="input_height_altitude" style="margin-top: 10px"/>
+
                         </div>
                         <div class='fieldset displayNone' id="div_beam_direction">
                             <label id="label_beam_direction">Beam direction</label>
