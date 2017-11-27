@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 </head>
 <body>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -35,7 +36,7 @@
             Check me out
         </label>
     </div>
-<h2>Activity information</h2>
+    <h2>Activity information</h2>
     <div class="form-group">
         <label for="type_of_activity">Type of activity</label>
         <select class="form-control" id="type_of_activity">
@@ -51,6 +52,22 @@
     </div>
 
     <div id="container_fields"></div>
+    <fieldset class="form-group">
+        <div class="row">
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                           value="option1"> ft AMSL
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                           value="option2"> ft GND
+                </label>
+            </div>
+        </div>
+    </fieldset>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
