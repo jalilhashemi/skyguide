@@ -3,6 +3,7 @@ var actualAircraftTypeList;
 var map;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 $(document).ready(function () {
+    $('[data-toggle="tooltip"]').tooltip();
     initializeForm();
     initializeChangeHandlers();
     initializeMap();
