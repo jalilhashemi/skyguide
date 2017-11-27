@@ -334,7 +334,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
 
-        AircraftType rpasAircraftTypePhotoFlightActivityType = new AircraftType("PRAS");
+        AircraftType rpasAircraftTypePhotoFlightActivityType = new AircraftType("RPAS");
         photoFlightActivityType.getAircraftTypeList().add(rpasAircraftTypePhotoFlightActivityType);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(depDestFieldInactive);
@@ -459,7 +459,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
 
-        AircraftType rpasAircraftTypeMilitaryMissionActivityType = new AircraftType("PRAS (e.g. ADS95)");
+        AircraftType rpasAircraftTypeMilitaryMissionActivityType = new AircraftType("RPAS (e.g. ADS95)");
         militaryMissionActivityType.getAircraftTypeList().add(rpasAircraftTypeMilitaryMissionActivityType);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(callsignFieldMandatory);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(depDestFieldMandatory);
@@ -512,7 +512,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
 
-        AircraftType rpasAircraftTypePoliceMissionActivityType = new AircraftType("PRAS");
+        AircraftType rpasAircraftTypePoliceMissionActivityType = new AircraftType("RPAS");
         policeMissionActivityType.getAircraftTypeList().add(rpasAircraftTypePoliceMissionActivityType);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(depDestFieldInactive);
@@ -565,7 +565,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
 
-        AircraftType rpasAircraftTypeSurveyFlightActivityType = new AircraftType("PRAS");
+        AircraftType rpasAircraftTypeSurveyFlightActivityType = new AircraftType("RPAS");
         surveyFlightActivityType.getAircraftTypeList().add(rpasAircraftTypeSurveyFlightActivityType);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(depDestFieldInactive);
@@ -690,7 +690,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
 
-        AircraftType rpasAircraftTypeCalibrationFlightActivityType = new AircraftType("PRAS");
+        AircraftType rpasAircraftTypeCalibrationFlightActivityType = new AircraftType("RPAS");
         calibrationFlightActivityType.getAircraftTypeList().add(rpasAircraftTypeCalibrationFlightActivityType);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(callsignFieldInactive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(depDestFieldInactive);
