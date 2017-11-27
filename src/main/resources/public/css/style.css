@@ -8,10 +8,22 @@ html {
 }
 
 .map {
-    height: 350px;
-    width: 600px;
+    height: 400px;
+
     margin: 20px;
     overflow: hidden;
+}
+
+.btn.legend-btn {
+    border-radius: 50%;
+    background-color: black;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: serif;
+    padding: 0 6px;
+    height: 16px;
+    margin-left: 10px;
 }
 
 textarea {

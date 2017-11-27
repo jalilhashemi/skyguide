@@ -1,5 +1,6 @@
 var informationJSON;
 var actualAircraftTypeList;
+var map;
 $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
@@ -38,12 +39,12 @@ function initializeChangeHandlers() {
             $("#" + field.name).hide();
         });
         $('#type_of_aircraft').hide();
-      /*  if($('#type_of_activity').val() == -1) {
-            $('#type_of_aircraft').hide();
-            $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
-                $("#" + field.name).hide();
-            });
-        }*/
+        /*  if($('#type_of_activity').val() == -1) {
+              $('#type_of_aircraft').hide();
+              $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
+                  $("#" + field.name).hide();
+              });
+          }*/
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.name) {
                 if (activityType.aircraftTypeList.length > 1) {
@@ -59,7 +60,7 @@ function initializeChangeHandlers() {
                 else {
                     $('#type_of_aircraft').hide();
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
-                        if(field.active)
+                        if (field.active)
                             $("#" + field.name).show();
                         else
                             $("#" + field.name).hide();
@@ -71,7 +72,7 @@ function initializeChangeHandlers() {
 
     $(document).on('change', '#type_of_aircraft', function () {
         console.log($('#type_of_aircraft').val());
-        if($('#type_of_aircraft').val() == "") {
+        if ($('#type_of_aircraft').val() == "") {
             $.each(actualAircraftTypeList[0].fieldList, function (j, field) {
                 $("#" + field.name).hide();
             });
@@ -81,7 +82,7 @@ function initializeChangeHandlers() {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 console.log(aircraftType.name);
                 $.each(aircraftType.fieldList, function (j, field) {
-                    if(field.active)
+                    if (field.active)
                         $("#" + field.name).show();
                     else
                         $("#" + field.name).hide();
@@ -90,17 +91,23 @@ function initializeChangeHandlers() {
         });
 
     });
+
+    $(document).on('click', '#btn-show-aviation', function (event) {
+        event.preventDefault();
+        var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
+        map.addLayer(lyr2);
+    });
 }
 
 function initializeMap() {
-    var map = new ga.Map({
+    map = new ga.Map({
 
         // Define the div where the map is placed
         target: 'map',
 
         // Define the layers to display
         layers: [
-            ga.layer.create('ch.swisstopo.pixelkarte-farbe')
+            ga.layer.create('ch.swisstopo.pixelkarte-grau')
         ],
         // Create a view
         view: new ol.View({
@@ -109,21 +116,13 @@ function initializeMap() {
             // 10 means that one pixel is 10m width and height
             // List of resolution of the WMTS layers:
             // 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1, 0.5, 0.25, 0.1
-            resolution: 650,
+            resolution: 10,
 
             // Define a coordinate CH1903 (EPSG:21781) for the center of the view
             center: [660000, 190000]
-        })
+        }),
+
+        // disable scrolling on map
+        interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
-
-    var catalogConfig = [
-        {layerBodId: 'ch.bafu.bundesinventare-amphibien', label: 'Amphibien Ortsfeste Objekte'},
-        {layerBodId: 'ch.bafu.bundesinventare-amphibien_wanderobjekte', label: 'Amphibien Wanderobjekte'},
-        {layerBodId: 'ch.bafu.bundesinventare-auen', label: 'Auengebiete'},
-        {layerBodId: 'ch.bafu.bundesinventare-bln', label: 'BLN'},
-        {layerBodId: 'ch.bafu.bundesinventare-flachmoore', label: 'Flachmoore'},
-        {layerBodId: 'ch.bafu.bundesinventare-hochmoore', label: 'Hochmoore'}
-    ];
-
-
 }
