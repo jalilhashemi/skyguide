@@ -1,0 +1,26 @@
+html {
+    font-size: 14px;
+}
+
+.form-control{
+    background: #d8e6f2;
+    color: #0159a0;
+    border: none;
+    font-weight: 300;
+    height: 45px;
+    border-radius: 0;
+}
+
+/*Does not work yet*/
+.form-control:checked{
+    background-color: black;
+}
+
+.btn {
+    background: #0159a0;
+    cursor: pointer;
+    height: 30px;
+    padding: 0 20px;
+    border: none;
+    border-radius: 0;
+}
