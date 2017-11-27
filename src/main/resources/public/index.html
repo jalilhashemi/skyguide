@@ -7,7 +7,10 @@
 </head>
 <body>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="http://api3.geo.admin.ch/loader.js"></script>
 <script src="js/script.js"></script>
+
+
 <div class='margin-b2-half'>
     <div class='main-wrapper'>
         <div class='grid table'>
@@ -89,7 +92,8 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                            <input type="text" class="field" name="height_altitude" id="input_height_altitude" style="margin-top: 10px"/>
+                            <input type="text" class="field" name="height_altitude" id="input_height_altitude"
+                                   style="margin-top: 10px"/>
                         </div>
                         <div class='fieldset displayNone' id="div_beam_direction">
                             <label id="label_beam_direction">Beam direction</label>
@@ -128,5 +132,8 @@
         </div>
     </div>
 </div>
+
+<div id="map" class="map panel panel-default""></div>
+
 </body>
 </html>

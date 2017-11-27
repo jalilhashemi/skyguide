@@ -3,6 +3,7 @@ var actualAircraftTypeList;
 $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
+    initializeMap();
 
     $.ajax({
         crossOrigin: true,
@@ -91,4 +92,38 @@ function initializeChangeHandlers() {
     });
 }
 
+function initializeMap() {
+    var map = new ga.Map({
 
+        // Define the div where the map is placed
+        target: 'map',
+
+        // Define the layers to display
+        layers: [
+            ga.layer.create('ch.swisstopo.pixelkarte-farbe')
+        ],
+        // Create a view
+        view: new ol.View({
+
+            // Define the default resolution
+            // 10 means that one pixel is 10m width and height
+            // List of resolution of the WMTS layers:
+            // 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1, 0.5, 0.25, 0.1
+            resolution: 650,
+
+            // Define a coordinate CH1903 (EPSG:21781) for the center of the view
+            center: [660000, 190000]
+        })
+    });
+
+    var catalogConfig = [
+        {layerBodId: 'ch.bafu.bundesinventare-amphibien', label: 'Amphibien Ortsfeste Objekte'},
+        {layerBodId: 'ch.bafu.bundesinventare-amphibien_wanderobjekte', label: 'Amphibien Wanderobjekte'},
+        {layerBodId: 'ch.bafu.bundesinventare-auen', label: 'Auengebiete'},
+        {layerBodId: 'ch.bafu.bundesinventare-bln', label: 'BLN'},
+        {layerBodId: 'ch.bafu.bundesinventare-flachmoore', label: 'Flachmoore'},
+        {layerBodId: 'ch.bafu.bundesinventare-hochmoore', label: 'Hochmoore'}
+    ];
+
+
+}
