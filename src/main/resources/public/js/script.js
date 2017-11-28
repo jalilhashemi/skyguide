@@ -3,6 +3,17 @@ var actualAircraftTypeList;
 var map;
 var view;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
+
+var pointFeature = new ol.Feature(new ol.geom.Point([700000, 190000]));
+var dragInteraction = new ol.interaction.Modify({
+    features: new ol.Collection([pointFeature]),
+    style: new ol.style.Style({
+        image: new ol.style.Icon(({
+            src: 'img/marker.png'
+        }))
+    })
+});
+
 $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
@@ -206,13 +217,15 @@ function initializeChangeHandlers() {
         var mapVectorSource = new ol.source.Vector({
             features: []
         });
+
         var mapVectorLayer = new ol.layer.Vector({
             source: mapVectorSource
         });
+
         map.addLayer(mapVectorLayer);
 
         iconStyle = new ol.style.Style({
-            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+            image: new ol.style.Icon(({
                 anchor: [0.5, 1],
                 anchorXUnits: 'fraction',
                 anchorYUnits: 'fraction',
@@ -221,7 +234,9 @@ function initializeChangeHandlers() {
         });
 
         var marker = createMarker(loc, iconStyle);
+
         mapVectorSource.addFeature(marker);
+
     });
 }
 
@@ -239,7 +254,17 @@ function initializeMap() {
 
         // Define the layers to display
         layers: [
-            ga.layer.create('ch.swisstopo.pixelkarte-farbe')
+            ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
+            new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [pointFeature]
+                }),
+                style: new ol.style.Style({
+                    image: new ol.style.Icon(({
+                        src: 'img/marker.png'
+                    }))
+                })
+            })
         ],
         // Create a view
         view: view,
@@ -247,6 +272,12 @@ function initializeMap() {
         // disable scrolling on map
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
+
+    map.addInteraction(dragInteraction)
+
+    pointFeature.on('change',function(){
+        console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
+    },pointFeature);
 }
 
 function createMarker(location, style){
