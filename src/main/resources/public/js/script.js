@@ -65,22 +65,41 @@ function initializeChangeHandlers() {
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
 
-                            $('#container_fields').append('<div class="form-group">\n' +
-                                '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
-                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
-                                '    </div>'
-                            );
+                            //$('#container_fields').append('<div class="form-group">\n' +
+                            //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
+                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= '+ field.name + (field.mandatory ? 'required':'')+'>' +
+                            //     '<div class="invalid-feedback">\n' +
+                            //     '            Please fill in all field with a * \n' +
+                            //     '</div>    ' +
+                            //     '</div>'
+                            // );
+                            if (field.mandatory) {
+                                $('#container_fields').append('<div class="form-group">\n' +
+                                    '        <label for="' + field.id + '">' + field.name + '*</label>\n' +
+                                    '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
+                                    '<div class="invalid-feedback">\n' +
+                                    '            Please fill in all field with a * \n' +
+                                    '</div>    ' +
+                                    '</div>'
+                                );
+                            }
+                            else {
+                                $('#container_fields').append('<div class="form-group">\n' +
+                                    '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                                    '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
+                                    '</div>');
+                            }
                             var counter = 0;
                             $.each(field.options, function (i, option) {
-                                if(option.active)
+                                if (option.active)
                                     counter++;
                             });
                             if (counter > 0) {
                                 var radioDiv = $("<div>").attr('class', 'form-group');
                                 $.each(field.options, function (i, radio) {
-                                    if(radio.active) {
+                                    if (radio.active) {
                                         radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                            '             title="Tooltip on top"><label class="form-check-label">\n' +
+                                            '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
                                             '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
                                             'value="' + radio.name + '"> ' + radio.name +
                                             '</label></div>');
@@ -101,27 +120,45 @@ function initializeChangeHandlers() {
         $('#container_fields').empty();
 
 
-
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 $.each(aircraftType.fieldList, function (i, field) {
                     if (field.active) {
-                        $('#container_fields').append('<div class="form-group">\n' +
-                            '        <label for="' + field.id + '">' + field.name + (field.mandatory ? ' *' : '') + '</label>\n' +
-                            '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
-                            '    </div>'
-                        );
+                        // $('#container_fields').append('<div class="form-group">\n' +
+                        //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? ' *' : '') + '</label>\n' +
+                        //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
+                        //     '    </div>'
+                        // );
+
+                        if (field.mandatory) {
+                            $('#container_fields').append('<div class="form-group">\n' +
+                                '        <label for="' + field.id + '">' + field.name + '* </label>\n' +
+                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
+                                '<div class="invalid-feedback">\n' +
+                                '            Please fill in all field with a * \n' +
+                                '</div>    ' +
+                                '</div>'
+                            );
+                        }
+                        else {
+                            $('#container_fields').append('<div class="form-group">\n' +
+                                '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
+                                '</div>');
+                        }
+
+
                         var counter = 0;
                         $.each(field.options, function (i, option) {
-                            if(option.active)
+                            if (option.active)
                                 counter++;
                         });
                         if (counter > 0) {
                             var radioDiv = $("<div>").attr('class', 'form-group');
                             $.each(field.options, function (i, radio) {
-                                if(radio.active) {
+                                if (radio.active) {
                                     radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                        '             title="Tooltip on top"><label class="form-check-label">\n' +
+                                        '             title="\'+ radio.tooltip + \'"><label class="form-check-label">\n' +
                                         '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
                                         'value="' + radio.name + '"> ' + radio.name +
                                         '</label></div>');

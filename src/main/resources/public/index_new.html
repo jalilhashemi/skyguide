@@ -23,49 +23,52 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="input_company">Company</label>
-            <input type="text" class="form-control is-valid" id="input_company" aria-describedby="companyHint"
+            <input type="text" class="form-control" id="input_company" aria-describedby="companyHint"
                    placeholder="Company">
             <small id="companyHint" class="form-text text-muted">If Company is available.</small>
         </div>
         <div class="form-group col-md-6">
             <label for="input_applicant_name">Applicant Name*</label>
-            <input type="text" class="form-control is-invalid" id="input_applicant_name" placeholder="Applicant Name">
+            <input type="text" class="form-control" id="input_applicant_name" placeholder="Applicant Name" required>
             <div class="invalid-feedback">
-                Please provide an Applicant Name.
+                Please provide a name.
             </div>
         </div>
     </div>
     <div class="form-group">
         <label for="input_applicant_phone">Applicant Phone*</label>
-        <input type="text" class="form-control" id="input_applicant_phone" placeholder="Applicant Phone">
+        <input type="text" class="form-control" id="input_applicant_phone" placeholder="Applicant Phone" required>
+        <div class="invalid-feedback">
+            Please provide a phone number.
+        </div>
     </div>
     <div class="form-group">
         <label for="input_applicant_email">Applicant Email*</label>
-        <input type="email" class="form-control" id="input_applicant_email" placeholder="Applicant Email">
-    </div>
-    <div class="form-check">
-        <label class="form-check-label">
-            <input type="checkbox" class="form-check-input">
-            Check me out
-        </label>
+        <input type="email" class="form-control" id="input_applicant_email" placeholder="Applicant Email" required>
+        <div class="invalid-feedback">
+            Please provide an email.
+        </div>
     </div>
     <h2>Activity information</h2>
     <div class="form-group">
         <label for="type_of_activity">Type of activity</label>
-        <select class="form-control" id="type_of_activity">
+        <select class="form-control" id="type_of_activity" required>
             <option value='-1'>Select the activity type</option>
         </select>
+        <!--<div class="invalid-feedback">-->
+            <!--Please choose your activity type.-->
+        <!--</div>-->
     </div>
-
     <div class="form-group">
         <label for="type_of_aircraft">Type of aircraft</label>
-        <select class="form-control" id="type_of_aircraft">
+        <select class="form-control" id="type_of_aircraft" required>
             <option value='-1'>Select the aircraft type</option>
         </select>
+        <!--<div class="invalid-feedback">-->
+            <!--Please choose your aircraft type.-->
+        <!--</div>-->
     </div>
-
     <div id="container_fields"></div>
-
     <button type="submit" class="btn btn-primary btn-sky">Submit</button>
 </form>
 
@@ -78,5 +81,24 @@
 </div>
 
 <div id="map" class="map panel panel-default"></div>
+
+
+
+<script>
+    (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+            var form = document.getElementById('needs-validation');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
+    })();
+</script>
 </body>
 </html>
