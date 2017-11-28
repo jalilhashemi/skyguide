@@ -6,6 +6,7 @@ import java.util.List;
 public class Field {
     private String id;
     private String name;
+    private String tooltip;
     private boolean isMandatory;
     private boolean isActive;
     private List<Field> options;
@@ -16,6 +17,7 @@ public class Field {
         this.isMandatory = mandatory;
         this.isActive = active;
         options = new ArrayList<>();
+
     }
     public String getId() {
         return id;
@@ -31,6 +33,14 @@ public class Field {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getTooltip() {
+        return tooltip;
+    }
+
+    public void setTooltip(String tooltip) {
+        this.tooltip = tooltip;
     }
 
     public boolean isMandatory() {
