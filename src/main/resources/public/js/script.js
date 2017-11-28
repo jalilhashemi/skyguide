@@ -3,7 +3,6 @@ var actualAircraftTypeList;
 var map;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 $(document).ready(function () {
-    $('[data-toggle="tooltip"]').tooltip();
     initializeForm();
     initializeChangeHandlers();
     initializeMap();
@@ -65,11 +64,32 @@ function initializeChangeHandlers() {
 
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
+
                             $('#container_fields').append('<div class="form-group">\n' +
                                 '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
                                 '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
                                 '    </div>'
                             );
+                            var counter = 0;
+                            $.each(field.options, function (i, option) {
+                                if(option.active)
+                                    counter++;
+                            });
+                            if (counter > 0) {
+                                var radioDiv = $("<div>").attr('class', 'form-group');
+                                $.each(field.options, function (i, radio) {
+                                    if(radio.active) {
+                                        radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
+                                            '             title="Tooltip on top"><label class="form-check-label">\n' +
+                                            '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
+                                            'value="' + radio.name + '"> ' + radio.name +
+                                            '</label></div>');
+
+                                    }
+                                });
+                                $('#container_fields').append(radioDiv);
+                                $('[data-toggle="tooltip"]').tooltip();
+                            }
                         }
                     });
                 }
@@ -80,6 +100,8 @@ function initializeChangeHandlers() {
     $(document).on('change', '#type_of_aircraft', function () {
         $('#container_fields').empty();
 
+
+
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 $.each(aircraftType.fieldList, function (i, field) {
@@ -89,25 +111,32 @@ function initializeChangeHandlers() {
                             '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
                             '    </div>'
                         );
+                        var counter = 0;
+                        $.each(field.options, function (i, option) {
+                            if(option.active)
+                                counter++;
+                        });
+                        if (counter > 0) {
+                            var radioDiv = $("<div>").attr('class', 'form-group');
+                            $.each(field.options, function (i, radio) {
+                                if(radio.active) {
+                                    radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
+                                        '             title="Tooltip on top"><label class="form-check-label">\n' +
+                                        '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
+                                        'value="' + radio.name + '"> ' + radio.name +
+                                        '</label></div>');
+
+                                }
+                            });
+                            $('#container_fields').append(radioDiv);
+                            $('[data-toggle="tooltip"]').tooltip();
+                        }
+
+
                     }
                 });
             }
         });
-
-    });
-
-    $(document).on('click', '#btn_add_coordinate_input', function (e) {
-        e.preventDefault();
-
-        var controlForm = $('.controls form:first'),
-            currentEntry = $(this).parents('.entry:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
-
-        newEntry.find('input').val('');
-        controlForm.find('.entry:not(:last) .btn-add')
-            .removeClass('btn-add').addClass('btn-remove')
-            .removeClass('btn-success').addClass('btn-danger')
-            .html('<span class="glyphicon glyphicon-minus"></span>');
 
     });
 

@@ -58,15 +58,14 @@ public class ActivityTypeService {
         Field durationFieldActive = new Field("field_duration", "Duration", false, true);
         Field durationFieldInactive = new Field("field_duration", "Duration", false, false);
 
-        Field exactLocationFieldMandatory = new Field("field_exact_location", "Exact location", true, true);
-        Field exactLocationFieldActive = new Field("field_exact_location", "Exact location", false, true);
-        Field exactLocationFieldInactive = new Field("field_exact_location", "Exact location", false, false);
+        Field exactLocationFieldMandatory = new Field("field_location", "Location", true, true);
+        Field exactLocationFieldActive = new Field("field_location", "Location", false, true);
+        Field exactLocationFieldInactive = new Field("field_location", "Location", false, false);
 
         Field heightAltitudeFieldMandatory = new Field("field_height_altitude","Height / Altitude", true, true);
         Field heightAltitudeFieldActive = new Field("field_height_altitude","Height / Altitude", false, true);
         Field heightAltitudeFieldInactive = new Field("field_height_altitude","Height / Altitude", false, false);
 
-        //
         Field heightAltitudeFlRadioMandatory = new Field("radio_height_fl","FL", true, true);
         Field heightAltitudeFlRadioActive = new Field("radio_height_fl","FL", false, true);
         Field heightAltitudeFlRadioInactive = new Field("radio_height_fl","FL", false, false);
@@ -82,7 +81,6 @@ public class ActivityTypeService {
         Field heightAltitudeMGndRadioMandatory = new Field("radio_height_m_gnd","m GND", true, true);
         Field heightAltitudeMGndRadioActive = new Field("radio_height_m_gnd","m GND", false, true);
         Field heightAltitudeMGndRadioInactive = new Field("radio_height_m_gnd","m GND", false, false);
-        //
 
         Field beamDirectionFieldMandatory = new Field("field_beam_direction","Beam direction", true, true);
         Field beamDirectionFieldActive = new Field("field_beam_direction","Beam direction", false, true);
@@ -118,11 +116,13 @@ public class ActivityTypeService {
         defaultSkyLanternActivityType.getFieldList().add(timeScheduleFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(durationFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(exactLocationFieldMandatory);
-        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeFieldInactive);
-        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeFlRadioInactive);
-        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeFtAmslRadioInactive);
-        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeFtGndRadioInactive);
-        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
+
+        heightAltitudeFieldActive.getOptions().add(heightAltitudeFtAmslRadioActive);
+        heightAltitudeFieldActive.getOptions().add(heightAltitudeFtGndRadioActive);
+        heightAltitudeFieldActive.getOptions().add(heightAltitudeMGndRadioInactive);
+
+        defaultSkyLanternActivityType.getFieldList().add(heightAltitudeFieldActive);
+
         defaultSkyLanternActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         defaultSkyLanternActivityType.getFieldList().add(amountFieldActive);
