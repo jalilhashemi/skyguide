@@ -158,7 +158,7 @@ function initializeChangeHandlers() {
                             $.each(field.options, function (i, radio) {
                                 if (radio.active) {
                                     radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                        '             title="\'+ radio.tooltip + \'"><label class="form-check-label">\n' +
+                                        '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
                                         '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
                                         'value="' + radio.name + '"> ' + radio.name +
                                         '</label></div>');

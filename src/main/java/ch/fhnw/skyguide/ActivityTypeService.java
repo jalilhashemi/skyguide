@@ -66,7 +66,7 @@ public class ActivityTypeService {
         Field exactLocationFieldInactive = new Field("field_location", "Location", false, false);
 
       /*  Field heightAltitudeFieldMandatory = new Field(FIELD_HEIGHT_ALTITUDE_ID,FIELD_HEIGHT_ALTITUDE_NAME, true, true);
-        Field heightAltitudeFieldActive = new Field(FIELD_HEIGHT_ALTITUDE_ID,FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field heightAltitudeFieldActive = new Field(FIELD_HEIGHT_ALTITUDE_ID,FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         Field heightAltitudeFieldInactive = new Field(FIELD_HEIGHT_ALTITUDE_ID,FIELD_HEIGHT_ALTITUDE_NAME, false, false);
         */
 
@@ -144,7 +144,7 @@ public class ActivityTypeService {
         AircraftType defaultWeatherBalloonActivityType = new AircraftType("");
         weatherBalloonActivityType.getAircraftTypeList().add(defaultWeatherBalloonActivityType);
 
-        Field defaultWeatherBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field defaultWeatherBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         defaultWeatherBalloonHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         defaultWeatherBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         defaultWeatherBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -197,7 +197,7 @@ public class ActivityTypeService {
         AircraftType defaultCaptiveBalloonActivityType = new AircraftType("");
         captiveBalloonActivityType.getAircraftTypeList().add(defaultCaptiveBalloonActivityType);
 
-        Field defaultCaptiveBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field defaultCaptiveBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         defaultCaptiveBalloonHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         defaultCaptiveBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioInactive);
         defaultCaptiveBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -223,7 +223,7 @@ public class ActivityTypeService {
         AircraftType defaultHotAirBalloonActivityType = new AircraftType("");
         hotAirBalloonActivityType.getAircraftTypeList().add(defaultHotAirBalloonActivityType);
 
-        Field defaultHotAirBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field defaultHotAirBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         defaultHotAirBalloonHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         defaultHotAirBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         defaultHotAirBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -249,7 +249,7 @@ public class ActivityTypeService {
         AircraftType defaultGasBalloonActivityType = new AircraftType("");
         gasBalloonActivityType.getAircraftTypeList().add(defaultGasBalloonActivityType);
 
-        Field gasBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field gasBalloonHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         gasBalloonHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         gasBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         gasBalloonHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -301,7 +301,7 @@ public class ActivityTypeService {
         AircraftType defaultKiteActivityType = new AircraftType("");
         kiteActivityType.getAircraftTypeList().add(defaultKiteActivityType);
 
-        Field kiteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field kiteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         kiteHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         kiteHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioInactive);
         kiteHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -327,7 +327,7 @@ public class ActivityTypeService {
         AircraftType defaultFireworkActivityType = new AircraftType("");
         fireworkActivityType.getAircraftTypeList().add(defaultFireworkActivityType);
 
-        Field fireworkHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fireworkHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fireworkHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         fireworkHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioInactive);
         fireworkHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -353,7 +353,7 @@ public class ActivityTypeService {
         AircraftType defaultfLightWithHangGliderActivityType = new AircraftType("");
         flightWithHangGliderActivityType.getAircraftTypeList().add(defaultfLightWithHangGliderActivityType);
 
-        Field flightWithHangGliderHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field flightWithHangGliderHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         flightWithHangGliderHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         flightWithHangGliderHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         flightWithHangGliderHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -379,7 +379,7 @@ public class ActivityTypeService {
         AircraftType defaultTransportFlightActivityType = new AircraftType("");
         transportFlightActivityType.getAircraftTypeList().add(defaultTransportFlightActivityType);
 
-        Field transportFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field transportFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         transportFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         transportFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         transportFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -405,7 +405,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypePhotoFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         photoFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypePhotoFlightActivityType);
 
-        Field rotaryWingAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rotaryWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -429,7 +429,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypePhotoFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         photoFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypePhotoFlightActivityType);
 
-        Field fixedWingAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -453,7 +453,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypePhotoFlightActivityType = new AircraftType("RPAS");
         photoFlightActivityType.getAircraftTypeList().add(rpasAircraftTypePhotoFlightActivityType);
 
-        Field rpasAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypePhotoFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rpasAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioInactive);
         rpasAircraftTypePhotoFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -479,7 +479,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeTaxiPassengerFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         taxiPassengerFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeTaxiPassengerFlightActivityType);
 
-        Field rotaryWingAircraftTypeTaxiPassengerFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeTaxiPassengerFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -503,7 +503,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeTaxiPassengerFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         taxiPassengerFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeTaxiPassengerFlightActivityType);
 
-        Field fixedWingAircraftTypeTaxiPassengerFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeTaxiPassengerFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeTaxiPassengerFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -529,7 +529,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeParachuteActivityType = new AircraftType("Rotary Wing Aircraft");
         parachuteActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeParachuteActivityType);
 
-        Field rotaryWingAircraftTypeParachuteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeParachuteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rotaryWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -553,7 +553,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeParachuteActivityType = new AircraftType("Fixed Wing Aircraft");
         parachuteActivityType.getAircraftTypeList().add(fixedWingAircraftTypeParachuteActivityType);
 
-        Field fixedWingAircraftTypeParachuteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeParachuteHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeParachuteHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -579,7 +579,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeMilitaryMissionActivityType = new AircraftType("Rotary Wing Aircraft");
         militaryMissionActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeMilitaryMissionActivityType);
 
-        Field rotaryWingAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rotaryWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -603,7 +603,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeMilitaryMissionActivityType = new AircraftType("Fixed Wing Aircraft");
         militaryMissionActivityType.getAircraftTypeList().add(fixedWingAircraftTypeMilitaryMissionActivityType);
 
-        Field fixedWingAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -627,7 +627,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypeMilitaryMissionActivityType = new AircraftType("RPAS (e.g. ADS95)");
         militaryMissionActivityType.getAircraftTypeList().add(rpasAircraftTypeMilitaryMissionActivityType);
 
-        Field rpasAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypeMilitaryMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rpasAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rpasAircraftTypeMilitaryMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -653,7 +653,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypePoliceMissionActivityType = new AircraftType("Rotary Wing Aircraft");
         policeMissionActivityType.getAircraftTypeList().add(rotaryWingAircraftTypePoliceMissionActivityType);
 
-        Field rotaryWingAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -677,7 +677,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypePoliceMissionActivityType = new AircraftType("Fixed Wing Aircraft");
         policeMissionActivityType.getAircraftTypeList().add(fixedWingAircraftTypePoliceMissionActivityType);
 
-        Field fixedWingAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -701,7 +701,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypePoliceMissionActivityType = new AircraftType("RPAS");
         policeMissionActivityType.getAircraftTypeList().add(rpasAircraftTypePoliceMissionActivityType);
 
-        Field rpasAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypePoliceMissionHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rpasAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rpasAircraftTypePoliceMissionHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -727,7 +727,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeSurveyFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         surveyFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeSurveyFlightActivityType);
 
-        Field rotaryWingAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -751,7 +751,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeSurveyFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         surveyFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeSurveyFlightActivityType);
 
-        Field fixedWingAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -775,7 +775,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypeSurveyFlightActivityType = new AircraftType("RPAS");
         surveyFlightActivityType.getAircraftTypeList().add(rpasAircraftTypeSurveyFlightActivityType);
 
-        Field rpasAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypeSurveyFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rpasAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rpasAircraftTypeSurveyFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -801,7 +801,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeTvRelayFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         tvRelayFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeSurveyFlightActivityType);
 
-        Field rotaryWingAircraftTypeTvRelayFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeTvRelayFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rotaryWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -825,7 +825,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeTvRelayFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         tvRelayFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeTvRelayFlightActivityType);
 
-        Field fixedWingAircraftTypeTvRelayFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeTvRelayFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeTvRelayFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -851,7 +851,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeTestFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         testFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeTestFlightActivityType);
 
-        Field rotaryWingAircraftTypeTestFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeTestFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -875,7 +875,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeTestFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         testFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeTestFlightActivityType);
 
-        Field fixedWingAircraftTypeTestFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeTestFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeTestFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -901,7 +901,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeCalibrationFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         calibrationFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeCalibrationFlightActivityType);
 
-        Field rotaryWingAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -925,7 +925,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeCalibrationFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         calibrationFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeCalibrationFlightActivityType);
 
-        Field fixedWingAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -949,7 +949,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypeCalibrationFlightActivityType = new AircraftType("RPAS");
         calibrationFlightActivityType.getAircraftTypeList().add(rpasAircraftTypeCalibrationFlightActivityType);
 
-        Field rpasAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypeCalibrationFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rpasAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rpasAircraftTypeCalibrationFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -975,7 +975,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeContestActivityType = new AircraftType("Rotary Wing Aircraft");
         contestActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeContestActivityType);
 
-        Field rotaryWingAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -999,7 +999,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeContestActivityType = new AircraftType("Fixed Wing Aircraft");
         contestActivityType.getAircraftTypeList().add(fixedWingAircraftTypeContestActivityType);
 
-        Field fixedWingAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -1023,7 +1023,7 @@ public class ActivityTypeService {
         AircraftType rpasAircraftTypeContestActivityType = new AircraftType("Glider");
         contestActivityType.getAircraftTypeList().add(rpasAircraftTypeContestActivityType);
 
-        Field rpasAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rpasAircraftTypeContestHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rpasAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         rpasAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rpasAircraftTypeContestHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
@@ -1049,7 +1049,7 @@ public class ActivityTypeService {
         AircraftType rotaryWingAircraftTypeAirshowAerobaticFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         airshowAerobaticFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeAirshowAerobaticFlightActivityType);
 
-        Field rotaryWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field rotaryWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         rotaryWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         rotaryWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioActive);
@@ -1073,7 +1073,7 @@ public class ActivityTypeService {
         AircraftType fixedWingAircraftTypeAirshowAerobaticFlightActivityType = new AircraftType("Fixed Wing Aircraft");
         airshowAerobaticFlightActivityType.getAircraftTypeList().add(fixedWingAircraftTypeAirshowAerobaticFlightActivityType);
 
-        Field fixedWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, false, true);
+        Field fixedWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, true, true);
         fixedWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeAirshowAerobaticFlightHeightAltitudeField.getOptions().add(heightAltitudeFtGndRadioInactive);
