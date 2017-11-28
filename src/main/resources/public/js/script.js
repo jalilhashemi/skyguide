@@ -96,6 +96,21 @@ function initializeChangeHandlers() {
 
     });
 
+    $(document).on('click', '#btn_add_coordinate_input', function (e) {
+        e.preventDefault();
+
+        var controlForm = $('.controls form:first'),
+            currentEntry = $(this).parents('.entry:first'),
+            newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+        newEntry.find('input').val('');
+        controlForm.find('.entry:not(:last) .btn-add')
+            .removeClass('btn-add').addClass('btn-remove')
+            .removeClass('btn-success').addClass('btn-danger')
+            .html('<span class="glyphicon glyphicon-minus"></span>');
+
+    });
+
     $(document).on('change', '#check-layer-icao', function () {
         if ($('#check-layer-icao').is(':checked')) {
             map.addLayer(lyr2);
