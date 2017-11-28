@@ -1,152 +1,104 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <script src="http://code.jquery.com/jquery-2.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+        integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+        integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+        crossorigin="anonymous"></script>
 <script src="http://api3.geo.admin.ch/loader.js"></script>
 <script src="js/script.js"></script>
-
-
-<div class='margin-b2-half'>
-    <div class='main-wrapper'>
-        <div class='grid table'>
-            <article class='contact-form-wrapper form'>
-                <h2>Request for coordination of special aerial activities </h2>
-                <ol type="1">
-                    <li><p class="ordered_list_title">Applicant information</p>
-                        <div class='fieldset mandatory' id="div_company">
-                            <label id="label_company">Company (if available)</label>
-                            <input type="text" class="field" id="input_company" id="input_company"/>
-                        </div>
-                        <div class='fieldset mandatory' id="div_applicant_name">
-                            <label id="label_applicant_name">Applicant id</label>
-                            <input type="text" class="field" id="id" id="input_applicant_name"/>
-                        </div>
-                        <div class='fieldset mandatory' id="div_applicant_phone">
-                            <label id="label_applicant_phone">Applicant phone</label>
-                            <input type="tel" class="field" id="address" id="input_applicant_phone"/>
-                        </div>
-                        <div class='fieldset mandatory' id="div_applicant_email">
-                            <label id="label_applicant_email">Applicant email</label>
-                            <input type="email" class="field" id="phone" id="input_applicant_email"/>
-                        </div>
-                    </li>
-                    <li id="fieldset_activity_information"><p class="ordered_list_title">Activity information</p>
-                        <div class='fieldset mandatory'>
-                            <label>Type of activity</label>
-                            <select class='field' id='type_of_activity' id='type_of_activity'>
-                                <option value='-1'>Select the activity type</option>
-                            </select>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id='type_of_aircraft'>
-                            <label>Type of aircraft</label>
-                            <select class='field' id='type_of_aircraft' id='select_type_of_aircraft'>
-                            </select>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_callsign">
-                            <label id="label_callsign">Call sign</label>
-                            <input type="text" class="field" id="registration" id="input_callsign"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_dep_dest">
-                            <label id="label_dep_dest">DEP / DEST </label>
-                            <input type="text" class="field" id="dep_dest" id="input_dep_dest"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_date_from">
-                            <label id="label_date_from">Date from</label>
-                            <input type="date" class="field" id="date_from" id="input_date_from"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_date_until">
-                            <label id="label_date_until">Date until</label>
-                            <input type="date" class="field" id="date_until" id="input_date_until"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_time_schedule">
-                            <label id="label_time_schedule">Time / Schedule</label>
-                            <input type="time" class="field" id="time_schedule" id="input_time_schedule"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_duration">
-                            <label id="label_duration">Duration</label>
-                            <input type="text" class="field" id="duraion" id="input_duration"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_exact_location">
-                            <label id="label_exact_location">Exact location</label>
-                            <input type="text" class="field" id="exact_location" id="input_exact_location"/>
-                        </div>
-                        <!--It is made to be run but need to be nice-->
-                        <div class='fieldset displayNone' id="div_height_altitude">
-                            <label id="label_height_altitude">Height / Altitude*</label>
-                            <div>
-                                <span class="displayNone" id="span_height_ft_amsl">
-                                <label class="container">ft AMSL
-                                    <input id="height_altitude" type="radio" value="ft AMSL">
-                                    <span class="checkmark"></span>
-                                </label>
-                                    <br>
-                                </span>
-                                <span class="displayNone" id="span_height_fl">
-                                <label class="container">FL
-                                    <input id="height_altitude" type="radio" value="FL">
-                                    <span class="checkmark"></span>
-                                </label><br></span>
-                                <span class="displayNone" id="span_height_ft_gnd">
-                                <label class="container">ft GND
-                                    <input id="height_altitude" type="radio" value="ft GND">
-                                    <span class="checkmark"></span>
-                                </label><br></span>
-                                <span class="displayNone" id="span_height_m_gnd">
-                                <label class="container">m GND
-                                    <input id="height_altitude" type="radio" value="m GND">
-                                    <span class="checkmark"></span>
-                                </label></span>
-                            </div>
-                            <input type="text" class="field displayNone" id="beam_direction"
-                                   id="input_height_altitude" style="margin-top: 10px"/>
-
-                        </div>
-                        <div class='fieldset displayNone' id="div_beam_direction">
-                            <label id="label_beam_direction">Beam direction</label>
-                            <input type="text" class="field" id="beam_direction" id="input_beam_direction"/>
-                        </div>
-                        <div class='fieldset displayNone' id="div_payload_attached_obj">
-                            <label id="label_payload_attached_obj">Payload / Attached objects</label>
-                            <input type="text" class="field" id="payload" id="input_payload_attached_obj"/>
-                        </div>
-                        <div class='fieldset displayNone' id="div_amount">
-                            <label id="label_amount">Amount</label>
-                            <input type="text" class="field" id="amount" id="input_amount"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_gps_coord">
-                            <label id="label_gps_coord">GPS coord.</label>
-                            <input type="text" class="field" id="gps_coord" id="input_gps_coord"/>
-                        </div>
-                        <div class='fieldset mandatory displayNone' id="div_radius">
-                            <label id="label_radius">Radius</label>
-                            <input type="text" class="field" id="radius" id="input_radius"/>
-                        </div>
-                        <div class='fieldset displayNone' id="div_self_declaration">
-                            <label id="label_self_declaration">Self declaration</label>
-                            <textarea class="field" id="message" id="input_self_declaration"></textarea>
-                        </div>
-                    </li>
-                </ol>
-                <div class='return errors'>
-                </div>
-                <div class='return success'>
-                </div>
-                <div class='actions'>
-                    <input type="button" class="send-btn" value="Senden"/>
-                </div>
-            </article>
+<form class="container" id="needs-validation" novalidate>
+    <h1>Request for coordination of special aerial activities</h1>
+    <h2>Applicant information</h2>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="input_company">Company</label>
+            <input type="text" class="form-control" id="input_company" aria-describedby="companyHint"
+                   placeholder="Company">
+            <small id="companyHint" class="form-text text-muted">If Company is available.</small>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="input_applicant_name">Applicant Name*</label>
+            <input type="text" class="form-control" id="input_applicant_name" placeholder="Applicant Name" required>
+            <div class="invalid-feedback">
+                Please provide a name.
+            </div>
         </div>
     </div>
+    <div class="form-group">
+        <label for="input_applicant_phone">Applicant Phone*</label>
+        <input type="text" class="form-control" id="input_applicant_phone" placeholder="Applicant Phone" required>
+        <div class="invalid-feedback">
+            Please provide a phone number.
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="input_applicant_email">Applicant Email*</label>
+        <input type="email" class="form-control" id="input_applicant_email" placeholder="Applicant Email" required>
+        <div class="invalid-feedback">
+            Please provide an email.
+        </div>
+    </div>
+    <h2>Activity information</h2>
+    <div class="form-group">
+        <label for="type_of_activity">Type of activity</label>
+        <select class="form-control form-control-lg select_temporary" id="type_of_activity" required>
+            <option value='-1'>Select the activity type</option>
+        </select>
+        <!--<div class="invalid-feedback">-->
+            <!--Please choose your activity type.-->
+        <!--</div>-->
+    </div>
+    <div class="form-group">
+        <label for="type_of_aircraft">Type of aircraft</label>
+        <select class="form-control form-control-lg select_temporary" id="type_of_aircraft" required>
+            <option value='-1'>Select the aircraft type</option>
+        </select>
+        <!--<div class="invalid-feedback">-->
+            <!--Please choose your aircraft type.-->
+        <!--</div>-->
+    </div>
+    <div id="container_fields"></div>
+    <button type="submit" class="btn btn-primary btn-sky">Submit</button>
+</form>
+
+
+<div class="form-check" id="layer_temporary">
+    <label class="form-check-label">
+        <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
+        Aeronautical Chart ICAO
+    </label>
 </div>
 
 <div id="map" class="map panel panel-default"></div>
-<div class='actions'>
-    <input type="button" class="send-btn" id="btn-show-aviation" value="show aviation"/>
-</div>
+
+
+
+<script>
+    (function() {
+        'use strict';
+
+        window.addEventListener('load', function() {
+            var form = document.getElementById('needs-validation');
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
+    })();
+</script>
 </body>
 </html>
