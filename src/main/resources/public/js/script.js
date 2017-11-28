@@ -1,6 +1,7 @@
 var informationJSON;
 var actualAircraftTypeList;
 var map;
+var view;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 $(document).ready(function () {
     initializeForm();
@@ -185,9 +186,52 @@ function initializeChangeHandlers() {
             map.removeLayer(lyr2);
         }
     });
+
+    $(document).on('focusout', '#field_location', function () {
+
+        /*map.geocode('Payerne');*/
+
+        var lat = 46.84089;
+        var lon = 7.46485;
+
+        lat = $(this).val().split(',')[0];
+        lon = $(this).val().split(',')[1];
+
+        var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+
+        // Zoom on the position
+        map.getView().setCenter(loc);
+        map.getView().setResolution(50);
+
+        var mapVectorSource = new ol.source.Vector({
+            features: []
+        });
+        var mapVectorLayer = new ol.layer.Vector({
+            source: mapVectorSource
+        });
+        map.addLayer(mapVectorLayer);
+
+        iconStyle = new ol.style.Style({
+            image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                anchor: [0.5, 1],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'fraction',
+                src: 'img/marker.png',
+            }))
+        });
+
+        var marker = createMarker(loc, iconStyle);
+        mapVectorSource.addFeature(marker);
+    });
 }
 
 function initializeMap() {
+    view = new ol.View({
+        resolution: 250,
+
+        // Define a coordinate CH1903 (EPSG:21781) for the center of the view
+        center: [700000, 190000]
+    });
     map = new ga.Map({
 
         // Define the div where the map is placed
@@ -198,19 +242,18 @@ function initializeMap() {
             ga.layer.create('ch.swisstopo.pixelkarte-farbe')
         ],
         // Create a view
-        view: new ol.View({
-
-            // Define the default resolution
-            // 10 means that one pixel is 10m width and height
-            // List of resolution of the WMTS layers:
-            // 650, 500, 250, 100, 50, 20, 10, 5, 2.5, 2, 1, 0.5, 0.25, 0.1
-            resolution: 250,
-
-            // Define a coordinate CH1903 (EPSG:21781) for the center of the view
-            center: [660000, 190000]
-        }),
+        view: view,
 
         // disable scrolling on map
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
+}
+
+function createMarker(location, style){
+    var iconFeature = new ol.Feature({
+        geometry: new ol.geom.Point(location)
+    });
+    iconFeature.setStyle(style);
+
+    return iconFeature
 }
