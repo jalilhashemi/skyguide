@@ -66,7 +66,7 @@ function initializeChangeHandlers() {
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
                             $('#container_fields').append('<div class="form-group">\n' +
-                                '        <label for="' + field.id + '">' + field.name + (field.mandatory ? ' *' : '') + '</label>\n' +
+                                '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
                                 '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
                                 '    </div>'
                             );
