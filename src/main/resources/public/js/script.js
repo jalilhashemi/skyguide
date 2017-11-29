@@ -269,7 +269,9 @@ function initializeMap() {
         iconGeometry.setCoordinates(evt.coordinate);
 
         var gps = ol.proj.transform(evt.coordinate, 'EPSG:21781','EPSG:4326');
-        $('#field_location').val(gps);
+
+        $('#field_latitude').val(gps[1]);
+        $('#field_longitude').val(gps[0]);
     });
 
 
