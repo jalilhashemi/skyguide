@@ -42,3 +42,7 @@ h1{
     border: none;
     /*-webkit-appearance: none;*/
 }
+
+.display-none{
+    display: none;
+}

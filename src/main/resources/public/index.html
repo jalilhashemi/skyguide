@@ -62,7 +62,7 @@
         <!--Please choose your activity type.-->
         <!--</div>-->
     </div>
-    <div class="form-group">
+    <div class="form-group  display-none">
         <label for="type_of_aircraft">Type of aircraft</label>
         <select class="form-control form-control-lg select_temporary" id="type_of_aircraft" required>
             <option value='-1'>Select the aircraft type</option>
@@ -72,132 +72,144 @@
         <!--</div>-->
     </div>
     <!--Define where the field showed be shown from backend-->
+
     <div id="container_fields">
 
 
-        <div class="form-group">
-            <label for="field_callsign"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_callsign"></label>-->
             <input type="text" class="form-control" id="field_callsign">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_dep_dest"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_dep_dest"></label>-->
             <input type="text" class="form-control" id="field_dep_dest">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="field_date_from"></label>
-            <input type="date" class="form-control" id="field_date_from">
-            <div class="invalid-feedback">
+        <div class="form-row">
+            <div class="form-group col-md-6 display-none">
+                <!--<label for="field_date_from"></label>-->
+                <input type="date" class="form-control" id="field_date_from">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group col-md-6 display-none">
+                <!--<label for="field_date_until"></label>-->
+                <input type="date" class="form-control" id="field_date_until">
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="field_date_until"></label>
-            <input type="date" class="form-control" id="field_date_until">
-            <div class="invalid-feedback">
+        <div class="form-row ">
+            <div class="form-group col-md-6 display-none">
+                <!--<label for="field_time_schedule"></label>-->
+                <input type="time" class="form-control" id="field_time_schedule">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group col-md-6 display-none">
+                <!--<label for="field_duration"></label>-->
+                <input type="text" class="form-control" id="field_duration">
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="field_time_schedule"></label>
-            <input type="time" class="form-control" id="field_time_schedule">
-            <div class="invalid-feedback">
+        <div class="form-row">
+
+            <div class="form-group col-md-6 display-none">
+                <!--<label for="field_latitude"></label>-->
+                <input type="number" class="form-control" id="field_latitude">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group col-md-6 display-none">
+                <label for="field_longitude"></label>
+                <input type="number" class="form-control" id="field_longitude">
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="field_duration"></label>
-            <input type="text" class="form-control" id="field_duration">
-            <div class="invalid-feedback">
+
+        <div id="map-container" class="display-none">
+            <div id="map" class="map panel panel-default  "></div>
+            <div class="form-check ">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
+                    Aeronautical Chart ICAO
+                </label>
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="field_latitude"></label>
-            <input type="number" class="form-control" id="field_latitude">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="field_longitude"></label>
-            <input type="number" class="form-control" id="field_longitude">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div id="map" class="map panel panel-default"></div>
-        <div class="form-check">
-            <label class="form-check-label">
-                <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
-                Aeronautical Chart ICAO
-            </label>
-        </div>
-        <div class="form-group">
+
+        <div class="form-group  display-none">
             <div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top" title=""
                  data-original-title="This is the FL Tooltip.">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
-                           value="FL">
-                    FL</label>
+                <!--<label class="form-check-label">-->
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
+                       value="FL">
+                FL</label>
             </div>
             <div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top" title=""
                  data-original-title="This is the ft AMSL Tooltip.">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
-                           value="ft AMSL">
-                    ft AMSL</label>
+                <!--<label class="form-check-label">-->
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
+                       value="ft AMSL">
+                ft AMSL</label>
             </div>
             <div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top" title=""
                  data-original-title="This is the ft GND Tooltip.">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
-                           value="ft GND">
-                    ft GND</label>
+                <!--<label class="form-check-label">-->
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
+                       value="ft GND">
+                ft GND</label>
             </div>
             <div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top" title=""
                  data-original-title="This is the m GND Tooltip.">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
-                           value="ft GND">
-                    ft GND</label>
+                <!--<label class="form-check-label">-->
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
+                       value="ft GND">
+                ft GND</label>
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_height_altitude"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_height_altitude"></label>-->
             <input type="number" class="form-control" id="field_height_altitude">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_beam_direction"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_beam_direction"></label>-->
             <input type="text" class="form-control" id="field_beam_direction">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_payload_attached_obj"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_payload_attached_obj"></label>-->
             <input type="tel" class="form-control" id="field_payload_attached_obj">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_amount"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_amount"></label>-->
             <input type="text" class="form-control" id="field_amount">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="field_gps_coord"></label>
+        <div class="form-group  display-none">
+            <!--<label for="field_gps_coord"></label>-->
             <input type="number" class="form-control" id="field_gps_coord">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group  display-none">
             <label for="field_radius"></label>
             <input type="number" class="form-control" id="field_radius">
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group">
-            <label for="textfield_self_declaration"></label>
+        <div class="form-group  display-none">
+            <!--<label for="textfield_self_declaration"></label>-->
             <textarea type="text" class="form-control" id="textfield_self_declaration"></textarea>
             <div class="invalid-feedback">
             </div>
@@ -205,6 +217,8 @@
     </div>
     <button type="submit" class="btn btn-primary btn-sky">Submit</button>
 </form>
+
+
 
 <script>
     (function () {

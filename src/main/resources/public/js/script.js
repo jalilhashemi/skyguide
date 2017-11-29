@@ -36,13 +36,14 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
-    $('#type_of_aircraft').parent().hide();
-    $('#container_fields').empty();
 }
 
 function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
-        $('#container_fields').empty();
+        $('#container_fields').children('div .form-group').addClass('display-none');
+        $('#container_fields').find('div .form-group').addClass('display-none');
+        $('#map-container').addClass('display-none');
+
         $('#type_of_aircraft').parent().hide();
         /*  if($('#type_of_activity').val() == -1) {
               $('#type_of_aircraft').hide();
@@ -64,11 +65,13 @@ function initializeChangeHandlers() {
                 }
                 else {
                     $('#type_of_aircraft').parent().hide();
-                    $('#container_fields').empty();
+                    //$('#container_fields').children('div').addClass('display-none');
 
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
-
+                            $('#' + field.id).parent().removeClass('display-none');
+                            $('#map-container').removeClass('display-none');
+                            map.updateSize();
                             //$('#container_fields').append('<div class="form-group">\n' +
                             //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
                             //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= '+ field.name + (field.mandatory ? 'required':'')+'>' +
@@ -78,20 +81,26 @@ function initializeChangeHandlers() {
                             //     '</div>'
                             // );
                             if (field.mandatory) {
-                                $('#container_fields').append('<div class="form-group">\n' +
-                                    '        <label for="' + field.id + '">' + field.name + '*</label>\n' +
-                                    '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
-                                    '<div class="invalid-feedback">\n' +
-                                    '            Please fill in all field with a * \n' +
-                                    '</div>    ' +
-                                    '</div>'
-                                );
+                                $('#' + field.id).parent().children('label').remove();
+                                $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '*</label>\n')
+                                $('#' + field.id).attr('placeholder', field.name);
+                                //     .append('<div class="form-group">\n' +
+                                //     '        <label for="' + field.id + '">' + field.name + '*</label>\n' +
+                                //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
+                                //     '<div class="invalid-feedback">\n' +
+                                //     '            Please fill in all field with a * \n' +
+                                //     '</div>    ' +
+                                //     '</div>'
+                                // );
                             }
                             else {
-                                $('#container_fields').append('<div class="form-group">\n' +
-                                    '        <label for="' + field.id + '">' + field.name + '</label>\n' +
-                                    '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
-                                    '</div>');
+                                // $('#container_fields').append('<div class="form-group">\n' +
+                                //     '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                                //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
+                                //     '</div>');
+                                $('#' + field.id).parent().children('label').remove();
+                                $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '</label>\n')
+                                $('#' + field.id).attr('placeholder', field.name);
                             }
                             var counter = 0;
                             $.each(field.options, function (i, option) {
@@ -114,6 +123,9 @@ function initializeChangeHandlers() {
                                 $('[data-toggle="tooltip"]').tooltip();
                             }
                         }
+                        else {
+                            //$('#' + field.id).parent().hide();
+                        }
                     });
                 }
             }
@@ -121,13 +133,20 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_aircraft', function () {
-        $('#container_fields').empty();
+       // $('#container_fields').children('div').addClass('display-none');
+        $('#container_fields').children('div .form-group').addClass('display-none');
+        $('#container_fields').find('div .form-group').addClass('display-none');
+        $('#map-container').addClass('display-none');
+
 
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 $.each(aircraftType.fieldList, function (i, field) {
                     if (field.active) {
+                        $('#' + field.id).parent().removeClass('display-none');
+                        $('#map-container').removeClass('display-none');
+                        map.updateSize();
                         // $('#container_fields').append('<div class="form-group">\n' +
                         //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? ' *' : '') + '</label>\n' +
                         //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
@@ -135,20 +154,28 @@ function initializeChangeHandlers() {
                         // );
 
                         if (field.mandatory) {
-                            $('#container_fields').append('<div class="form-group">\n' +
-                                '        <label for="' + field.id + '">' + field.name + '* </label>\n' +
-                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
-                                '<div class="invalid-feedback">\n' +
-                                '            Please fill in all field with a * \n' +
-                                '</div>    ' +
-                                '</div>'
-                            );
+                            // $('#container_fields').append('<div class="form-group">\n' +
+                            //     '        <label for="' + field.id + '">' + field.name + '* </label>\n' +
+                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
+                            //     '<div class="invalid-feedback">\n' +
+                            //     '            Please fill in all field with a * \n' +
+                            //     '</div>    ' +
+                            //     '</div>'
+                            // );
+                            $('#' + field.id).parent().children('label').remove();
+
+                            $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '*</label>\n')
+                            $('#' + field.id).attr('placeholder', field.name);
                         }
                         else {
-                            $('#container_fields').append('<div class="form-group">\n' +
-                                '        <label for="' + field.id + '">' + field.name + '</label>\n' +
-                                '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
-                                '</div>');
+                            // $('#container_fields').append('<div class="form-group">\n' +
+                            //     '        <label for="' + field.id + '">' + field.name + '</label>\n' +
+                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
+                            //     '</div>');
+                            $('#' + field.id).parent().children('label').remove();
+
+                            $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '</label>\n')
+                            $('#' + field.id).attr('placeholder', field.name);
                         }
 
 
