@@ -197,8 +197,8 @@ function initializeChangeHandlers() {
         var lat = 46.84089;
         var lon = 7.46485;
 
-        lat = $(this).val().split(',')[0];
-        lon = $(this).val().split(',')[1];
+        lat = $('#field_latitude').val();
+        lon = $(this).val()
 
         var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
@@ -218,7 +218,7 @@ function initializeMap() {
 
     var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
-     iconGeometry = new ol.geom.Point(loc);
+    iconGeometry = new ol.geom.Point(loc);
 
     var iconFeature = new ol.Feature({
         geometry: iconGeometry,
@@ -228,13 +228,23 @@ function initializeMap() {
     });
 
     var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon(({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,0,0,0.8)',
+                width: 3
+            })
+        })
+        /*Icon(({
             anchor: [0.5, 46],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
             opacity: 0.9,
             src: 'img/marker.png'
-        }))
+        }))*/
     });
 
     iconFeature.setStyle(iconStyle);
@@ -245,6 +255,23 @@ function initializeMap() {
 
     var vectorLayer = new ol.layer.Vector({
         source: vectorSource
+    });
+
+    var modify = new ol.interaction.Modify({
+        features: new ol.Collection([iconFeature]),
+        style: new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.8)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,0,0,0.8)',
+                    width: 3
+                })
+            })
+        })
+
     });
 
 
@@ -265,15 +292,47 @@ function initializeMap() {
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
 
+    map.addInteraction(modify);
+
     map.on('singleclick', function (evt) {
         iconGeometry.setCoordinates(evt.coordinate);
 
-        var gps = ol.proj.transform(evt.coordinate, 'EPSG:21781','EPSG:4326');
+        var gps = ol.proj.transform(evt.coordinate, 'EPSG:21781', 'EPSG:4326');
 
         $('#field_latitude').val(gps[1]);
         $('#field_longitude').val(gps[0]);
-    });
 
+        map.removeInteraction(modify);
+        modify = new ol.interaction.Modify({
+            features: new ol.Collection([iconFeature]),
+            style: new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 10,
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255,0,0,0.8)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(255,0,0,0.8)',
+                        width: 3
+                    })
+                })
+            })
+
+        });
+
+        map.addInteraction(modify);
+
+
+    }, iconFeature);
+
+    iconFeature.on('change', function () {
+        var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
+
+        $('#field_latitude').val(gps[1]);
+        $('#field_longitude').val(gps[0]);
+
+
+    });
 
     map.getView().setCenter(loc);
     map.getView().setResolution(50);
