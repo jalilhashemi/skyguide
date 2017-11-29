@@ -10,6 +10,7 @@ $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
     initializeMap();
+    $('[data-toggle="tooltip"]').tooltip();
 
     $.ajax({
         crossOrigin: true,
@@ -65,66 +66,52 @@ function initializeChangeHandlers() {
                 }
                 else {
                     $('#type_of_aircraft').parent().hide();
-                    //$('#container_fields').children('div').addClass('display-none');
-
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
+                            if (field.id.substring(0, 5) === 'radio_') {
+                                $('#' + field.id).parent().removeClass('display-none');
+                                $('#' + field.id).parent().parent().removeClass('display-none');
+
+                                $('#' + field.id).parent().attr('title', field.tooltip);
+                            }
                             $('#' + field.id).parent().removeClass('display-none');
                             $('#map-container').removeClass('display-none');
                             map.updateSize();
-                            //$('#container_fields').append('<div class="form-group">\n' +
-                            //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n' +
-                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= '+ field.name + (field.mandatory ? 'required':'')+'>' +
-                            //     '<div class="invalid-feedback">\n' +
-                            //     '            Please fill in all field with a * \n' +
-                            //     '</div>    ' +
-                            //     '</div>'
-                            // );
                             if (field.mandatory) {
                                 $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '*</label>\n')
-                                $('#' + field.id).attr('placeholder', field.name);
-                                //     .append('<div class="form-group">\n' +
-                                //     '        <label for="' + field.id + '">' + field.name + '*</label>\n' +
-                                //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
-                                //     '<div class="invalid-feedback">\n' +
-                                //     '            Please fill in all field with a * \n' +
-                                //     '</div>    ' +
-                                //     '</div>'
-                                // );
+                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
+                                $('#' + field.id).attr('placeholder', field.name).prop('required', true);
                             }
                             else {
-                                // $('#container_fields').append('<div class="form-group">\n' +
-                                //     '        <label for="' + field.id + '">' + field.name + '</label>\n' +
-                                //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
-                                //     '</div>');
                                 $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '</label>\n')
+                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
                                 $('#' + field.id).attr('placeholder', field.name);
                             }
-                            var counter = 0;
-                            $.each(field.options, function (i, option) {
-                                if (option.active)
-                                    counter++;
-                            });
-                            if (counter > 0) {
-                                var radioDiv = $("<div>").attr('class', 'form-group');
-                                $.each(field.options, function (i, radio) {
-                                    if (radio.active) {
-                                        radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                            '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
-                                            '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
-                                            'value="' + radio.name + '"> ' + radio.name +
-                                            '</label></div>');
+                            /*       var counter = 0;
+                                   $.each(field.options, function (i, option) {
+                                       if (option.active)
+                                           counter++;
+                                   });
+                                   if (counter > 0) {
+                                       //var radioDiv = $("<div>").attr('class', 'form-group');
+                                       $.each(field.options, function (i, radio) {
+                                           if (radio.active) {
+                                               // radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
+                                               //     '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
+                                               //     '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
+                                               //     'value="' + radio.name + '"> ' + radio.name +
+                                               //     '</label></div>');
 
-                                    }
-                                });
-                                $('#container_fields').append(radioDiv);
-                                $('[data-toggle="tooltip"]').tooltip();
-                            }
+                                           }
+                                       });
+                                       //$('#container_fields').append(radioDiv);
+                                       $('[data-toggle="tooltip"]').tooltip();
+                                   }*/
                         }
                         else {
-                            //$('#' + field.id).parent().hide();
+                            if (field.id.substring(0, 5) === 'radio_') {
+                                $('#' + field.id).parent().addClass('display-none');
+                            }
                         }
                     });
                 }
@@ -133,74 +120,64 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_aircraft', function () {
-       // $('#container_fields').children('div').addClass('display-none');
+        // $('#container_fields').children('div').addClass('display-none');
         $('#container_fields').children('div .form-group').addClass('display-none');
         $('#container_fields').find('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
-
 
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 $.each(aircraftType.fieldList, function (i, field) {
                     if (field.active) {
+                        if (field.id.substring(0, 5) === 'radio_') {
+                            $('#' + field.id).parent().removeClass('display-none');
+                            $('#' + field.id).parent().parent().removeClass('display-none');
+                            $('#' + field.id).parent().attr('title', field.tooltip);
+                        }
                         $('#' + field.id).parent().removeClass('display-none');
                         $('#map-container').removeClass('display-none');
+
                         map.updateSize();
-                        // $('#container_fields').append('<div class="form-group">\n' +
-                        //     '        <label for="' + field.id + '">' + field.name + (field.mandatory ? ' *' : '') + '</label>\n' +
-                        //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder="' + field.name + '">\n' +
-                        //     '    </div>'
-                        // );
-
                         if (field.mandatory) {
-                            // $('#container_fields').append('<div class="form-group">\n' +
-                            //     '        <label for="' + field.id + '">' + field.name + '* </label>\n' +
-                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '" required>' +
-                            //     '<div class="invalid-feedback">\n' +
-                            //     '            Please fill in all field with a * \n' +
-                            //     '</div>    ' +
-                            //     '</div>'
-                            // );
                             $('#' + field.id).parent().children('label').remove();
-
-                            $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '*</label>\n')
-                            $('#' + field.id).attr('placeholder', field.name);
+                            $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
+                            $('#' + field.id).attr('placeholder', field.name).prop('required', true);
                         }
                         else {
-                            // $('#container_fields').append('<div class="form-group">\n' +
-                            //     '        <label for="' + field.id + '">' + field.name + '</label>\n' +
-                            //     '        <input type="text" class="form-control" id="' + field.id + '" placeholder= "' + field.name + '">' +
-                            //     '</div>');
                             $('#' + field.id).parent().children('label').remove();
-
-                            $('#' + field.id).parent().prepend( '<label for="' + field.id + '">' + field.name + '</label>\n')
+                            $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
                             $('#' + field.id).attr('placeholder', field.name);
                         }
 
 
-                        var counter = 0;
-                        $.each(field.options, function (i, option) {
-                            if (option.active)
-                                counter++;
-                        });
-                        if (counter > 0) {
-                            var radioDiv = $("<div>").attr('class', 'form-group');
-                            $.each(field.options, function (i, radio) {
-                                if (radio.active) {
-                                    radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                        '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
-                                        '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
-                                        'value="' + radio.name + '"> ' + radio.name +
-                                        '</label></div>');
+                        /*   var counter = 0;
+                           $.each(field.options, function (i, option) {
+                               if (option.active)
+                                   counter++;
+                           });
+                           if (counter > 0) {
+                               //var radioDiv = $("<div>").attr('class', 'form-group');
+                               $.each(field.options, function (i, radio) {
+                                   if (radio.active) {
+                                       // radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
+                                       //     '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
+                                       //     '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
+                                       //     'value="' + radio.name + '"> ' + radio.name +
+                                       //     '</label></div>');
 
-                                }
-                            });
-                            $('#container_fields').append(radioDiv);
-                            $('[data-toggle="tooltip"]').tooltip();
+                                   }
+                               });
+                               //$('#container_fields').append(radioDiv);
+                               $('[data-toggle="tooltip"]').tooltip();
+                           }
+   */
+
+                    }
+                    else {
+                        if (field.id.substring(0, 5) === 'radio_') {
+                            $('#' + field.id).parent().addClass('display-none');
                         }
-
-
                     }
                 });
             }
@@ -224,8 +201,8 @@ function initializeChangeHandlers() {
         var lat = 46.84089;
         var lon = 7.46485;
 
-        lat = $('#field_latitude').val();
-        lon = $(this).val()
+        lat = $(this).val().split(',')[0];
+        lon = $(this).val().split(',')[1];
 
         var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
@@ -255,23 +232,13 @@ function initializeMap() {
     });
 
     var iconStyle = new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 10,
-            fill: new ol.style.Fill({
-                color: 'rgba(255,0,0,0.3)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(255,0,0,0.8)',
-                width: 3
-            })
-        })
-        /*Icon(({
+        image: new ol.style.Icon(({
             anchor: [0.5, 46],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
             opacity: 0.9,
             src: 'img/marker.png'
-        }))*/
+        }))
     });
 
     iconFeature.setStyle(iconStyle);
@@ -282,23 +249,6 @@ function initializeMap() {
 
     var vectorLayer = new ol.layer.Vector({
         source: vectorSource
-    });
-
-    var modify = new ol.interaction.Modify({
-        features: new ol.Collection([iconFeature]),
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 10,
-                fill: new ol.style.Fill({
-                    color: 'rgba(255,0,0,0.8)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255,0,0,0.8)',
-                    width: 3
-                })
-            })
-        })
-
     });
 
 
@@ -319,8 +269,6 @@ function initializeMap() {
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
 
-    map.addInteraction(modify);
-
     map.on('singleclick', function (evt) {
         iconGeometry.setCoordinates(evt.coordinate);
 
@@ -328,38 +276,8 @@ function initializeMap() {
 
         $('#field_latitude').val(gps[1]);
         $('#field_longitude').val(gps[0]);
-
-        map.removeInteraction(modify);
-        modify = new ol.interaction.Modify({
-            features: new ol.Collection([iconFeature]),
-            style: new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 10,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255,0,0,0.8)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255,0,0,0.8)',
-                        width: 3
-                    })
-                })
-            })
-
-        });
-
-        map.addInteraction(modify);
-
-
-    }, iconFeature);
-
-    iconFeature.on('change', function () {
-        var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
-
-        $('#field_latitude').val(gps[1]);
-        $('#field_longitude').val(gps[0]);
-
-
     });
+
 
     map.getView().setCenter(loc);
     map.getView().setResolution(50);
