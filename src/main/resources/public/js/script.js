@@ -190,7 +190,7 @@ function initializeChangeHandlers() {
         }
     });
 
-    $(document).on('focusout', '#field_location', function () {
+    $(document).on('focusout', '#field_longitude', function () {
 
         /*map.geocode('Payerne');*/
 
