@@ -4,15 +4,7 @@ var map;
 var view;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 
-var pointFeature = new ol.Feature(new ol.geom.Point([700000, 190000]));
-var dragInteraction = new ol.interaction.Modify({
-    features: new ol.Collection([pointFeature]),
-    style: new ol.style.Style({
-        image: new ol.style.Icon(({
-            src: 'img/marker.png'
-        }))
-    })
-});
+var iconGeometry;
 
 $(document).ready(function () {
     initializeForm();
@@ -214,39 +206,48 @@ function initializeChangeHandlers() {
         map.getView().setCenter(loc);
         map.getView().setResolution(50);
 
-        var mapVectorSource = new ol.source.Vector({
-            features: []
-        });
-
-        var mapVectorLayer = new ol.layer.Vector({
-            source: mapVectorSource
-        });
-
-        map.addLayer(mapVectorLayer);
-
-        iconStyle = new ol.style.Style({
-            image: new ol.style.Icon(({
-                anchor: [0.5, 1],
-                anchorXUnits: 'fraction',
-                anchorYUnits: 'fraction',
-                src: 'img/marker.png',
-            }))
-        });
-
-        var marker = createMarker(loc, iconStyle);
-
-        mapVectorSource.addFeature(marker);
+        iconGeometry.setCoordinates(loc);
 
     });
 }
 
 function initializeMap() {
-    view = new ol.View({
-        resolution: 250,
 
-        // Define a coordinate CH1903 (EPSG:21781) for the center of the view
-        center: [700000, 190000]
+    var lat = 46.84089;
+    var lon = 7.46485;
+
+    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+
+     iconGeometry = new ol.geom.Point(loc);
+
+    var iconFeature = new ol.Feature({
+        geometry: iconGeometry,
+        name: 'Null Island',
+        population: 4000,
+        rainfall: 500
     });
+
+    var iconStyle = new ol.style.Style({
+        image: new ol.style.Icon(({
+            anchor: [0.5, 46],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'pixels',
+            opacity: 0.9,
+            src: 'img/marker.png'
+        }))
+    });
+
+    iconFeature.setStyle(iconStyle);
+
+    var vectorSource = new ol.source.Vector({
+        features: [iconFeature]
+    });
+
+    var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+    });
+
+
     map = new ga.Map({
 
         // Define the div where the map is placed
@@ -255,16 +256,7 @@ function initializeMap() {
         // Define the layers to display
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
-            new ol.layer.Vector({
-                source: new ol.source.Vector({
-                    features: [pointFeature]
-                }),
-                style: new ol.style.Style({
-                    image: new ol.style.Icon(({
-                        src: 'img/marker.png'
-                    }))
-                })
-            })
+            vectorLayer
         ],
         // Create a view
         view: view,
@@ -273,18 +265,16 @@ function initializeMap() {
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
 
-    map.addInteraction(dragInteraction)
+    map.on('singleclick', function (evt) {
+        iconGeometry.setCoordinates(evt.coordinate);
 
-    pointFeature.on('change',function(){
-        console.log('Feature Moved To:' + this.getGeometry().getCoordinates());
-    },pointFeature);
-}
-
-function createMarker(location, style){
-    var iconFeature = new ol.Feature({
-        geometry: new ol.geom.Point(location)
+        var gps = ol.proj.transform(evt.coordinate, 'EPSG:21781','EPSG:4326');
+        $('#field_location').val(gps);
     });
-    iconFeature.setStyle(style);
 
-    return iconFeature
+
+    map.getView().setCenter(loc);
+    map.getView().setResolution(50);
+
+
 }
