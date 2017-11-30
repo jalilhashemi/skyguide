@@ -42,8 +42,11 @@ function initializeForm() {
 function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
         $('#container_fields').children('div .form-group').addClass('display-none');
-        $('#container_fields').find('div .form-group').addClass('display-none');
+        $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
+
+        $('#radio_height_fl').parent().parent().removeClass('display-none');
+        $('#radio_height_fl').parent().parent().parent().removeClass('display-none');
 
         $('#type_of_aircraft').parent().hide();
         /*  if($('#type_of_activity').val() == -1) {
@@ -69,10 +72,11 @@ function initializeChangeHandlers() {
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
                             if (field.id.substring(0, 5) === 'radio_') {
-                                $('#' + field.id).parent().removeClass('display-none');
-                                $('#' + field.id).parent().parent().removeClass('display-none');
+                                /*  $('#' + field.id).parent().removeClass('display-none');
+                                  $('#' + field.id).parent().parent().removeClass('display-none');
 
-                                $('#' + field.id).parent().attr('title', field.tooltip);
+                                  $('#' + field.id).parent().attr('title', field.tooltip);
+                                  */
                             }
                             $('#' + field.id).parent().removeClass('display-none');
                             $('#map-container').removeClass('display-none');
@@ -110,7 +114,7 @@ function initializeChangeHandlers() {
                         }
                         else {
                             if (field.id.substring(0, 5) === 'radio_') {
-                                $('#' + field.id).parent().addClass('display-none');
+                                //    $('#' + field.id).parent().addClass('display-none');
                             }
                         }
                     });
@@ -122,7 +126,7 @@ function initializeChangeHandlers() {
     $(document).on('change', '#type_of_aircraft', function () {
         // $('#container_fields').children('div').addClass('display-none');
         $('#container_fields').children('div .form-group').addClass('display-none');
-        $('#container_fields').find('div .form-group').addClass('display-none');
+        $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
 
 
@@ -131,9 +135,10 @@ function initializeChangeHandlers() {
                 $.each(aircraftType.fieldList, function (i, field) {
                     if (field.active) {
                         if (field.id.substring(0, 5) === 'radio_') {
-                            $('#' + field.id).parent().removeClass('display-none');
-                            $('#' + field.id).parent().parent().removeClass('display-none');
-                            $('#' + field.id).parent().attr('title', field.tooltip);
+                            /*  $('#' + field.id).parent().removeClass('display-none');
+                              $('#' + field.id).parent().parent().removeClass('display-none');
+                              $('#' + field.id).parent().attr('title', field.tooltip);
+                              */
                         }
                         $('#' + field.id).parent().removeClass('display-none');
                         $('#map-container').removeClass('display-none');
@@ -176,7 +181,7 @@ function initializeChangeHandlers() {
                     }
                     else {
                         if (field.id.substring(0, 5) === 'radio_') {
-                            $('#' + field.id).parent().addClass('display-none');
+                            // $('#' + field.id).parent().addClass('display-none');
                         }
                     }
                 });
@@ -201,8 +206,8 @@ function initializeChangeHandlers() {
         var lat = 46.84089;
         var lon = 7.46485;
 
-        lat = $(this).val().split(',')[0];
-        lon = $(this).val().split(',')[1];
+        lat = $('#field_latitude').val();
+         lon = $(this).val();
 
         var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
@@ -232,13 +237,23 @@ function initializeMap() {
     });
 
     var iconStyle = new ol.style.Style({
-        image: new ol.style.Icon(({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,0,0,0.8)',
+                width: 3
+            })
+        })
+        /*Icon(({
             anchor: [0.5, 46],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
             opacity: 0.9,
             src: 'img/marker.png'
-        }))
+        }))*/
     });
 
     iconFeature.setStyle(iconStyle);
@@ -249,6 +264,23 @@ function initializeMap() {
 
     var vectorLayer = new ol.layer.Vector({
         source: vectorSource
+    });
+
+    var modify = new ol.interaction.Modify({
+        features: new ol.Collection([iconFeature]),
+        style: new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.8)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,0,0,0.8)',
+                    width: 3
+                })
+            })
+        })
+
     });
 
 
@@ -269,6 +301,8 @@ function initializeMap() {
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
 
+    map.addInteraction(modify);
+
     map.on('singleclick', function (evt) {
         iconGeometry.setCoordinates(evt.coordinate);
 
@@ -276,11 +310,38 @@ function initializeMap() {
 
         $('#field_latitude').val(gps[1]);
         $('#field_longitude').val(gps[0]);
+
+        map.removeInteraction(modify);
+        modify = new ol.interaction.Modify({
+            features: new ol.Collection([iconFeature]),
+            style: new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 10,
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255,0,0,0.8)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(255,0,0,0.8)',
+                        width: 3
+                    })
+                })
+            })
+
+        });
+
+        map.addInteraction(modify);
+
+
+    }, iconFeature);
+
+    iconFeature.on('change', function () {
+        var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
+
+        $('#field_latitude').val(gps[1]);
+        $('#field_longitude').val(gps[0]);
+
+
     });
-
-
-    map.getView().setCenter(loc);
-    map.getView().setResolution(50);
 
 
 }
