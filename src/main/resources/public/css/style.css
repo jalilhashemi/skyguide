@@ -28,6 +28,7 @@ h1 {
     border: none;
     border-radius: 0;
     float: right;
+    margin-bottom:50px;
 }
 
 .map {
@@ -48,5 +49,5 @@ h1 {
 }
 
 .form-check-inline {
-    margin-top: 40px;
+    margin-top: 30px;
 }

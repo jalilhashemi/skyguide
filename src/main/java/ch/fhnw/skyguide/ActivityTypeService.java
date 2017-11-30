@@ -483,6 +483,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(durationFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(latitudeFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(longitudeFieldMandatory);
+        fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(heightAltitudeFieldMandatory);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(heightAltitudeFlRadioActive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(heightAltitudeFtAmslRadioActive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(heightAltitudeFtGndRadioInactive);

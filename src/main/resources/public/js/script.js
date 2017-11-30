@@ -25,7 +25,6 @@ $(document).ready(function () {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
-
 });
 
 function appendSelection(data) {
@@ -45,16 +44,11 @@ function initializeChangeHandlers() {
         $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
 
-        $('#radio_height_fl').parent().parent().removeClass('display-none');
-        $('#radio_height_fl').parent().parent().parent().removeClass('display-none');
+        $('.form-check-inline').parent().addClass('display-none');
+        $('.form-check-inline').addClass('display-none');
 
         $('#type_of_aircraft').parent().hide();
-        /*  if($('#type_of_activity').val() == -1) {
-              $('#type_of_aircraft').hide();
-              $.each(informationJSON[0].aircraftTypeList[0].fieldList, function (j, field) {
-                  $("#" + field.name).hide();
-              });
-          }*/
+
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.name) {
                 if (activityType.aircraftTypeList.length > 1) {
@@ -71,50 +65,26 @@ function initializeChangeHandlers() {
                     $('#type_of_aircraft').parent().hide();
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         if (field.active) {
-                            if (field.id.substring(0, 5) === 'radio_') {
-                                /*  $('#' + field.id).parent().removeClass('display-none');
-                                  $('#' + field.id).parent().parent().removeClass('display-none');
-
-                                  $('#' + field.id).parent().attr('title', field.tooltip);
-                                  */
-                            }
-                            $('#' + field.id).parent().removeClass('display-none');
-                            $('#map-container').removeClass('display-none');
-                            map.updateSize();
-                            if (field.mandatory) {
-                                $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
-                                $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                            if (field.id.substring(0, 6) === 'radio_') {
+                                $('#' + field.id).parent().parent().removeClass('display-none');
+                                $('#' + field.id).parent().parent().parent().removeClass('display-none');
                             }
                             else {
-                                $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
-                                $('#' + field.id).attr('placeholder', field.name);
-                            }
-                            /*       var counter = 0;
-                                   $.each(field.options, function (i, option) {
-                                       if (option.active)
-                                           counter++;
-                                   });
-                                   if (counter > 0) {
-                                       //var radioDiv = $("<div>").attr('class', 'form-group');
-                                       $.each(field.options, function (i, radio) {
-                                           if (radio.active) {
-                                               // radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                               //     '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
-                                               //     '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
-                                               //     'value="' + radio.name + '"> ' + radio.name +
-                                               //     '</label></div>');
+                                $('#' + field.id).parent().removeClass('display-none');
+                                $('#map-container').removeClass('display-none');
+                                map.updateSize();
 
-                                           }
-                                       });
-                                       //$('#container_fields').append(radioDiv);
-                                       $('[data-toggle="tooltip"]').tooltip();
-                                   }*/
-                        }
-                        else {
-                            if (field.id.substring(0, 5) === 'radio_') {
-                                //    $('#' + field.id).parent().addClass('display-none');
+                                if (field.mandatory) {
+                                    $('#' + field.id).parent().children('label').remove();
+                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
+                                    $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                                }
+                                else {
+                                    $('#' + field.id).parent().children('label').remove();
+                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
+                                    $('#' + field.id).attr('placeholder', field.name);
+                                }
+
                             }
                         }
                     });
@@ -129,59 +99,32 @@ function initializeChangeHandlers() {
         $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
 
+        $('.form-check-inline').parent().addClass('display-none');
+        $('.form-check-inline').addClass('display-none');
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
                 $.each(aircraftType.fieldList, function (i, field) {
                     if (field.active) {
-                        if (field.id.substring(0, 5) === 'radio_') {
-                            /*  $('#' + field.id).parent().removeClass('display-none');
-                              $('#' + field.id).parent().parent().removeClass('display-none');
-                              $('#' + field.id).parent().attr('title', field.tooltip);
-                              */
-                        }
-                        $('#' + field.id).parent().removeClass('display-none');
-                        $('#map-container').removeClass('display-none');
-
-                        map.updateSize();
-                        if (field.mandatory) {
-                            $('#' + field.id).parent().children('label').remove();
-                            $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
-                            $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                        if (field.id.substring(0, 6) === 'radio_') {
+                            $('#' + field.id).parent().parent().removeClass('display-none');
+                            $('#' + field.id).parent().parent().parent().removeClass('display-none');
                         }
                         else {
-                            $('#' + field.id).parent().children('label').remove();
-                            $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
-                            $('#' + field.id).attr('placeholder', field.name);
-                        }
+                            $('#' + field.id).parent().removeClass('display-none');
+                            $('#map-container').removeClass('display-none');
+                            map.updateSize();
 
-
-                        /*   var counter = 0;
-                           $.each(field.options, function (i, option) {
-                               if (option.active)
-                                   counter++;
-                           });
-                           if (counter > 0) {
-                               //var radioDiv = $("<div>").attr('class', 'form-group');
-                               $.each(field.options, function (i, radio) {
-                                   if (radio.active) {
-                                       // radioDiv.append('<div class="form-check form-check-inline" data-toggle="tooltip" data-placement="top"\n' +
-                                       //     '             title="' + radio.tooltip + '"><label class="form-check-label">\n' +
-                                       //     '<input class="form-check-input" type="radio" name="inlineRadioOptions" id="' + radio.id + '"' +
-                                       //     'value="' + radio.name + '"> ' + radio.name +
-                                       //     '</label></div>');
-
-                                   }
-                               });
-                               //$('#container_fields').append(radioDiv);
-                               $('[data-toggle="tooltip"]').tooltip();
-                           }
-   */
-
-                    }
-                    else {
-                        if (field.id.substring(0, 5) === 'radio_') {
-                            // $('#' + field.id).parent().addClass('display-none');
+                            if (field.mandatory) {
+                                $('#' + field.id).parent().children('label').remove();
+                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
+                                $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                            }
+                            else {
+                                $('#' + field.id).parent().children('label').remove();
+                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
+                                $('#' + field.id).attr('placeholder', field.name);
+                            }
                         }
                     }
                 });
