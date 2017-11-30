@@ -37,6 +37,13 @@
         </div>
     </div>
     <div class="form-group">
+        <label for="input_applicant_reference">Applicant reference</label>
+        <input type="text" class="form-control" id="input_applicant_reference" placeholder="Applicant reference">
+        <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
+            application
+        </small>
+    </div>
+    <div class="form-group">
         <label for="input_applicant_phone">Applicant Phone*</label>
         <input type="tel" class="form-control" id="input_applicant_phone" placeholder="Applicant Phone"
                required>
@@ -78,9 +85,16 @@
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control" id="field_dep_dest">
-            <div class="invalid-feedback">
+        <div class="form-row">
+            <div class="form-group  col-md-6 display-none">
+                <input type="text" class="form-control" id="field_departure">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  col-md-6 display-none">
+                <input type="text" class="form-control" id="field_destination">
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
         <div class="form-row">
@@ -96,8 +110,13 @@
             </div>
         </div>
         <div class="form-row ">
-            <div class="form-group col-md-6 display-none">
-                <input type="time" class="form-control" id="field_time_schedule">
+            <div class="form-group col-md-3 display-none">
+                <input type="time" class="form-control" id="field_time_schedule_from">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group col-md-3 display-none">
+                <input type="time" class="form-control" id="field_time_schedule_until">
                 <div class="invalid-feedback">
                 </div>
             </div>
@@ -107,78 +126,18 @@
                 </div>
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group col-md-6 display-none">
-                <input type="number" class="form-control" id="field_latitude">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group col-md-6 display-none">
-                <label for="field_longitude"></label>
-                <input type="number" class="form-control" id="field_longitude">
-                <div class="invalid-feedback">
-                </div>
+        <div class="form-group display-none">
+            <input type="text" class="form-control" id="field_location">
+            <div class="invalid-feedback">
             </div>
         </div>
-        <div id="map-container" class="display-none">
-            <div id="map" class="map panel panel-default  "></div>
-            <div class="form-check ">
-                <label class="form-check-label">
-                    <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
-                    Aeronautical Chart ICAO
-                </label>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6 display-none">
-                <input type="number" class="form-control" id="field_height_altitude">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-
-            <div class="form-group col-md-6 height">
-                <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
-                               value="FL">FL
-                    </label>
-                </div>
-                <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
-                               value="ft AMSL">ft AMSL
-                    </label>
-                </div>
-                <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
-                               value="ft GND">ft GND
-                    </label>
-                </div>
-                <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
-                               value="m GND">m GND
-                    </label>
-                </div>
+        <div class="form-group display-none">
+            <input type="number" class="form-control" id="field_latitude_longitude">
+            <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
             <input type="text" class="form-control" id="field_beam_direction">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="tel" class="form-control" id="field_payload_attached_obj">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control" id="field_amount">
             <div class="invalid-feedback">
             </div>
         </div>
@@ -188,8 +147,64 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <label for="field_radius"></label>
             <input type="number" class="form-control" id="field_radius">
+            <div class="invalid-feedback">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6 display-none">
+                <input type="number" class="form-control" id="field_height_altitude">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <!--<div class="form-group col-md-6 height">-->
+            <!--now i could take one parent out of from script-->
+                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                     title="">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
+                               value="FL">FL
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                     title="">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
+                               value="ft AMSL">ft AMSL
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                     title="">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
+                               value="ft GND">ft GND
+                    </label>
+                </div>
+                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                     title="">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
+                               value="m GND">m GND
+                    </label>
+                </div>
+            </div>
+        <!--</div>-->
+        <div id="map-container" class="display-none">
+            <div id="map" class="map panel panel-default  "></div>
+            <div class="form-check ">
+                <label class="form-check-label">
+                    <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
+                    Aeronautical Chart ICAO
+                </label>
+            </div>
+        </div>
+        <div class="form-group  display-none">
+            <input type="tel" class="form-control" id="field_payload_attached_obj">
+            <div class="invalid-feedback">
+            </div>
+        </div>
+        <div class="form-group  display-none">
+            <input type="text" class="form-control" id="field_amount">
             <div class="invalid-feedback">
             </div>
         </div>
