@@ -1,7 +1,7 @@
 var informationJSON;
 var actualAircraftTypeList;
 var map;
-var view;
+//var view;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 
 var iconGeometry;
@@ -204,37 +204,25 @@ function initializeChangeHandlers() {
         /*map.geocode('Payerne');*/
 
         var lat = 46.84089;
-        var lon = 7.46485;
+        var lon = 9.3;
 
         lat = $('#field_latitude').val();
-         lon = $(this).val();
+        lon = $(this).val();
 
-        var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-
-        // Zoom on the position
-        map.getView().setCenter(loc);
-        map.getView().setResolution(50);
-
-        iconGeometry.setCoordinates(loc);
+        setMarker(lat, lon);
 
     });
 }
 
 function initializeMap() {
 
-    var lat = 46.84089;
-    var lon = 7.46485;
+    // middle of the map (init state)
+    var lat = 46.78;
+    var lon = 9.3;
 
     var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
     iconGeometry = new ol.geom.Point(loc);
-
-    var iconFeature = new ol.Feature({
-        geometry: iconGeometry,
-        name: 'Null Island',
-        population: 4000,
-        rainfall: 500
-    });
 
     var iconStyle = new ol.style.Style({
         image: new ol.style.Circle({
@@ -256,31 +244,20 @@ function initializeMap() {
         }))*/
     });
 
-    iconFeature.setStyle(iconStyle);
-
-    var vectorSource = new ol.source.Vector({
-        features: [iconFeature]
+    var pointMarker = new ol.Feature({
+        geometry: iconGeometry,
+        style: iconStyle
+        /*,name: 'Null Island',
+        population: 4000,
+        rainfall: 500*/
     });
 
-    var vectorLayer = new ol.layer.Vector({
-        source: vectorSource
-    });
+    //pointMarker.setStyle(iconStyle);
+
 
     var modify = new ol.interaction.Modify({
-        features: new ol.Collection([iconFeature]),
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 10,
-                fill: new ol.style.Fill({
-                    color: 'rgba(255,0,0,0.8)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255,0,0,0.8)',
-                    width: 3
-                })
-            })
-        })
-
+        features: new ol.Collection([pointMarker]),
+        style: iconStyle
     });
 
 
@@ -292,16 +269,23 @@ function initializeMap() {
         // Define the layers to display
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
-            vectorLayer
+            new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [pointMarker]
+                })
+            })
         ],
         // Create a view
-        view: view,
+        //  view: view,
 
         // disable scrolling on map
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
     });
 
-    map.addInteraction(modify);
+    map.getView().setCenter(loc);
+    map.getView().setResolution(500);
+
+    //   map.addInteraction(modify);
 
     map.on('singleclick', function (evt) {
         iconGeometry.setCoordinates(evt.coordinate);
@@ -313,7 +297,7 @@ function initializeMap() {
 
         map.removeInteraction(modify);
         modify = new ol.interaction.Modify({
-            features: new ol.Collection([iconFeature]),
+            features: new ol.Collection([pointMarker]),
             style: new ol.style.Style({
                 image: new ol.style.Circle({
                     radius: 10,
@@ -332,9 +316,9 @@ function initializeMap() {
         map.addInteraction(modify);
 
 
-    }, iconFeature);
+    }, pointMarker);
 
-    iconFeature.on('change', function () {
+    pointMarker.on('change', function () {
         var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
 
         $('#field_latitude').val(gps[1]);
@@ -342,6 +326,16 @@ function initializeMap() {
 
 
     });
+}
 
+function setView(loc) {
+    map.getView().setCenter(loc);
+    map.getView().setResolution(50);
+}
 
+function setMarker(lat, lon) {
+    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+
+    setView(loc);
+    iconGeometry.setCoordinates(loc);
 }
