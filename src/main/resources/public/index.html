@@ -72,29 +72,24 @@
         <!--</div>-->
     </div>
     <!--Define where the field showed be shown from backend-->
-
     <div id="container_fields">
         <div class="form-group  display-none">
-            <!--<label for="field_callsign"></label>-->
             <input type="text" class="form-control" id="field_callsign">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <!--<label for="field_dep_dest"></label>-->
             <input type="text" class="form-control" id="field_dep_dest">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_date_from"></label>-->
                 <input type="date" class="form-control" id="field_date_from">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_date_until"></label>-->
                 <input type="date" class="form-control" id="field_date_until">
                 <div class="invalid-feedback">
                 </div>
@@ -102,13 +97,11 @@
         </div>
         <div class="form-row ">
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_time_schedule"></label>-->
                 <input type="time" class="form-control" id="field_time_schedule">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_duration"></label>-->
                 <input type="text" class="form-control" id="field_duration">
                 <div class="invalid-feedback">
                 </div>
@@ -116,7 +109,6 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_latitude"></label>-->
                 <input type="number" class="form-control" id="field_latitude">
                 <div class="invalid-feedback">
                 </div>
@@ -128,7 +120,6 @@
                 </div>
             </div>
         </div>
-
         <div id="map-container" class="display-none">
             <div id="map" class="map panel panel-default  "></div>
             <div class="form-check ">
@@ -138,68 +129,60 @@
                 </label>
             </div>
         </div>
-
-
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <!--<label for="field_height_altitude"></label>-->
                 <input type="number" class="form-control" id="field_height_altitude">
                 <div class="invalid-feedback">
                 </div>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6 height">
                 <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
                      title="">
                     <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
-                           value="">FL</label>
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
+                               value="FL">FL
+                    </label>
                 </div>
                 <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
                      title="">
                     <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
-                           value="ft AMSL">
-                    ft AMSL</label>
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
+                               value="ft AMSL">ft AMSL
+                    </label>
                 </div>
                 <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
                      title="">
                     <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
-                           value="ft GND">
-                    ft GND</label>
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
+                               value="ft GND">ft GND
+                    </label>
                 </div>
                 <div class="form-check form-check-inline display-none" data-toggle="tooltip" data-placement="top"
                      title="">
                     <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
-                           value="ft GND">
-                    ft GND</label>
+                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
+                               value="m GND">m GND
+                    </label>
                 </div>
             </div>
         </div>
-
-
         <div class="form-group  display-none">
-            <!--<label for="field_beam_direction"></label>-->
             <input type="text" class="form-control" id="field_beam_direction">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <!--<label for="field_payload_attached_obj"></label>-->
             <input type="tel" class="form-control" id="field_payload_attached_obj">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <!--<label for="field_amount"></label>-->
             <input type="text" class="form-control" id="field_amount">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <!--<label for="field_gps_coord"></label>-->
             <input type="number" class="form-control" id="field_gps_coord">
             <div class="invalid-feedback">
             </div>
@@ -211,7 +194,6 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <!--<label for="textfield_self_declaration"></label>-->
             <textarea type="text" class="form-control" id="textfield_self_declaration"></textarea>
             <div class="invalid-feedback">
             </div>
@@ -219,8 +201,6 @@
     </div>
     <button type="submit" class="btn btn-primary btn-sky">Submit</button>
 </form>
-
-
 <script>
     (function () {
         'use strict';

@@ -2,11 +2,11 @@ html {
     font-size: 14px;
 }
 
-h1{
+h1 {
     padding: 50px 0 30px 0;
 }
 
-.form-control{
+.form-control {
     background: #d8e6f2;
     color: #0159a0;
     font-weight: 300;
@@ -15,7 +15,7 @@ h1{
     /*border:none;*/
 }
 
-.form-control:focus{
+.form-control:focus {
     background: #d8e6f2;
     color: #0159a0;
 }
@@ -31,11 +31,11 @@ h1{
 }
 
 .map {
-    height:400px;
+    height: 400px;
     padding: 20px 0 0 0;
 }
 
-.select_temporary{
+.select_temporary {
     background: #d8e6f2;
     color: #0159a0;
     font-size: 14px;
@@ -43,6 +43,10 @@ h1{
     /*-webkit-appearance: none;*/
 }
 
-.display-none{
+.display-none {
     display: none;
+}
+
+.form-check-inline {
+    margin-top: 40px;
 }
