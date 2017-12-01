@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class ActivityTypeService {
@@ -1017,5 +1018,8 @@ public class ActivityTypeService {
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         listActivityType.add(airshowAerobaticFlightActivityType);
+
+        listActivityType.sort((o1, o2)->o1.getName().compareTo(o2.getName()));
     }
+
 }
