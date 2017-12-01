@@ -43,22 +43,20 @@ function initializeForm() {
             }
         });
     });
-    (function () {
-        'use strict';
-        window.addEventListener('load', function () {
-            var form = document.getElementById('needs-validation');
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        }, false);
-    })();
 }
 
 function initializeChangeHandlers() {
+    window.addEventListener('load', function () {
+        var form = document.getElementById('needs-validation');
+        form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    }, false);
+
     $(document).on('change', '#type_of_activity', function () {
         $('#container_fields').children('div .form-group').addClass('display-none');
         $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
