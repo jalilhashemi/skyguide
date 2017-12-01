@@ -142,7 +142,7 @@ function initializeChangeHandlers() {
         }
     });
 
-    $(document).on('keyup', '#field_latitude_longitude', function () {
+    $(document).on('keyup', '#field_gps_coord', function () {
 
         /*map.geocode('Payerne');*/
 
@@ -152,11 +152,10 @@ function initializeChangeHandlers() {
         var defaultEpsg = 'EPSG:21781';
 
         var position;
-        var extent =map.getView().getProjection().getExtent();
+        var extent = map.getView().getProjection().getExtent();
 
 
-
-        var query = $('#field_latitude_longitude').val();
+        var query = $('#field_gps_coord').val();
 
         var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
         var DMSMinute = '[0-9]{1,2}[\'|′]';
@@ -212,7 +211,8 @@ function initializeChangeHandlers() {
             position = ol.proj.transform([easting, northing],
                 'EPSG:4326', defaultEpsg);
             if (ol.extent.containsCoordinate(extent, position)) {
-                console.error("coordinate not contained: " + position);
+                position = roundCoordinates(position);
+
             }
         }
 
@@ -233,7 +233,7 @@ function initializeChangeHandlers() {
             // Match LV95
             if (ol.extent.containsCoordinate(extent, position)) {
                 position = roundCoordinates(position);
-                console.log("is lv 95: " + position);
+
             }
 
             // Match decimal notation EPSG:4326
@@ -246,7 +246,7 @@ function initializeChangeHandlers() {
                     defaultEpsg);
                 if (ol.extent.containsCoordinate(extent, position)) {
                     position = roundCoordinates(position);
-                    console.log("is decimal notation: " + position);
+
                 }
             }
 
@@ -260,7 +260,6 @@ function initializeChangeHandlers() {
                 .done(function (pos) {
                     if (ol.extent.containsCoordinate(extent, pos)) {
                         position = roundCoordinates(pos);
-                        console.log("is lv 03: " + position);
                     }
                 })
                 .fail(function (xhr, status, errorThrown) {
@@ -268,7 +267,8 @@ function initializeChangeHandlers() {
                 });
 
         }
-        setMarker(position);
+        if (position != null)
+            setMarker(position);
 
         /*
                     var sr = '?';
