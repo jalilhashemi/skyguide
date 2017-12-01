@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
     <link rel="stylesheet" href="lib/bootstrap.min.css"/>
     <link rel="stylesheet" href="lib/daterangepicker.css"/>
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 <body>
 <script src="lib/jquery-2.2.1.min.js"></script>
@@ -15,6 +17,30 @@
 <script src="lib/moment.min.js"></script>
 <script src="lib/daterangepicker.js"></script>
 <script src="js/script.js"></script>
+<div class="modal fade" id="info_gps_coord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">GPS Coordinates Info</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div style="font-size: 12px;" class="modal-body">
+                <a href="https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-frames/local/lv95.html"
+                   target="_blank">CH1903+ / LV95</a>: "2600000 1200000","2600000 ,1200000"<br>
+                <a href="https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-frames/local/lv03.html"
+                   target="_blank">CH1903 / LV03</a>: "600000 200000", "600000, 200000"<br>
+                <a href="https://epsg.io/4326" target="_blank">WGS 84 (lat/lon)</a>: "46.5 6.0" ,"46.5,6.0" ,
+                "47°09′43.999″ N 7°40′33.646″E"<br>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <form class="container" id="needs-validation" novalidate>
     <h1>Request for coordination of special aerial activities</h1>
     <h2>1. Applicant information</h2>
@@ -132,13 +158,12 @@
             </div>
         </div>
         <div class="form-group  display-none">
+            <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord"
+                    style="border: none;">
+                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+            </button>
             <input type="text" class="form-control input-field-sky" id="field_gps_coord">
-            <small class="form-text text-muted">CH1903+ / LV95: "2600000 1200000","2600000 ,1200000"<br>
-                CH1903 / LV03: "600000 200000", "600000, 200000"<br>
-                WGS 84 (lat/lon): "46.5 6.0" ,"46.5,6.0" , "47°09′43.999″ N 7°40′33.646″E"
-            </small>
             <div class="invalid-feedback">
-
             </div>
         </div>
         <div class="form-group  display-none">
