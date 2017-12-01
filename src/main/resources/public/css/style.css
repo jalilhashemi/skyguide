@@ -9,17 +9,18 @@ h1 {
 .form-control {
     background: #d8e6f2;
     color: #0159a0;
-    font-weight: 300;
-    height: 45px;
-    border-radius: 0;
-    /*border:none;*/
 }
-
 .form-control:focus {
     background: #d8e6f2;
     color: #0159a0;
 }
 
+.input-field-sky {
+    font-weight: 300;
+    height: 45px;
+    border-radius: 0;
+    /*border:none;*/
+}
 .btn-sky {
     background: #0159a0;
     cursor: pointer;
@@ -36,12 +37,18 @@ h1 {
     padding: 20px 0 0 0;
 }
 
-.select_temporary {
-    background: #d8e6f2;
-    color: #0159a0;
+.select-field-sky {
     font-size: 14px;
     border: none;
+    height: 300px;
     /*-webkit-appearance: none;*/
+}
+
+
+.textarea-field-sky {
+    height: 100px;
+    font-weight: 300;
+    /*border:none;*/
 }
 
 .display-none {

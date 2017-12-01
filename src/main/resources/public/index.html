@@ -5,6 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -16,36 +17,38 @@
         integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
         crossorigin="anonymous"></script>
 <script src="http://api3.geo.admin.ch/loader.js"></script>
+<script src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 <script src="js/script.js"></script>
 <form class="container" id="needs-validation" novalidate>
     <h1>Request for coordination of special aerial activities</h1>
     <h2>1. Applicant information</h2>
     <div class="form-row">
         <div class="form-group col-md-6">
-            <label for="input_company">Company</label>
-            <input type="text" class="form-control" id="input_company" aria-describedby="companyHint"
-                   placeholder="Company">
-            <small id="companyHint" class="form-text text-muted">If Company is available.</small>
-        </div>
-        <div class="form-group col-md-6">
             <label for="input_applicant_name">Applicant Name*</label>
-            <input type="text" class="form-control" id="input_applicant_name" placeholder="Applicant Name"
+            <input type="text" class="form-control input-field-sky" id="input_applicant_name" placeholder="Applicant Name"
                    required>
             <div class="invalid-feedback">
                 Please provide a name.
             </div>
         </div>
+        <div class="form-group col-md-6">
+            <label for="input_company">Company</label>
+            <input type="text" class="form-control input-field-sky" id="input_company" aria-describedby="companyHint"
+                   placeholder="Company">
+            <small id="companyHint" class="form-text text-muted">If Company is available.</small>
+        </div>
     </div>
     <div class="form-group">
         <label for="input_applicant_reference">Applicant reference</label>
-        <input type="text" class="form-control" id="input_applicant_reference" placeholder="Applicant reference">
+        <input type="text" class="form-control input-field-sky" id="input_applicant_reference" placeholder="Applicant reference">
         <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
             application
         </small>
     </div>
     <div class="form-group">
         <label for="input_applicant_phone">Applicant Phone*</label>
-        <input type="tel" class="form-control" id="input_applicant_phone" placeholder="Applicant Phone"
+        <input type="tel" class="form-control input-field-sky" id="input_applicant_phone" placeholder="Applicant Phone"
                required>
         <div class="invalid-feedback">
             Please provide a phone number.
@@ -53,7 +56,7 @@
     </div>
     <div class="form-group">
         <label for="input_applicant_email">Applicant Email*</label>
-        <input type="email" class="form-control" id="input_applicant_email" placeholder="Applicant Email"
+        <input type="email" class="form-control input-field-sky" id="input_applicant_email" placeholder="Applicant Email"
                required>
         <div class="invalid-feedback">
             Please provide an email.
@@ -62,7 +65,7 @@
     <h2>2. Activity information</h2>
     <div class="form-group">
         <label for="type_of_activity">Type of activity</label>
-        <select class="form-control form-control-lg select_temporary" id="type_of_activity" required>
+        <select class="form-control form-control-lg select-field-sky" id="type_of_activity" required>
             <option value='-1'>Select the activity type</option>
         </select>
         <!--<div class="invalid-feedback">-->
@@ -71,7 +74,7 @@
     </div>
     <div class="form-group  display-none">
         <label for="type_of_aircraft">Type of aircraft</label>
-        <select class="form-control form-control-lg select_temporary" id="type_of_aircraft" required>
+        <select class="form-control form-control-lg select-field-sky" id="type_of_aircraft" required>
             <option value='-1'>Select the aircraft type</option>
         </select>
         <!--<div class="invalid-feedback">-->
@@ -81,84 +84,78 @@
     <!--Define where the field showed be shown from backend-->
     <div id="container_fields">
         <div class="form-group  display-none">
-            <input type="text" class="form-control" id="field_callsign">
+            <input type="text" class="form-control input-field-sky" id="field_callsign">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group  col-md-6 display-none">
-                <input type="text" class="form-control" id="field_departure">
+                <input type="text" class="form-control input-field-sky" id="field_departure">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <div class="form-group  col-md-6 display-none">
-                <input type="text" class="form-control" id="field_destination">
+                <input type="text" class="form-control input-field-sky" id="field_destination">
                 <div class="invalid-feedback">
                 </div>
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <input type="date" class="form-control" id="field_date_from">
+                <input type="text" name="daterange" class="form-control input-field-sky" id="field_date_from_until">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <input type="date" class="form-control" id="field_date_until">
+                <input type="text" class="form-control input-field-sky" id="field_duration">
                 <div class="invalid-feedback">
                 </div>
             </div>
         </div>
         <div class="form-row ">
-            <div class="form-group col-md-3 display-none">
-                <input type="time" class="form-control" id="field_time_schedule_from">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group col-md-3 display-none">
-                <input type="time" class="form-control" id="field_time_schedule_until">
+            <div class="form-group col-md-6 display-none">
+                <input type="time" class="form-control input-field-sky" id="field_time_schedule_from">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <input type="text" class="form-control" id="field_duration">
+                <input type="time" class="form-control input-field-sky" id="field_time_schedule_until">
                 <div class="invalid-feedback">
                 </div>
             </div>
         </div>
         <div class="form-group display-none">
-            <input type="text" class="form-control" id="field_location">
+            <input type="text" class="form-control input-field-sky" id="field_location">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group display-none">
-            <input type="number" class="form-control" id="field_latitude_longitude">
+            <input type="number" class="form-control input-field-sky" id="field_latitude_longitude">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="text" class="form-control" id="field_beam_direction">
+            <input type="text" class="form-control input-field-sky" id="field_beam_direction">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="number" class="form-control" id="field_gps_coord">
+            <input type="text" class="form-control input-field-sky" id="field_gps_coord">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="number" class="form-control" id="field_radius">
+            <input type="number" class="form-control input-field-sky" id="field_radius">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <input type="number" class="form-control" id="field_height_altitude">
+                <input type="number" class="form-control input-field-sky" id="field_height_altitude">
                 <div class="invalid-feedback">
                 </div>
             </div>
             <!--<div class="form-group col-md-6 height">-->
-            <!--now i could take one parent out of from script-->
                 <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
                      title="">
                     <label class="form-check-label">
@@ -199,19 +196,25 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="tel" class="form-control" id="field_payload_attached_obj">
+            <input type="tel" class="form-control input-field-sky" id="field_payload_attached_obj">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="text" class="form-control" id="field_amount">
+            <input type="text" class="form-control input-field-sky" id="field_amount">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <textarea type="text" class="form-control" id="textfield_self_declaration"></textarea>
+            <textarea type="text" class="form-control textarea-field-sky my-textarea" id="textfield_self_declaration"></textarea>
             <div class="invalid-feedback">
             </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="textfield_remark">Remark</label>
+        <textarea type="text" class="form-control textarea-field-sky my-textarea" id="textfield_remark"></textarea>
+        <div class="invalid-feedback">
         </div>
     </div>
     <button type="submit" class="btn btn-primary btn-sky">Submit</button>
@@ -231,6 +234,16 @@
             }, false);
         }, false);
     })();
+</script>
+
+<script type="text/javascript">
+        $(function() {
+        $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'MM.DD.YYYY'
+            }
+        });
+    });
 </script>
 </body>
 </html>
