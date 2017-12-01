@@ -142,17 +142,165 @@ function initializeChangeHandlers() {
         }
     });
 
-    $(document).on('focusout', '#field_longitude', function () {
+    $(document).on('keyup', '#field_latitude_longitude', function () {
 
         /*map.geocode('Payerne');*/
 
         var lat = 46.84089;
         var lon = 9.3;
 
-        lat = $('#field_latitude').val();
-        lon = $(this).val();
+        var defaultEpsg = 'EPSG:21781';
 
-        setMarker(lat, lon);
+        var position;
+        var extent =map.getView().getProjection().getExtent();
+
+
+
+        var query = $('#field_latitude_longitude').val();
+
+        var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
+        var DMSMinute = '[0-9]{1,2}[\'|′]';
+        var DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
+            '[0-9]+\\b)("|\'\'|′′|″)';
+        var DMSNorth = '[N]';
+        var DMSEast = '[E]';
+        var MGRS = '^3[123][\\sa-z]{3}[\\s\\d]*';
+        var regexpDMSN = new RegExp(DMSDegree +
+            '(' + DMSMinute + ')?\\s*' +
+            '(' + DMSSecond + ')?\\s*' +
+            DMSNorth, 'g');
+        var regexpDMSE = new RegExp(DMSDegree +
+            '(' + DMSMinute + ')?\\s*' +
+            '(' + DMSSecond + ')?\\s*' +
+            DMSEast, 'g');
+        var regexpDMSDegree = new RegExp(DMSDegree, 'g');
+        var regexpCoordinate = new RegExp(
+            '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
+            '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
+        var regexMGRS = new RegExp(MGRS, 'gi');
+        // Grid zone designation for Switzerland + two 100km letters + two digits
+        // It's a limitiation of proj4 and a sensible default (precision is 10km)
+        var MGRSMinimalPrecision = 7;
+
+        var roundCoordinates = function (coords) {
+            return [Math.round(coords[0] * 1000) / 1000,
+                Math.round(coords[1] * 1000) / 1000];
+        };
+
+        // Parse degree EPSG:4326 notation
+        var matchDMSN = query.match(regexpDMSN);
+        var matchDMSE = query.match(regexpDMSE);
+        if (matchDMSN && matchDMSN.length === 1 &&
+            matchDMSE && matchDMSE.length === 1) {
+            var northing = parseFloat(matchDMSN[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+            var easting = parseFloat(matchDMSE[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+            var minuteN = matchDMSN[0].match(DMSMinute) ?
+                matchDMSN[0].match(DMSMinute)[0] : '0';
+            northing = northing +
+                parseFloat(minuteN.replace('\'', '').replace('′', '')) / 60;
+            var minuteE = matchDMSE[0].match(DMSMinute) ?
+                matchDMSE[0].match(DMSMinute)[0] : '0';
+            easting = easting +
+                parseFloat(minuteE.replace('\'', '').replace('′', '')) / 60;
+            var secondN =
+                matchDMSN[0].match(DMSSecond) ?
+                    matchDMSN[0].match(DMSSecond)[0] : '0';
+            northing = northing + parseFloat(secondN.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
+            var secondE = matchDMSE[0].match(DMSSecond) ?
+                matchDMSE[0].match(DMSSecond)[0] : '0';
+            easting = easting + parseFloat(secondE.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
+            position = ol.proj.transform([easting, northing],
+                'EPSG:4326', defaultEpsg);
+            if (ol.extent.containsCoordinate(extent, position)) {
+                console.error("coordinate not contained: " + position);
+            }
+        }
+
+        var match = query.match(regexpCoordinate);
+        if (match) {
+            var left = parseFloat(match[1].replace(/'/g, ''));
+            var right = parseFloat(match[2].replace(/'/g, ''));
+            // Old school entries like '600 000 200 000'
+            if (match[3] != null) {
+                left = parseFloat(match[1].replace(/'/g, '') +
+                    match[2].replace(/'/g, ''));
+                right = parseFloat(match[4].replace(/'/g, '') +
+                    match[5].replace(/'/g, ''));
+            }
+            position = [left > right ? left : right,
+                right < left ? right : left];
+
+            // Match LV95
+            if (ol.extent.containsCoordinate(extent, position)) {
+                position = roundCoordinates(position);
+                console.log("is lv 95: " + position);
+            }
+
+            // Match decimal notation EPSG:4326
+            if (left <= 180 && left >= -180 &&
+                right <= 180 && right >= -180) {
+                position = [left > right ? right : left,
+                    right < left ? left : right
+                ];
+                position = ol.proj.transform(position, 'EPSG:4326',
+                    defaultEpsg);
+                if (ol.extent.containsCoordinate(extent, position)) {
+                    position = roundCoordinates(position);
+                    console.log("is decimal notation: " + position);
+                }
+            }
+
+            // Match LV03 coordinates
+            $.ajax({
+                crossOrigin: true,
+                url: 'http://geodesy.geo.admin.ch/reframe/lv03tolv95?easting=' + position[0] + '&northing=' + position[1],
+                type: 'GET',
+                dataType: 'json'
+            })
+                .done(function (pos) {
+                    if (ol.extent.containsCoordinate(extent, pos)) {
+                        position = roundCoordinates(pos);
+                        console.log("is lv 03: " + position);
+                    }
+                })
+                .fail(function (xhr, status, errorThrown) {
+                    console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+                });
+
+        }
+        setMarker(position);
+
+        /*
+                    var sr = '?';
+                    var epsgCode = map.getView().getProjection().getCode();
+                    sr += 'sr=' + epsgCode.split(':')[1] + '&';
+
+                    $.ajax({
+                        crossOrigin: true,
+                        url: 'https://api3.geo.admin.ch/rest/services/api/SearchServer' + sr + '&searchText=' + $('#field_latitude_longitude').val() + '&type=locations&lang=de',
+                        type: 'GET',
+                        dataType: 'json'
+                    })
+                        .done(function (json) {
+                            console.log(json);
+                            if (fuzzy)
+
+                                setMarker(json.results[0].attrs.lat, json.results[0].attrs.lon)
+                        })
+                        .fail(function (xhr, status, errorThrown) {
+                            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+                        });
+
+        */
+        // '/rest/services/{Topic}/MapServer/{Layer}/{Feature}' + sr
+
+        /*
+                lat = $('#field_latitude').val();
+                lon = $(this).val();
+
+                setMarker(lat, lon);
+                */
+
     });
 }
 
@@ -194,7 +342,7 @@ function initializeMap() {
         rainfall: 500*/
     });
 
-     pointMarker.setStyle(iconStyle);
+    pointMarker.setStyle(iconStyle);
 
 
     var modify = new ol.interaction.Modify({
@@ -202,13 +350,13 @@ function initializeMap() {
         style: iconStyle
     });
 
-   // pointMarker.set('visible', false);
+    // pointMarker.set('visible', false);
 
     var vectorLayer = new ol.source.Vector({
         features: [pointMarker]
     });
 
-     layer = new ol.layer.Vector({
+    layer = new ol.layer.Vector({
         source: vectorLayer
     });
 
@@ -280,15 +428,16 @@ function initializeMap() {
 }
 
 function setView(loc) {
+
     map.getView().setCenter(loc);
     map.getView().setResolution(50);
 }
 
-function setMarker(lat, lon) {
+function setMarker(pos) {
     layer.setVisible(true);
-    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+    //var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
-    setView(loc);
-    iconGeometry.setCoordinates(loc);
+    setView([pos[0], pos[1]]);
+    iconGeometry.setCoordinates([pos[0], pos[1]]);
 
 }
