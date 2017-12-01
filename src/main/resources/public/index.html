@@ -5,7 +5,7 @@
     <title>Title</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
           integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css"/>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -26,7 +26,8 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="input_applicant_name">Applicant Name*</label>
-            <input type="text" class="form-control input-field-sky" id="input_applicant_name" placeholder="Applicant Name"
+            <input type="text" class="form-control input-field-sky" id="input_applicant_name"
+                   placeholder="Applicant Name"
                    required>
             <div class="invalid-feedback">
                 Please provide a name.
@@ -41,7 +42,8 @@
     </div>
     <div class="form-group">
         <label for="input_applicant_reference">Applicant reference</label>
-        <input type="text" class="form-control input-field-sky" id="input_applicant_reference" placeholder="Applicant reference">
+        <input type="text" class="form-control input-field-sky" id="input_applicant_reference"
+               placeholder="Applicant reference">
         <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
             application
         </small>
@@ -56,7 +58,8 @@
     </div>
     <div class="form-group">
         <label for="input_applicant_email">Applicant Email*</label>
-        <input type="email" class="form-control input-field-sky" id="input_applicant_email" placeholder="Applicant Email"
+        <input type="email" class="form-control input-field-sky" id="input_applicant_email"
+               placeholder="Applicant Email"
                required>
         <div class="invalid-feedback">
             Please provide an email.
@@ -141,7 +144,12 @@
         </div>
         <div class="form-group  display-none">
             <input type="text" class="form-control input-field-sky" id="field_gps_coord">
+            <small class="form-text text-muted">CH1903+ / LV95: "2600000 1200000","2600000 ,1200000"<br>
+                CH1903 / LV03: "600000 200000", "600000, 200000"<br>
+                WGS 84 (lat/lon): "46.5 6.0" ,"46.5,6.0" , "47°09′43.999″ N 7°40′33.646″E"
+            </small>
             <div class="invalid-feedback">
+
             </div>
         </div>
         <div class="form-group  display-none">
@@ -156,35 +164,35 @@
                 </div>
             </div>
             <!--<div class="form-group col-md-6 height">-->
-                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
-                               value="FL">FL
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
-                               value="ft AMSL">ft AMSL
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
-                               value="ft GND">ft GND
-                    </label>
-                </div>
-                <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
-                     title="">
-                    <label class="form-check-label">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
-                               value="m GND">m GND
-                    </label>
-                </div>
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                 title="">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
+                           value="FL">FL
+                </label>
             </div>
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                 title="">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
+                           value="ft AMSL">ft AMSL
+                </label>
+            </div>
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                 title="">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
+                           value="ft GND">ft GND
+                </label>
+            </div>
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+                 title="">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
+                           value="m GND">m GND
+                </label>
+            </div>
+        </div>
         <!--</div>-->
         <div id="map-container" class="display-none">
             <div id="map" class="map panel panel-default  "></div>
@@ -206,7 +214,8 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <textarea type="text" class="form-control textarea-field-sky my-textarea" id="textfield_self_declaration"></textarea>
+            <textarea type="text" class="form-control textarea-field-sky my-textarea"
+                      id="textfield_self_declaration"></textarea>
             <div class="invalid-feedback">
             </div>
         </div>
@@ -237,7 +246,7 @@
 </script>
 
 <script type="text/javascript">
-        $(function() {
+    $(function () {
         $('input[name="daterange"]').daterangepicker({
             locale: {
                 format: 'MM.DD.YYYY'
