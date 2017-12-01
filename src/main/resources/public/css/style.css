@@ -39,11 +39,10 @@ h1 {
 
 .select-field-sky {
     font-size: 14px;
-    border: none;
-    height: 300px;
+    font-weight: 300;
+    /*border: none;*/
     /*-webkit-appearance: none;*/
 }
-
 
 .textarea-field-sky {
     height: 100px;
