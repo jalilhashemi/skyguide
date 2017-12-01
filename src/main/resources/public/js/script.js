@@ -76,12 +76,12 @@ function initializeChangeHandlers() {
 
                                 if (field.mandatory) {
                                     $('#' + field.id).parent().children('label').remove();
-                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
+                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>')
                                     $('#' + field.id).attr('placeholder', field.name).prop('required', true);
                                 }
                                 else {
                                     $('#' + field.id).parent().children('label').remove();
-                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
+                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>')
                                     $('#' + field.id).attr('placeholder', field.name);
                                 }
 
