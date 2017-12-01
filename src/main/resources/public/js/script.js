@@ -10,7 +10,6 @@ $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
     initializeMap();
-    $('[data-toggle="tooltip"]').tooltip();
 
     $.ajax({
         crossOrigin: true,
@@ -36,6 +35,27 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
+    $('[data-toggle="tooltip"]').tooltip();
+    $(function () {
+        $('input[name="daterange"]').daterangepicker({
+            locale: {
+                format: 'MM.DD.YYYY'
+            }
+        });
+    });
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            var form = document.getElementById('needs-validation');
+            form.addEventListener('submit', function (event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        }, false);
+    })();
 }
 
 function initializeChangeHandlers() {

@@ -79,7 +79,6 @@
         <!--Please choose your aircraft type.-->
         <!--</div>-->
     </div>
-    <!--Define where the field showed be shown from backend-->
     <div id="container_fields">
         <div class="form-group  display-none">
             <input type="text" class="form-control input-field-sky" id="field_callsign">
@@ -105,8 +104,8 @@
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <input type="text" class="form-control input-field-sky" id="field_duration">
-                <div class="invalid-feedback">
+                <input type="number" min="0" class="form-control input-field-sky" id="field_duration">
+                <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
         </div>
@@ -127,11 +126,6 @@
             <div class="invalid-feedback">
             </div>
         </div>
-        <div class="form-group display-none">
-            <input type="number" class="form-control input-field-sky" id="field_latitude_longitude">
-            <div class="invalid-feedback">
-            </div>
-        </div>
         <div class="form-group  display-none">
             <input type="text" class="form-control input-field-sky" id="field_beam_direction">
             <div class="invalid-feedback">
@@ -148,17 +142,16 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="number" class="form-control input-field-sky" id="field_radius">
-            <div class="invalid-feedback">
+            <input type="number" min="0" class="form-control input-field-sky" id="field_radius">
+            <div class="invalid-feedback">Must be a positive number
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <input type="number" class="form-control input-field-sky" id="field_height_altitude">
-                <div class="invalid-feedback">
+                <input type="number" min="0" class="form-control input-field-sky" id="field_height_altitude">
+                <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
-            <!--<div class="form-group col-md-6 height">-->
             <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
                  title="">
                 <label class="form-check-label">
@@ -188,7 +181,6 @@
                 </label>
             </div>
         </div>
-        <!--</div>-->
         <div id="map-container" class="display-none">
             <div id="map" class="map panel panel-default  "></div>
             <div class="form-check ">
@@ -199,13 +191,13 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="tel" class="form-control input-field-sky" id="field_payload_attached_obj">
+            <input type="text" class="form-control input-field-sky" id="field_payload_attached_obj">
             <div class="invalid-feedback">
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky" id="field_amount">
-            <div class="invalid-feedback">
+            <input type="number" min="0" class="form-control input-field-sky" id="field_amount">
+            <div class="invalid-feedback">Must be a positive number
             </div>
         </div>
         <div class="form-group  display-none">
@@ -223,31 +215,5 @@
     </div>
     <button type="submit" class="btn btn-primary btn-sky">Submit</button>
 </form>
-<script>
-    (function () {
-        'use strict';
-
-        window.addEventListener('load', function () {
-            var form = document.getElementById('needs-validation');
-            form.addEventListener('submit', function (event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        }, false);
-    })();
-</script>
-
-<script type="text/javascript">
-    $(function () {
-        $('input[name="daterange"]').daterangepicker({
-            locale: {
-                format: 'MM.DD.YYYY'
-            }
-        });
-    });
-</script>
 </body>
 </html>
