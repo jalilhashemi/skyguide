@@ -386,8 +386,10 @@ function initializeMap() {
         // Define the layers to display
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
+            ga.layer.create('ch.swisstopo.fixpunkte-agnes'),
             layer
         ],
+        crossOrigin: 'null',
         // Create a view
         //  view: view,
 
