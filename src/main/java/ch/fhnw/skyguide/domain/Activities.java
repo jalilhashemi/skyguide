@@ -1,9 +1,6 @@
 package ch.fhnw.skyguide.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Activities {
@@ -33,6 +30,9 @@ public class Activities {
     private String toyBalloon;
     private String transportFlight;
     private String weatherBalloon;
+    //private Application application;
+
+   public Activities(){}
 
     public Integer getId() {
         return id;
@@ -217,4 +217,14 @@ public class Activities {
     public void setWeatherBalloon(String weatherBalloon) {
         this.weatherBalloon = weatherBalloon;
     }
+
+//    @ManyToOne
+//    @JoinColumn(name = "applicationTest")
+//    public Application getApplication() {
+//        return application;
+//    }
+//
+//    public void setApplication(Application application) {
+//        this.application = application;
+//    }
 }

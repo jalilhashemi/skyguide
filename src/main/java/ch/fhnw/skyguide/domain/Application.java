@@ -1,9 +1,7 @@
 package ch.fhnw.skyguide.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Application {
@@ -30,10 +28,14 @@ public class Application {
     private String radius;
     private String selfDeclaration;
     private String remark;
-   // private Activities activities;
-   // private Aircrafts aircrafts;
-    //private Coordinate coordinate;
-    //private Height height;
+//    private Set<Activities> activities;
+//    private Set<Aircrafts> aircrafts;
+//    private Set<Coordinate> coordinate;
+//    private Set<Height> height;
+
+    public Application(){
+
+    }
 
     public Integer getId() {
         return id;
@@ -194,37 +196,54 @@ public class Application {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-/*
-    public Activities getActivities() {
-        return activities;
-    }
 
-    public void setActivities(Activities activities) {
-        this.activities = activities;
-    }
-
-    public Aircrafts getAircrafts() {
-        return aircrafts;
-    }
-
-    public void setAircrafts(Aircrafts aircrafts) {
-        this.aircrafts = aircrafts;
-    }
-
-    public Coordinate getCoordinate() {
-        return coordinate;
-    }
-
-    public void setCoordinate(Coordinate coordinate) {
-        this.coordinate = coordinate;
-    }
-
-    public Height getHeight() {
-        return height;
-    }
-
-    public void setHeight(Height height) {
-        this.height = height;
-    }
-    */
+//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
+//    public Set<Activities> getActivities() {
+//        return activities;
+//    }
+//    public void setActivities(Set<Activities> activities) {
+//        this.activities = activities;
+//    }
+//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
+//    public Set<Aircrafts> getAircrafts() {
+//        return aircrafts;
+//    }
+//
+//    public void setAircrafts(Set<Aircrafts> aircrafts) {
+//        this.aircrafts = aircrafts;
+//    }
+//
+//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
+//    public Set<Coordinate> getCoordinate() {
+//        return coordinate;
+//    }
+//
+//    public void setCoordinate(Set<Coordinate> coordinate) {
+//        this.coordinate = coordinate;
+//    }
+//
+//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
+//    public Set<Height> getHeight() {
+//        return height;
+//    }
+//
+//    public void setHeight(Set<Height> height) {
+//        this.height = height;
+//    }
+//
+//    @Override
+//    public String toString() {
+//        String result = String.format(
+//                "Category[id=%d, name='%s']%n",
+//                id, name);
+//        if (activities != null) {
+//            for(Activities act : activities) {
+//                result += String.format(
+//                        "Book[id=%d, name='%s']%n",
+//                        act.getId(), act.getId());
+//            }
+//        }
+//
+//        return result;
+//    }
 }

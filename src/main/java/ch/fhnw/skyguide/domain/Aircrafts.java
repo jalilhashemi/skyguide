@@ -1,9 +1,6 @@
 package ch.fhnw.skyguide.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Aircrafts {
@@ -14,6 +11,9 @@ public class Aircrafts {
     private String fixedWingAircraft;
     private String rotaryWingAircraft;
     private String rpas;
+    //private Application application;
+
+    public Aircrafts(){}
 
     public Integer getId() {
         return id;
@@ -46,4 +46,14 @@ public class Aircrafts {
     public void setRpas(String rpas) {
         this.rpas = rpas;
     }
+
+//    @ManyToOne
+//    @JoinColumn(name = "")
+//    public Application getApplication() {
+//        return application;
+//    }
+//
+//    public void setApplication(Application application) {
+//        this.application = application;
+//    }
 }

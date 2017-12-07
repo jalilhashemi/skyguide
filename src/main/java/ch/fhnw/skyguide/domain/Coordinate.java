@@ -1,9 +1,6 @@
 package ch.fhnw.skyguide.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Coordinate {
@@ -13,6 +10,12 @@ public class Coordinate {
 
     private Float latitude;
     private Float longitude;
+
+    //private Application application;
+
+   public Coordinate(){
+
+   }
 
     public Integer getId() {
         return id;
@@ -37,4 +40,14 @@ public class Coordinate {
     public void setLongitude(Float longitude) {
         this.longitude = longitude;
     }
+
+//    @ManyToOne
+//    @JoinColumn(name = "")
+//    public Application getApplication() {
+//        return application;
+//    }
+//
+//    public void setApplication(Application application) {
+//        this.application = application;
+//    }
 }
