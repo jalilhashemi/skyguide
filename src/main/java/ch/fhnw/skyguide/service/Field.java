@@ -1,4 +1,4 @@
-package ch.fhnw.skyguide;
+package ch.fhnw.skyguide.service;
 
 import java.util.ArrayList;
 import java.util.List;

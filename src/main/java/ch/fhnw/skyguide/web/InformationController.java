@@ -1,9 +1,8 @@
 package ch.fhnw.skyguide.web;
 
-import ch.fhnw.skyguide.ActivityType;
-import ch.fhnw.skyguide.ActivityTypeService;
+import ch.fhnw.skyguide.service.ActivityType;
+import ch.fhnw.skyguide.service.ActivityTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

@@ -1,11 +1,10 @@
-package ch.fhnw.skyguide;
+package ch.fhnw.skyguide.service;
 
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Service
 public class ActivityTypeService {
