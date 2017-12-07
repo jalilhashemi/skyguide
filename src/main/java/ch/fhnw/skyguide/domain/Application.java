@@ -30,10 +30,10 @@ public class Application {
     private String radius;
     private String selfDeclaration;
     private String remark;
-    private Activities activities;
-    private Aircrafts aircrafts;
-    private Coordinate coordinate;
-    private Height height;
+   // private Activities activities;
+   // private Aircrafts aircrafts;
+    //private Coordinate coordinate;
+    //private Height height;
 
     public Integer getId() {
         return id;
@@ -194,7 +194,7 @@ public class Application {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
+/*
     public Activities getActivities() {
         return activities;
     }
@@ -226,4 +226,5 @@ public class Application {
     public void setHeight(Height height) {
         this.height = height;
     }
+    */
 }
