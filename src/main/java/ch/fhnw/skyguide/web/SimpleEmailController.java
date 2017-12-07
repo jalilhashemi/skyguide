@@ -21,18 +21,18 @@ public class SimpleEmailController {
         try {
             sendEmail();
             return "Email Sent!";
-        }catch(Exception ex) {
-            return "Error in sending email: "+ex;
+        } catch (Exception ex) {
+            return "Error in sending email: " + ex;
         }
     }
 
-    private void sendEmail() throws Exception{
+    private void sendEmail() throws Exception {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setTo("jalil.hashemi@students.fhnw.ch");
-        helper.setText("How are you?");
-        helper.setSubject("Hi");
+        helper.setTo(new String[]{"jalil.hashemi@students.fhnw.ch", "marco.ghilardelli@students.fhnw.ch"});
+        helper.setText("Link");
+        helper.setSubject("There is a new Application");
 
         sender.send(message);
     }
