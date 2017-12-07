@@ -18,10 +18,11 @@ public class SkyguideApplication extends SpringBootServletInitializer {
         SpringApplication.run(SkyguideApplication.class, args);
     }
 
+    /*
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(SkyguideApplication.class);
-    }
+    }*/
 
     @Bean
     public LocaleResolver localeResolver() {
