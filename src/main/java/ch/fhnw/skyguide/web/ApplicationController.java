@@ -2,6 +2,7 @@ package ch.fhnw.skyguide.web;
 
 import ch.fhnw.skyguide.domain.Application;
 import ch.fhnw.skyguide.persistence.ApplicationRepository;
+import ch.fhnw.skyguide.util.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ public class ApplicationController {
     @Autowired
     ApplicationRepository applicationRepository;
 
+    @Autowired
+    EmailSender emailSender;
+
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Application>> findAll() {
         Iterable<Application> applications = applicationRepository.findAll();
@@ -26,6 +30,7 @@ public class ApplicationController {
     public ResponseEntity<Application> create(@RequestBody Application application) {
         if(application != null) {
             application = applicationRepository.save(application);
+            emailSender.send();
             return new ResponseEntity<>(application, HttpStatus.CREATED);
         }
         else
