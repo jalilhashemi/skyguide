@@ -3,7 +3,7 @@ package ch.fhnw.skyguide.domain;
 import javax.persistence.*;
 
 @Entity
-public class Activities {
+public class Activities extends Aircrafts{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
@@ -30,7 +30,6 @@ public class Activities {
     private String toyBalloon;
     private String transportFlight;
     private String weatherBalloon;
-    //private Application application;
 
    public Activities(){}
 
@@ -218,13 +217,4 @@ public class Activities {
         this.weatherBalloon = weatherBalloon;
     }
 
-//    @ManyToOne
-//    @JoinColumn(name = "applicationTest")
-//    public Application getApplication() {
-//        return application;
-//    }
-//
-//    public void setApplication(Application application) {
-//        this.application = application;
-//    }
 }

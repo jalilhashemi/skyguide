@@ -3,7 +3,7 @@ package ch.fhnw.skyguide.domain;
 import javax.persistence.*;
 
 @Entity
-public class Height {
+public class Height extends Coordinate{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
@@ -14,8 +14,9 @@ public class Height {
 //    private Application application;
 
     public Height(){
-
     }
+
+
 
     public Integer getId() {
         return id;
