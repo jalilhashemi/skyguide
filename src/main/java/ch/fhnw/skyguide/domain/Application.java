@@ -27,7 +27,7 @@ public class Application {
     private String selfDeclaration;
     private String remark;
     private ActivityType activityType;
-//    private Set<Aircrafts> aircrafts;
+//    private Set<AircraftType> aircrafts;
 //    private Set<Coordinate> coordinate;
 //    private Set<Height> height;
 
@@ -215,11 +215,11 @@ public class Application {
 //        this.activities = activities;
 //    }
 //    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
-//    public Set<Aircrafts> getAircrafts() {
+//    public Set<AircraftType> getAircrafts() {
 //        return aircrafts;
 //    }
 //
-//    public void setAircrafts(Set<Aircrafts> aircrafts) {
+//    public void setAircrafts(Set<AircraftType> aircrafts) {
 //        this.aircrafts = aircrafts;
 //    }
 //

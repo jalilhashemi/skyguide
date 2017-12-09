@@ -1,22 +1,18 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Aircrafts extends Height{
+public class AircraftType extends Height{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    private String fixedWingAircraft;
-    private String rotaryWingAircraft;
-    private String rpas;
+    private String name;
 
-    public Aircrafts(){}
 
-    public Aircrafts (int id) {
-        this.id = id;
-    }
+    public AircraftType(){}
 
 
     public Integer getId() {
