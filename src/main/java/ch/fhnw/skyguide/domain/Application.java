@@ -1,12 +1,10 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Application {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Integer id;
 
     private String name;
@@ -28,7 +26,7 @@ public class Application {
     private String radius;
     private String selfDeclaration;
     private String remark;
-//    private Set<Activities> activities;
+    private ActivityType activityType;
 //    private Set<Aircrafts> aircrafts;
 //    private Set<Coordinate> coordinate;
 //    private Set<Height> height;
@@ -37,6 +35,8 @@ public class Application {
 
     }
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -195,6 +195,16 @@ public class Application {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "activity_type_id")
+    public ActivityType getActivityType() {
+        return activityType;
+    }
+
+    public void setActivityType(ActivityType activityType) {
+        this.activityType = activityType;
     }
 
 //    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)

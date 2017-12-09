@@ -1,14 +1,17 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-public class Activities {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+@Table(name = "activity_type")
+public class ActivityType {
     private Integer id;
 
-    private String airshow;
+    private String name;
+
+    private Set<Application> applications;
+  /*  private String airshow;
     private String calibrationFlight;
     private String captive;
     private String contest;
@@ -31,9 +34,11 @@ public class Activities {
     private String transportFlight;
     private String weatherBalloon;
     //private Application application;
+*/
+   public ActivityType(){}
 
-   public Activities(){}
-
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -42,7 +47,24 @@ public class Activities {
         this.id = id;
     }
 
-    public String getAirshow() {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @OneToMany(mappedBy = "activityType", cascade = CascadeType.ALL)
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
+
+    /*   public String getAirshow() {
         return airshow;
     }
 
@@ -216,7 +238,7 @@ public class Activities {
 
     public void setWeatherBalloon(String weatherBalloon) {
         this.weatherBalloon = weatherBalloon;
-    }
+    }*/
 
 //    @ManyToOne
 //    @JoinColumn(name = "applicationTest")

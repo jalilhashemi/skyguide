@@ -28,18 +28,26 @@ public class ApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<Application> create(@RequestBody Application application) {
-        if(application != null) {
+        if (application != null) {
             application = applicationRepository.save(application);
             emailSender.send();
             return new ResponseEntity<>(application, HttpStatus.CREATED);
-        }
-        else
+        } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
 
-    @RequestMapping(value= "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Application> findById(@PathVariable("id") String id) {
         return new ResponseEntity<>(applicationRepository.findOne(id), HttpStatus.OK);
+    }
+
+    @RequestMapping(params = {"name", "company"}, method = RequestMethod.GET)
+    public ResponseEntity<Application> createTemporaryTest(@RequestParam("name") String name, @RequestParam("company") String company) {
+        Application app = new Application();
+        app.setName(name);
+        app.setCompany(company);
+        applicationRepository.save(app);
+        return new ResponseEntity<>(app, HttpStatus.OK);
     }
 
 }
