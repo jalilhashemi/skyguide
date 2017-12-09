@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/applications")
@@ -38,7 +41,8 @@ public class ApplicationController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Application> findById(@PathVariable("id") String id) {
-        return new ResponseEntity<>(applicationRepository.findOne(id), HttpStatus.OK);
+       // return new ResponseEntity<>(HttpStatus.OK);
+       return new ResponseEntity<>(applicationRepository.findByAdminKey(id), HttpStatus.OK);
     }
 
     @RequestMapping(params = {"name", "company"}, method = RequestMethod.GET)
@@ -46,6 +50,25 @@ public class ApplicationController {
         Application app = new Application();
         app.setName(name);
         app.setCompany(company);
+        try {
+            Date date = new Date();
+
+            String s = name + new Timestamp(date.getTime());
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(s.getBytes());
+            byte[] digest = md.digest();
+            StringBuilder sb = new StringBuilder();
+            // System.out.println("byteData.length " + byteData.length);
+            for (int i = 0; i < digest.length; i++) {
+                sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16)
+                        .substring(1));
+            }
+
+            app.setAdminKey(sb.toString());
+        } catch (NoSuchAlgorithmException e){
+
+        }
+
         applicationRepository.save(app);
         return new ResponseEntity<>(app, HttpStatus.OK);
     }

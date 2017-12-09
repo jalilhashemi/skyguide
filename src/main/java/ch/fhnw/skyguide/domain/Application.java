@@ -7,6 +7,8 @@ public class Application {
 
     private Integer id;
 
+    private String viewKey;
+    private String adminKey;
     private String name;
     private String company;
     private String reference;
@@ -43,6 +45,22 @@ public class Application {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getAdminKey() {
+        return adminKey;
+    }
+
+    public void setAdminKey(String adminKey) {
+        this.adminKey = adminKey;
+    }
+
+    public String getViewKey() {
+        return viewKey;
+    }
+
+    public void setViewKey(String viewKey) {
+        this.viewKey = viewKey;
     }
 
     public String getName() {
