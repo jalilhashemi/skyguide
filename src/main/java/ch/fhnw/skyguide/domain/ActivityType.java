@@ -1,16 +1,14 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
-@Table(name = "activity_type")
+//@Table(name = "activity_type")
 public class ActivityType {
 
     private Integer id;
     private String name;
-
-    private Set<Application> applications;
+    private Application application;
 
     public ActivityType(){}
 
@@ -32,13 +30,13 @@ public class ActivityType {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "activityType", cascade = CascadeType.ALL)
-    public Set<Application> getApplications() {
-        return applications;
+    @OneToOne(mappedBy = "activityType")
+    public Application getApplication() {
+        return application;
     }
 
-    public void setApplications(Set<Application> applications) {
-        this.applications = applications;
+    public void setApplication(Application application) {
+        this.application = application;
     }
 }
 

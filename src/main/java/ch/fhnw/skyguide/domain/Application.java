@@ -1,12 +1,12 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Application {
 
     private Integer id;
-
     private String viewKey;
     private String adminKey;
     private String name;
@@ -29,9 +29,9 @@ public class Application {
     private String selfDeclaration;
     private String remark;
     private ActivityType activityType;
-//    private Set<AircraftType> aircrafts;
-//    private Set<Coordinate> coordinate;
-//    private Set<Height> height;
+    private AircraftType aircraftType;
+    private HeightType heightType;
+    private Set<Coordinate> coordinates;
 
     public Application(){
 
@@ -215,7 +215,7 @@ public class Application {
         this.remark = remark;
     }
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "activity_type_id")
     public ActivityType getActivityType() {
         return activityType;
@@ -225,53 +225,33 @@ public class Application {
         this.activityType = activityType;
     }
 
-//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
-//    public Set<Activities> getActivities() {
-//        return activities;
-//    }
-//    public void setActivities(Set<Activities> activities) {
-//        this.activities = activities;
-//    }
-//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
-//    public Set<AircraftType> getAircrafts() {
-//        return aircrafts;
-//    }
-//
-//    public void setAircrafts(Set<AircraftType> aircrafts) {
-//        this.aircrafts = aircrafts;
-//    }
-//
-//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
-//    public Set<Coordinate> getCoordinate() {
-//        return coordinate;
-//    }
-//
-//    public void setCoordinate(Set<Coordinate> coordinate) {
-//        this.coordinate = coordinate;
-//    }
-//
-//    @OneToMany(mappedBy = "Application", cascade = CascadeType.ALL)
-//    public Set<Height> getHeight() {
-//        return height;
-//    }
-//
-//    public void setHeight(Set<Height> height) {
-//        this.height = height;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        String result = String.format(
-//                "Category[id=%d, name='%s']%n",
-//                id, name);
-//        if (activities != null) {
-//            for(Activities act : activities) {
-//                result += String.format(
-//                        "Book[id=%d, name='%s']%n",
-//                        act.getId(), act.getId());
-//            }
-//        }
-//
-//        return result;
-//    }
+    @ManyToOne
+    @JoinColumn(name = "aircraft_type_id")
+    public AircraftType getAircraftType() {
+        return aircraftType;
+    }
+
+    public void setAircraftType(AircraftType aircraftType) {
+        this.aircraftType = aircraftType;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "height_type_id")
+    public HeightType getHeightType() {
+        return heightType;
+    }
+
+    public void setHeightType(HeightType heightType) {
+        this.heightType = heightType;
+    }
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "application_coordinate", joinColumns = @JoinColumn(name = "application_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "coordinate_id", referencedColumnName = "id"))
+    public Set<Coordinate> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Set<Coordinate> coordinates) {
+        this.coordinates = coordinates;
+    }
 }

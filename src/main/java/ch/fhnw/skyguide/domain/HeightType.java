@@ -4,13 +4,15 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class AircraftType{
+//@Table(name = "height_type")
+public class HeightType {
 
     private Integer id;
     private String name;
-    private Set<Application> applications;
+    private Set<Application> application;
 
-    public AircraftType(){}
+    public HeightType(){
+    }
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -30,12 +32,12 @@ public class AircraftType{
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "aircraftType", cascade = CascadeType.ALL)
-    public Set<Application> getApplications() {
-        return applications;
+    @OneToMany(mappedBy = "heightType", cascade = CascadeType.ALL)
+    public Set<Application> getApplication() {
+        return application;
     }
 
-    public void setApplications(Set<Application> applications) {
-        this.applications = applications;
+    public void setApplication(Set<Application> application) {
+        this.application = application;
     }
 }

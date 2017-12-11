@@ -1,22 +1,22 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Coordinate {
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id;
 
+    private Integer id;
     private Float latitude;
     private Float longitude;
+    private Set<Application> applications;
 
-    //private Application application;
+    public Coordinate() {
 
-   public Coordinate(){
+    }
 
-   }
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -41,13 +41,12 @@ public class Coordinate {
         this.longitude = longitude;
     }
 
-//    @ManyToOne
-//    @JoinColumn(name = "")
-//    public Application getApplication() {
-//        return application;
-//    }
-//
-//    public void setApplication(Application application) {
-//        this.application = application;
-//    }
+    @ManyToMany(mappedBy = "coordinates")
+    public Set<Application> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
+    }
 }
