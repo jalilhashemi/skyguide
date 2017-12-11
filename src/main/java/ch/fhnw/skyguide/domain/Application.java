@@ -1,8 +1,11 @@
 package ch.fhnw.skyguide.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Set;
 
+@JsonIgnoreProperties({"id", "viewKey", "adminKey"})
 @Entity
 public class Application {
 
@@ -215,7 +218,7 @@ public class Application {
         this.remark = remark;
     }
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "activity_type_id")
     public ActivityType getActivityType() {
         return activityType;

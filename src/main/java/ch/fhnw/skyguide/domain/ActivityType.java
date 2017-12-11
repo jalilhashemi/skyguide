@@ -1,6 +1,7 @@
 package ch.fhnw.skyguide.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 //@Table(name = "activity_type")
@@ -8,7 +9,7 @@ public class ActivityType {
 
     private Integer id;
     private String name;
-    private Application application;
+    private Set<Application> applications;
 
     public ActivityType(){}
 
@@ -30,13 +31,13 @@ public class ActivityType {
         this.name = name;
     }
 
-    @OneToOne(mappedBy = "activityType")
-    public Application getApplication() {
-        return application;
+    @OneToMany
+    public Set<Application> getApplications() {
+        return applications;
     }
 
-    public void setApplication(Application application) {
-        this.application = application;
+    public void setApplications(Set<Application> applications) {
+        this.applications = applications;
     }
 }
 

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface ApplicationRepository extends CrudRepository<Application, String> {
+public interface ApplicationRepository extends CrudRepository<Application, Integer> {
 
     @Query("SELECT a FROM Application a WHERE LOWER(a.adminKey) = LOWER(:adminKey)")
     Application findByAdminKey(@Param("adminKey") String adminKey);

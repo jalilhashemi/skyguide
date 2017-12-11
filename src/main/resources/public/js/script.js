@@ -13,6 +13,21 @@ $(document).ready(function () {
 
     $.ajax({
         crossOrigin: true,
+        url: 'http://localhost:8080/applications',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: '{"name":"adsf","company":"Mfddfarco"}',
+        dataType: 'json'
+    })
+        .done(function (json) {
+            console.log(json);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
+
+    $.ajax({
+        crossOrigin: true,
         url: 'http://86.119.37.77:8080/information',
         type: 'GET',
         dataType: 'json'

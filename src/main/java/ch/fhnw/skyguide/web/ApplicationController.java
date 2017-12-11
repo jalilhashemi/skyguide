@@ -1,6 +1,8 @@
 package ch.fhnw.skyguide.web;
 
+import ch.fhnw.skyguide.domain.ActivityType;
 import ch.fhnw.skyguide.domain.Application;
+import ch.fhnw.skyguide.persistence.ActivityTypeRepository;
 import ch.fhnw.skyguide.persistence.ApplicationRepository;
 import ch.fhnw.skyguide.util.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class ApplicationController {
     ApplicationRepository applicationRepository;
 
     @Autowired
+    ActivityTypeRepository activityTypeRepository;
+
+    @Autowired
     EmailSender emailSender;
 
     @RequestMapping(method = RequestMethod.GET)
@@ -33,7 +38,7 @@ public class ApplicationController {
     public ResponseEntity<Application> create(@RequestBody Application application) {
         if (application != null) {
             application = applicationRepository.save(application);
-            emailSender.send();
+            //emailSender.send();
             return new ResponseEntity<>(application, HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
@@ -50,6 +55,7 @@ public class ApplicationController {
         Application app = new Application();
         app.setName(name);
         app.setCompany(company);
+        app.setActivityType(activityTypeRepository.findByName("Calibration Flight"));
         try {
             Date date = new Date();
 
