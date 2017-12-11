@@ -32,7 +32,7 @@ public class HeightType {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "heightType", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "heightType")
     public Set<Application> getApplication() {
         return application;
     }

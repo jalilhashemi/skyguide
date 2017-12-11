@@ -30,7 +30,7 @@ public class AircraftType{
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "aircraftType", cascade = CascadeType.ALL)
+    @OneToMany
     public Set<Application> getApplications() {
         return applications;
     }

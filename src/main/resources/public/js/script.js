@@ -11,21 +11,7 @@ $(document).ready(function () {
     initializeChangeHandlers();
     initializeMap();
 
-    $.ajax({
-        crossOrigin: true,
-        url: 'http://localhost:8080/applications',
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: '{"name":"adsf","company":"Mfddfarco"}',
-        dataType: 'json'
-    })
-        .done(function (json) {
-            console.log(json);
-        })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-        });
-
+    submitApplication();
     $.ajax({
         crossOrigin: true,
         url: 'http://86.119.37.77:8080/information',
@@ -474,5 +460,21 @@ function setMarker(pos) {
 
     setView([pos[0], pos[1]]);
     iconGeometry.setCoordinates([pos[0], pos[1]]);
+}
 
+function submitApplication() {
+    $.ajax({
+        crossOrigin: true,
+        url: 'http://localhost:8080/applications',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: '{"name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "location" : "Windisch"}',
+        dataType: 'json'
+    })
+        .done(function (json) {
+            console.log(json);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
 }

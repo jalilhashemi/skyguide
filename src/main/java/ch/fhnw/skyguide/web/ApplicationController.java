@@ -1,10 +1,15 @@
 package ch.fhnw.skyguide.web;
 
 import ch.fhnw.skyguide.domain.ActivityType;
+import ch.fhnw.skyguide.domain.AircraftType;
 import ch.fhnw.skyguide.domain.Application;
+import ch.fhnw.skyguide.domain.ApplicationDTO;
 import ch.fhnw.skyguide.persistence.ActivityTypeRepository;
+import ch.fhnw.skyguide.persistence.AircraftTypeRepository;
 import ch.fhnw.skyguide.persistence.ApplicationRepository;
+import ch.fhnw.skyguide.persistence.HeightTypeRepository;
 import ch.fhnw.skyguide.util.EmailSender;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.Date;
 
 @RestController
@@ -26,7 +32,16 @@ public class ApplicationController {
     ActivityTypeRepository activityTypeRepository;
 
     @Autowired
+    AircraftTypeRepository aircraftTypeRepository;
+
+    @Autowired
+    HeightTypeRepository heightTypeRepository;
+
+    @Autowired
     EmailSender emailSender;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Application>> findAll() {
@@ -35,19 +50,21 @@ public class ApplicationController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Application> create(@RequestBody Application application) {
+    public ResponseEntity<ApplicationDTO> create(@RequestBody ApplicationDTO applicationDTO) {
+        Application application = convertToEntity(applicationDTO);
         if (application != null) {
+            Application appCreated = applicationRepository.save(application);
             application = applicationRepository.save(application);
             //emailSender.send();
-            return new ResponseEntity<>(application, HttpStatus.CREATED);
+            return new ResponseEntity<>(convertToDto(appCreated), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Application> findById(@PathVariable("id") String id) {
-       // return new ResponseEntity<>(HttpStatus.OK);
-       return new ResponseEntity<>(applicationRepository.findByAdminKey(id), HttpStatus.OK);
+        // return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(applicationRepository.findByAdminKey(id), HttpStatus.OK);
     }
 
     @RequestMapping(params = {"name", "company"}, method = RequestMethod.GET)
@@ -71,12 +88,30 @@ public class ApplicationController {
             }
 
             app.setAdminKey(sb.toString());
-        } catch (NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
 
         }
 
         applicationRepository.save(app);
         return new ResponseEntity<>(app, HttpStatus.OK);
+    }
+
+    private ApplicationDTO convertToDto(Application application) {
+        ApplicationDTO applicationDTO = modelMapper.map(application, ApplicationDTO.class);
+        applicationDTO.setActivityType(application.getActivityType().getName());
+        //applicationDTO.setAircraftType(application.getAircraftType().getName());
+      //  applicationDTO.setHeightType(application.getHeightType().getName());
+        // TODO: coordinates
+        return applicationDTO;
+    }
+
+    private Application convertToEntity(ApplicationDTO applicationDTO) {
+        Application application = modelMapper.map(applicationDTO, Application.class);
+        application.setActivityType(activityTypeRepository.findByName(applicationDTO.getActivityType()));
+      //  application.setAircraftType(aircraftTypeRepository.findByName(applicationDTO.getAircraftType()));
+      //  application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
+        // TODO: coordinates
+        return application;
     }
 
 }

@@ -1,5 +1,6 @@
 package ch.fhnw.skyguide;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -37,6 +38,11 @@ public class SkyguideApplication extends SpringBootServletInitializer {
         source.setBasenames("i18n/messages");  // name of the resource bundle
         source.setUseCodeAsDefaultMessage(true);
         return source;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

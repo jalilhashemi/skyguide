@@ -1,17 +1,8 @@
 package ch.fhnw.skyguide.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
-import javax.persistence.*;
-import java.util.Set;
-
-@JsonIgnoreProperties({"id", "viewKey", "adminKey"})
-@Entity
-public class Application {
-
-    private Integer id;
-    private String viewKey;
-    private String adminKey;
+public class ApplicationDTO {
     private String name;
     private String company;
     private String reference;
@@ -31,40 +22,13 @@ public class Application {
     private String radius;
     private String selfDeclaration;
     private String remark;
-    private ActivityType activityType;
-    private AircraftType aircraftType;
-    private HeightType heightType;
-    private Set<Coordinate> coordinates;
+    private String activityType;
+    private String aircraftType;
+    private String heightType;
 
-    public Application(){
+    // TODO: coordinates ??
+    // private List<String> coordinates;
 
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getAdminKey() {
-        return adminKey;
-    }
-
-    public void setAdminKey(String adminKey) {
-        this.adminKey = adminKey;
-    }
-
-    public String getViewKey() {
-        return viewKey;
-    }
-
-    public void setViewKey(String viewKey) {
-        this.viewKey = viewKey;
-    }
 
     public String getName() {
         return name;
@@ -218,43 +182,27 @@ public class Application {
         this.remark = remark;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "activity_type_id")
-    public ActivityType getActivityType() {
+    public String getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(ActivityType activityType) {
+    public void setActivityType(String activityType) {
         this.activityType = activityType;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "aircraft_type_id")
-    public AircraftType getAircraftType() {
+    public String getAircraftType() {
         return aircraftType;
     }
 
-    public void setAircraftType(AircraftType aircraftType) {
+    public void setAircraftType(String aircraftType) {
         this.aircraftType = aircraftType;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "height_type_id")
-    public HeightType getHeightType() {
+    public String getHeightType() {
         return heightType;
     }
 
-    public void setHeightType(HeightType heightType) {
+    public void setHeightType(String heightType) {
         this.heightType = heightType;
-    }
-
-    @ManyToMany
-    @JoinTable(name = "application_coordinate", joinColumns = @JoinColumn(name = "application_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "coordinate_id", referencedColumnName = "id"))
-    public Set<Coordinate> getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Set<Coordinate> coordinates) {
-        this.coordinates = coordinates;
     }
 }
