@@ -1,5 +1,7 @@
 package ch.fhnw.skyguide.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -33,6 +35,7 @@ public class HeightType {
     }
 
     @OneToMany(mappedBy = "heightType")
+    @JsonIgnore
     public Set<Application> getApplication() {
         return application;
     }

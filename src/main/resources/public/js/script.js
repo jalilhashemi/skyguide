@@ -468,7 +468,7 @@ function submitApplication() {
         url: 'http://localhost:8080/applications',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
-        data: '{"name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "location" : "Windisch"}',
+        data: '{"name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}',
         dataType: 'json'
     })
         .done(function (json) {

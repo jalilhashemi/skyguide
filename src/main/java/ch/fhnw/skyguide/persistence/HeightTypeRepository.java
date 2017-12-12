@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface HeightTypeRepository extends CrudRepository<ActivityType, Integer> {
-    @Query(value = "SELECT * FROM height_type WHERE name = ?1", nativeQuery = true)
-    HeightType findByName(@Param("name") String name);
+public interface HeightTypeRepository extends CrudRepository<HeightType, Integer> {
+    //@Query(value = "SELECT * FROM height_type WHERE name = ?1", nativeQuery = true)
+    HeightType findByName(String name);
 }

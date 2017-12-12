@@ -99,8 +99,8 @@ public class ApplicationController {
     private ApplicationDTO convertToDto(Application application) {
         ApplicationDTO applicationDTO = modelMapper.map(application, ApplicationDTO.class);
         applicationDTO.setActivityType(application.getActivityType().getName());
-        //applicationDTO.setAircraftType(application.getAircraftType().getName());
-      //  applicationDTO.setHeightType(application.getHeightType().getName());
+        applicationDTO.setAircraftType(application.getAircraftType().getName());
+        applicationDTO.setHeightType(application.getHeightType().getName());
         // TODO: coordinates
         return applicationDTO;
     }
@@ -108,8 +108,8 @@ public class ApplicationController {
     private Application convertToEntity(ApplicationDTO applicationDTO) {
         Application application = modelMapper.map(applicationDTO, Application.class);
         application.setActivityType(activityTypeRepository.findByName(applicationDTO.getActivityType()));
-      //  application.setAircraftType(aircraftTypeRepository.findByName(applicationDTO.getAircraftType()));
-      //  application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
+        application.setAircraftType(aircraftTypeRepository.findByName(applicationDTO.getAircraftType()));
+        application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
         // TODO: coordinates
         return application;
     }
