@@ -20,6 +20,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/applications")
@@ -52,6 +53,8 @@ public class ApplicationController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ApplicationDTO> create(@RequestBody ApplicationDTO applicationDTO) {
         Application application = convertToEntity(applicationDTO);
+        application.setAdminKey(UUID.randomUUID().toString());
+        application.setViewKey(UUID.randomUUID().toString());
         if (application != null) {
             Application appCreated = applicationRepository.save(application);
             application = applicationRepository.save(application);
