@@ -1,5 +1,7 @@
 package ch.fhnw.skyguide.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -31,6 +33,7 @@ public class AircraftType{
     }
 
     @OneToMany
+    @JsonIgnore
     public Set<Application> getApplications() {
         return applications;
     }

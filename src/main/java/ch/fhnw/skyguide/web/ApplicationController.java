@@ -56,10 +56,10 @@ public class ApplicationController {
         application.setAdminKey(UUID.randomUUID().toString());
         application.setViewKey(UUID.randomUUID().toString());
         if (application != null) {
-            Application appCreated = applicationRepository.save(application);
+           // Application appCreated = applicationRepository.save(application);
             application = applicationRepository.save(application);
             //emailSender.send();
-            return new ResponseEntity<>(convertToDto(appCreated), HttpStatus.CREATED);
+            return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
     }
