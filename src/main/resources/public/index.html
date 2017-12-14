@@ -26,6 +26,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            <div style="font-size: 12px;" class="modal-body">
+                <a href="https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-frames/local/lv95.html"
+                   target="_blank">CH1903+ / LV95</a>: "2600000 1200000","2600000 ,1200000"<br>
+                <a href="https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-frames/local/lv03.html"
+                   + target="_blank">CH1903 / LV03</a>: "600000 200000", "600000, 200000"<br>
+                <a href="https://epsg.io/4326" target="_blank">WGS 84 (lat/lon)</a>: "46.5 6.0" ,"46.5,6.0" ,"47°09′43.999″ N 7°40′33.646″E"<br>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -47,7 +54,8 @@
         </div>
         <div class="form-group col-md-6">
             <label for="input_company_name">Company name</label>
-            <input type="text" class="form-control input-field-sky" id="input_company_name" aria-describedby="companyNameHint"
+            <input type="text" class="form-control input-field-sky" id="input_company_name"
+                   aria-describedby="companyNameHint"
                    placeholder="Company">
             <small id="companyNameHint" class="form-text text-muted">If Company is available.</small>
         </div>
@@ -121,7 +129,7 @@
                 </div>
             </div>
             <div class="form-group col-md-6 display-none">
-                <input type="number" min="0" class="form-control input-field-sky" id="field_duration">
+                <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_duration">
                 <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
@@ -154,8 +162,7 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord"
-                    style="border: none;">
+            <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord" style="border: none; background: white;">
                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
             </button>
             <input type="text" class="form-control input-field-sky" onchange="validateCoord(this)" id="field_gps_coord">
@@ -163,13 +170,14 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="number" min="0" class="form-control input-field-sky" id="field_radius">
+            <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_radius">
             <div class="invalid-feedback">Must be a positive number
             </div>
         </div>
         <div class="form-row">
             <div class="form-group col-md-6 display-none">
-                <input type="number" min="0" class="form-control input-field-sky" id="field_height_altitude">
+                <input type="number" min="0" max="99999" class="form-control input-field-sky"
+                       id="field_height_altitude">
                 <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
@@ -217,7 +225,7 @@
             </div>
         </div>
         <div class="form-group  display-none">
-            <input type="number" min="0" class="form-control input-field-sky" id="field_amount">
+            <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_amount">
             <div class="invalid-feedback">Must be a positive number
             </div>
         </div>
@@ -263,35 +271,35 @@
     }
 
 
-//    $(function () {
-//        var scntDiv = $('#p_scents');
-//        var i = $('#p_scents div').size() + 1;
-//
-//        $('#addScnt').live('click', function () {
-//
-//            $('<div class="form-row ">' +
-//                '<div class="form-group col-md-5">' +
-//                '<input type="text" onchange="validateHhMm(this);" class="form-control input-field-sky" id="field_time_schedule_from" name="p_scnt_' + i + '"/>' +
-//                '</div>' +
-//                '<div class="form-group col-md-5">' +
-//                '<input type="text" onchange="validateHhMm(this);" class="form-control input-field-sky"id="field_time_schedule_until" name="p_scnt_' + i + '"/>' +
-//                '</div>' +
-//                '<div class="form-group col-md-2">' +
-//                '<a href="#" id="remScnt">Remove</a>' +
-//                '</div>' +
-//                '</div>').appendTo(scntDiv);
-//            i++;
-//            return false;
-//        });
-//
-//        $('#remScnt').live('click', function () {
-//            if (i > 2) {
-//                $(this).parents('div').remove();
-//                i--;
-//            }
-//            return false;
-//        });
-//    });
+    //    $(function () {
+    //        var scntDiv = $('#p_scents');
+    //        var i = $('#p_scents div').size() + 1;
+    //
+    //        $('#addScnt').live('click', function () {
+    //
+    //            $('<div class="form-row ">' +
+    //                '<div class="form-group col-md-5">' +
+    //                '<input type="text" onchange="validateHhMm(this);" class="form-control input-field-sky" id="field_time_schedule_from" name="p_scnt_' + i + '"/>' +
+    //                '</div>' +
+    //                '<div class="form-group col-md-5">' +
+    //                '<input type="text" onchange="validateHhMm(this);" class="form-control input-field-sky"id="field_time_schedule_until" name="p_scnt_' + i + '"/>' +
+    //                '</div>' +
+    //                '<div class="form-group col-md-2">' +
+    //                '<a href="#" id="remScnt">Remove</a>' +
+    //                '</div>' +
+    //                '</div>').appendTo(scntDiv);
+    //            i++;
+    //            return false;
+    //        });
+    //
+    //        $('#remScnt').live('click', function () {
+    //            if (i > 2) {
+    //                $(this).parents('div').remove();
+    //                i--;
+    //            }
+    //            return false;
+    //        });
+    //    });
 </SCRIPT>
 </body>
 </html>
