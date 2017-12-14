@@ -299,8 +299,13 @@ function initializeChangeHandlers() {
                 });
 
         }
-        if (position != null)
+        if (position != null) {
+            $('#field_gps_coord').css("border-color", '#28a745');
             setMarker(position);
+        }
+        else {
+            $('#field_gps_coord').css("border-color", '#dc3545');
+        }
 
         /*
                     var sr = '?';
