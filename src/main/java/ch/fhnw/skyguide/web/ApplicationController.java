@@ -1,13 +1,7 @@
 package ch.fhnw.skyguide.web;
 
-import ch.fhnw.skyguide.domain.ActivityType;
-import ch.fhnw.skyguide.domain.AircraftType;
-import ch.fhnw.skyguide.domain.Application;
-import ch.fhnw.skyguide.domain.ApplicationDTO;
-import ch.fhnw.skyguide.persistence.ActivityTypeRepository;
-import ch.fhnw.skyguide.persistence.AircraftTypeRepository;
-import ch.fhnw.skyguide.persistence.ApplicationRepository;
-import ch.fhnw.skyguide.persistence.HeightTypeRepository;
+import ch.fhnw.skyguide.domain.*;
+import ch.fhnw.skyguide.persistence.*;
 import ch.fhnw.skyguide.util.EmailSender;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +13,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/applications")
@@ -39,6 +32,9 @@ public class ApplicationController {
     HeightTypeRepository heightTypeRepository;
 
     @Autowired
+    CoordinateRepository coordinateRepository;
+
+    @Autowired
     EmailSender emailSender;
 
     @Autowired
@@ -52,6 +48,21 @@ public class ApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ApplicationDTO> create(@RequestBody ApplicationDTO applicationDTO) {
+    /*    List<CoordinateDTO> list = new ArrayList<>();
+
+        CoordinateDTO c = new CoordinateDTO();
+
+        c.setLat("9.3");
+        c.setLon("9.3");
+        list.add(coordinateRepository.save(c));
+        c = new Coordinate();
+        c.setLat("9.3");
+        c.setLon("9.3");
+        list.add(coordinateRepository.save(c));
+        ApplicationDTO app = new ApplicationDTO();
+        app.setCoordinates(list);
+        return new ResponseEntity<>(ApplicationDTO, HttpStatus.CREATED);
+        */
         Application application = convertToEntity(applicationDTO);
         application.setAdminKey(UUID.randomUUID().toString());
         application.setViewKey(UUID.randomUUID().toString());
@@ -62,6 +73,7 @@ public class ApplicationController {
             return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
+
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
@@ -104,7 +116,14 @@ public class ApplicationController {
         applicationDTO.setActivityType(application.getActivityType().getName());
         applicationDTO.setAircraftType(application.getAircraftType().getName());
         applicationDTO.setHeightType(application.getHeightType().getName());
-        // TODO: coordinates
+
+        List<CoordinateDTO> coordinatesDTO = new ArrayList<>();
+        for (Coordinate c : application.getCoordinates())
+            coordinatesDTO.add(convertToDto(c));
+
+        applicationDTO.setCoordinates(coordinatesDTO);
+
+
         return applicationDTO;
     }
 
@@ -113,8 +132,24 @@ public class ApplicationController {
         application.setActivityType(activityTypeRepository.findByName(applicationDTO.getActivityType()));
         application.setAircraftType(aircraftTypeRepository.findByName(applicationDTO.getAircraftType()));
         application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
-        // TODO: coordinates
+
+        Set<Coordinate> coordinates = new HashSet<>();
+        for(CoordinateDTO c : applicationDTO.getCoordinates()) {
+            Coordinate coordinate = coordinateRepository.save(convertToEntity(c));
+            coordinates.add(coordinate);
+        }
+
+        application.setCoordinates(coordinates);
+
         return application;
+    }
+
+    private CoordinateDTO convertToDto(Coordinate coordinate) {
+        return modelMapper.map(coordinate, CoordinateDTO.class);
+    }
+
+    private Coordinate convertToEntity(CoordinateDTO coordinateDTO) {
+        return modelMapper.map(coordinateDTO, Coordinate.class);
     }
 
 }

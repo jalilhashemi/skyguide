@@ -25,9 +25,7 @@ public class ApplicationDTO {
     private String activityType;
     private String aircraftType;
     private String heightType;
-
-    // TODO: coordinates ??
-    // private List<String> coordinates;
+    private List<CoordinateDTO> coordinates;
 
 
     public String getName() {
@@ -204,5 +202,13 @@ public class ApplicationDTO {
 
     public void setHeightType(String heightType) {
         this.heightType = heightType;
+    }
+
+    public List<CoordinateDTO> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<CoordinateDTO> coordinates) {
+        this.coordinates = coordinates;
     }
 }

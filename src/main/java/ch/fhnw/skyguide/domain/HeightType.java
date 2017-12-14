@@ -11,7 +11,7 @@ public class HeightType {
 
     private Integer id;
     private String name;
-    private Set<Application> application;
+  //  private Set<Application> application;
 
     public HeightType(){
     }
@@ -34,7 +34,7 @@ public class HeightType {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "heightType")
+   /* @OneToMany(mappedBy = "heightType")
     @JsonIgnore
     public Set<Application> getApplication() {
         return application;
@@ -42,5 +42,5 @@ public class HeightType {
 
     public void setApplication(Set<Application> application) {
         this.application = application;
-    }
+    }*/
 }

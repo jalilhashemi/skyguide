@@ -11,7 +11,7 @@ public class ActivityType {
 
     private Integer id;
     private String name;
-    private Set<Application> applications;
+   // private Set<Application> applications;
 
     public ActivityType(){}
 
@@ -33,7 +33,7 @@ public class ActivityType {
         this.name = name;
     }
 
-    @OneToMany
+  /*  @OneToMany
     @JsonIgnore
     public Set<Application> getApplications() {
         return applications;
@@ -41,6 +41,6 @@ public class ActivityType {
 
     public void setApplications(Set<Application> applications) {
         this.applications = applications;
-    }
+    }*/
 }
 
