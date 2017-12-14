@@ -40,6 +40,8 @@ public class ApplicationController {
     @Autowired
     private ModelMapper modelMapper;
 
+
+    // Not supported in production
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<Iterable<Application>> findAll() {
         Iterable<Application> applications = applicationRepository.findAll();
@@ -48,28 +50,12 @@ public class ApplicationController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<ApplicationDTO> create(@RequestBody ApplicationDTO applicationDTO) {
-    /*    List<CoordinateDTO> list = new ArrayList<>();
-
-        CoordinateDTO c = new CoordinateDTO();
-
-        c.setLat("9.3");
-        c.setLon("9.3");
-        list.add(coordinateRepository.save(c));
-        c = new Coordinate();
-        c.setLat("9.3");
-        c.setLon("9.3");
-        list.add(coordinateRepository.save(c));
-        ApplicationDTO app = new ApplicationDTO();
-        app.setCoordinates(list);
-        return new ResponseEntity<>(ApplicationDTO, HttpStatus.CREATED);
-        */
         Application application = convertToEntity(applicationDTO);
         application.setAdminKey(UUID.randomUUID().toString());
         application.setViewKey(UUID.randomUUID().toString());
         if (application != null) {
-           // Application appCreated = applicationRepository.save(application);
             application = applicationRepository.save(application);
-            //emailSender.send();
+            emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
             return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
@@ -78,37 +64,15 @@ public class ApplicationController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<Application> findById(@PathVariable("id") String id) {
-        // return new ResponseEntity<>(HttpStatus.OK);
-        return new ResponseEntity<>(applicationRepository.findByAdminKey(id), HttpStatus.OK);
-    }
+        Application application = applicationRepository.findByAdminKey(id);
+        if(application != null)
+            return new ResponseEntity<>(application, HttpStatus.OK);
 
-    @RequestMapping(params = {"name", "company"}, method = RequestMethod.GET)
-    public ResponseEntity<Application> createTemporaryTest(@RequestParam("name") String name, @RequestParam("company") String company) {
-        Application app = new Application();
-        app.setName(name);
-        app.setCompany(company);
-        app.setActivityType(activityTypeRepository.findByName("Calibration Flight"));
-        try {
-            Date date = new Date();
-
-            String s = name + new Timestamp(date.getTime());
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update(s.getBytes());
-            byte[] digest = md.digest();
-            StringBuilder sb = new StringBuilder();
-            // System.out.println("byteData.length " + byteData.length);
-            for (int i = 0; i < digest.length; i++) {
-                sb.append(Integer.toString((digest[i] & 0xff) + 0x100, 16)
-                        .substring(1));
-            }
-
-            app.setAdminKey(sb.toString());
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
-        applicationRepository.save(app);
-        return new ResponseEntity<>(app, HttpStatus.OK);
+        application = applicationRepository.findByKey(id);
+        if(application != null)
+            return new ResponseEntity<>(application, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     private ApplicationDTO convertToDto(Application application) {
