@@ -12,6 +12,13 @@ $(document).ready(function () {
     initializeMap();
 
     submitApplication();
+
+    var url = new URL(window.location.href);
+    var key = url.searchParams.get("key");
+    console.log(key);
+    var edit = url.searchParams.get("edit");
+    console.log(edit);
+
     $.ajax({
         crossOrigin: true,
         url: 'http://localhost:8080/information',
@@ -474,7 +481,7 @@ function submitApplication() {
         url: 'http://localhost:8080/applications',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
-        data: '{"name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}',
+        data: '{"email":"jalil.hashemi@students.fhnw.ch","name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
         dataType: 'json'
     })
         .done(function (json) {
