@@ -165,7 +165,7 @@
             <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord" style="border: none; background: white;">
                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
             </button>
-            <input type="text" class="form-control input-field-sky" onchange="validateCoord(this)" id="field_gps_coord">
+            <input type="text" class="form-control input-field-sky" id="field_gps_coord">
             <div class="invalid-feedback">
             </div>
         </div>
@@ -256,20 +256,6 @@
 
         return isValid;
     }
-
-
-    function validateCoord(inputField) {
-        var isValid = /[0-9]{1,2}[°|º]\s*[0-9]{1,2}['|′]\s*(?:\b[0-9]+(?:\.[0-9]*)?|\.)\s*([0-9]+\b)("|''|′′|″)?\s*[N]\s*[0-9]{1,2}[°|º]\s*[0-9]{1,2}['|′]?\s*(?:\b[0-9]+(?:\.[0-9]*)?|\.)?\s*("|''|′′|″)?[E]/.test(inputField.value);
-
-        if (isValid) {
-            inputField.style.borderColor = '#28a745';
-        } else {
-            inputField.style.borderColor = '#dc3545';
-        }
-
-        return isValid;
-    }
-
 
     //    $(function () {
     //        var scntDiv = $('#p_scents');
