@@ -1,5 +1,7 @@
 package ch.fhnw.skyguide.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -7,8 +9,8 @@ import java.util.Set;
 public class Coordinate {
 
     private Integer id;
-    private Float latitude;
-    private Float longitude;
+    private String lat;
+    private String lon;
     private Set<Application> applications;
 
     public Coordinate() {
@@ -25,23 +27,24 @@ public class Coordinate {
         this.id = id;
     }
 
-    public Float getLatitude() {
-        return latitude;
+    public String getLat() {
+        return lat;
     }
 
-    public void setLatitude(Float latitude) {
-        this.latitude = latitude;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public Float getLongitude() {
-        return longitude;
+    public String getLon() {
+        return lon;
     }
 
-    public void setLongitude(Float longitude) {
-        this.longitude = longitude;
+    public void setLon(String lon) {
+        this.lon = lon;
     }
 
     @ManyToMany(mappedBy = "coordinates")
+    @JsonIgnore
     public Set<Application> getApplications() {
         return applications;
     }

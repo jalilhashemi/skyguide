@@ -3,6 +3,7 @@ package ch.fhnw.skyguide.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @JsonIgnoreProperties({"id", "viewKey", "adminKey"})

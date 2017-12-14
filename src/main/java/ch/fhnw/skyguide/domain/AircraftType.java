@@ -10,7 +10,7 @@ public class AircraftType{
 
     private Integer id;
     private String name;
-    private Set<Application> applications;
+   // private Set<Application> applications;
 
     public AircraftType(){}
 
@@ -32,7 +32,7 @@ public class AircraftType{
         this.name = name;
     }
 
-    @OneToMany
+  /*  @OneToMany(mappedBy = "aircraftType")
     @JsonIgnore
     public Set<Application> getApplications() {
         return applications;
@@ -41,4 +41,5 @@ public class AircraftType{
     public void setApplications(Set<Application> applications) {
         this.applications = applications;
     }
+    */
 }
