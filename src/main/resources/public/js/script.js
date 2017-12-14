@@ -14,7 +14,7 @@ $(document).ready(function () {
     submitApplication();
     $.ajax({
         crossOrigin: true,
-        url: 'http://86.119.37.77:8080/information',
+        url: 'http://localhost:8080/information',
         type: 'GET',
         dataType: 'json'
     })
@@ -62,6 +62,7 @@ function initializeChangeHandlers() {
         $('#container_fields').children('div .form-group').addClass('display-none');
         $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
+        $('#addScnt').addClass('display-none');
 
         $('.form-check-inline').parent().addClass('display-none');
         $('.form-check-inline').addClass('display-none');
@@ -87,21 +88,23 @@ function initializeChangeHandlers() {
                             if (field.id.substring(0, 6) === 'radio_') {
                                 $('#' + field.id).parent().parent().removeClass('display-none');
                                 $('#' + field.id).parent().parent().parent().removeClass('display-none');
+                                $('#addScnt').removeClass('display-none');
                             }
                             else {
                                 $('#' + field.id).parent().removeClass('display-none');
                                 $('#map-container').removeClass('display-none');
+                                $('#addScnt').removeClass('display-none');
                                 map.updateSize();
 
                                 if (field.mandatory) {
                                     $('#' + field.id).parent().children('label').remove();
                                     $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>')
-                                    $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                                    $('#' + field.id).attr('placeholder', field.placeholder).prop('required', true);
                                 }
                                 else {
                                     $('#' + field.id).parent().children('label').remove();
                                     $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>')
-                                    $('#' + field.id).attr('placeholder', field.name);
+                                    $('#' + field.id).attr('placeholder', field.placeholder);
                                 }
 
                             }
@@ -117,6 +120,7 @@ function initializeChangeHandlers() {
         $('#container_fields').children('div .form-group').addClass('display-none');
         $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
         $('#map-container').addClass('display-none');
+        $('#addScnt').addClass('display-none');
 
         $('.form-check-inline').parent().addClass('display-none');
         $('.form-check-inline').addClass('display-none');
@@ -128,21 +132,23 @@ function initializeChangeHandlers() {
                         if (field.id.substring(0, 6) === 'radio_') {
                             $('#' + field.id).parent().parent().removeClass('display-none');
                             $('#' + field.id).parent().parent().parent().removeClass('display-none');
+                            $('#addScnt').removeClass('display-none');
                         }
                         else {
                             $('#' + field.id).parent().removeClass('display-none');
                             $('#map-container').removeClass('display-none');
+                            $('#addScnt').removeClass('display-none');
                             map.updateSize();
 
                             if (field.mandatory) {
                                 $('#' + field.id).parent().children('label').remove();
                                 $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
-                                $('#' + field.id).attr('placeholder', field.name).prop('required', true);
+                                $('#' + field.id).attr('placeholder', field.placeholder).prop('required', true);
                             }
                             else {
                                 $('#' + field.id).parent().children('label').remove();
                                 $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
-                                $('#' + field.id).attr('placeholder', field.name);
+                                $('#' + field.id).attr('placeholder', field.placeholder);
                             }
                         }
                     }

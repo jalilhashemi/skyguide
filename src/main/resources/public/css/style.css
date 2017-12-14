@@ -57,3 +57,8 @@ h1 {
 .form-check-inline {
     margin-top: 37px;
 }
+
+#addScnt{
+    margin-top: 15px;
+    align-items: center;
+}
