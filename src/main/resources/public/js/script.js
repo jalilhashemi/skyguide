@@ -13,11 +13,12 @@ $(document).ready(function () {
 
     //submitApplication();
 
+    // for hash link
     var url = new URL(window.location.href);
     var key = url.searchParams.get("key");
-    console.log(key);
+    console.log('url key: ' + key);
     var edit = url.searchParams.get("edit");
-    console.log(edit);
+    console.log('url edit: '+edit);
 
 });
 
@@ -67,9 +68,58 @@ function initializeDateRangePicker() {
     });
 }
 
+function hideAllFields() {
+    $('#container_fields').children('div .form-group').addClass('display-none');
+    $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
+    $('#map-container').addClass('display-none');
+    $('#addScnt').addClass('display-none');
+
+    $('.form-check-inline').parent().addClass('display-none');
+    $('.form-check-inline').addClass('display-none');
+}
+
+/**
+ * Displays a field with the label and the mandatory * sign
+ * @param field The JSON field object from /information service
+ */
+function showField(field) {
+    $('#' + field.id).parent().children('label').remove();
+    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n')
+    $('#' + field.id).attr('placeholder', field.placeholder).prop('required', field.mandatory ? true : false);
+}
+
+function processField(field) {
+    if (field.active) {
+        if (field.id.substring(0, 6) === 'radio_') {
+            $('#' + field.id).parent().parent().removeClass('display-none');
+            $('#' + field.id).parent().parent().parent().removeClass('display-none');
+            $('#addScnt').removeClass('display-none');
+        }
+        else {
+            $('#' + field.id).parent().removeClass('display-none');
+            showField(field);
+        }
+    }
+}
+
 function initializeChangeHandlers() {
 
-    var form = document.getElementById('needs-validation');
+    $(document).on('submit', '#needs-validation', function() {
+        var form = document.getElementById('needs-validation');
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else {
+            // here to send data
+            event.preventDefault();
+            submitApplication();
+            console.log("submitted");
+        }
+        form.classList.add('was-validated');
+    })
+
+   /* var form = document.getElementById('needs-validation');
     form.addEventListener('submit', function (event) {
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -82,26 +132,29 @@ function initializeChangeHandlers() {
             console.log("submitted");
         }
         form.classList.add('was-validated');
-    }, false);
+    }, false);*/
 
 
     $(document).on('change', '#type_of_activity', function () {
-        $('#container_fields').children('div .form-group').addClass('display-none');
-        $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
-        $('#map-container').addClass('display-none');
-        $('#addScnt').addClass('display-none');
+        hideAllFields();
 
-        $('.form-check-inline').parent().addClass('display-none');
-        $('.form-check-inline').addClass('display-none');
-
+        // and hide the aircraft type selection
         $('#type_of_aircraft').parent().hide();
 
+        //
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.name) {
+                // it's a activity type with multiple aircraft type
                 if (activityType.aircraftTypeList.length > 1) {
-                    $('#type_of_aircraft').parent().show();
-                    $('#type_of_aircraft').find('option').remove().end().append("<option value=''>Select the aircraft type</option>");
                     actualAircraftTypeList = activityType.aircraftTypeList;
+
+                    // show the dropdown
+                    $('#type_of_aircraft').parent().show();
+
+                    // remove all options and append default text
+                    $('#type_of_aircraft').find('option').remove().end().append("<option value=''>Select the aircraft type</option>");
+
+                    // append all aircraft types
                     $.each(activityType.aircraftTypeList, function (i, aircraftType) {
                         $('#type_of_aircraft').append($('<option>', {
                             text: aircraftType.name
@@ -109,33 +162,14 @@ function initializeChangeHandlers() {
                     });
                 }
                 else {
-                    $('#type_of_aircraft').parent().hide();
+                    // things showed anytime
+                    $('#map-container').removeClass('display-none');
+                    map.updateSize();
+                    // add time button
+                    $('#addScnt').removeClass('display-none');
+
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
-                        if (field.active) {
-                            if (field.id.substring(0, 6) === 'radio_') {
-                                $('#' + field.id).parent().parent().removeClass('display-none');
-                                $('#' + field.id).parent().parent().parent().removeClass('display-none');
-                                $('#addScnt').removeClass('display-none');
-                            }
-                            else {
-                                $('#' + field.id).parent().removeClass('display-none');
-                                $('#map-container').removeClass('display-none');
-                                $('#addScnt').removeClass('display-none');
-                                map.updateSize();
-
-                                if (field.mandatory) {
-                                    $('#' + field.id).parent().children('label').remove();
-                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>')
-                                    $('#' + field.id).attr('placeholder', field.placeholder).prop('required', true);
-                                }
-                                else {
-                                    $('#' + field.id).parent().children('label').remove();
-                                    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>')
-                                    $('#' + field.id).attr('placeholder', field.placeholder);
-                                }
-
-                            }
-                        }
+                        processField(field);
                     });
                 }
             }
@@ -143,42 +177,15 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_aircraft', function () {
-        // $('#container_fields').children('div').addClass('display-none');
-        $('#container_fields').children('div .form-group').addClass('display-none');
-        $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
-        $('#map-container').addClass('display-none');
-        $('#addScnt').addClass('display-none');
-
-        $('.form-check-inline').parent().addClass('display-none');
-        $('.form-check-inline').addClass('display-none');
+        hideAllFields();
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
+                $('#map-container').removeClass('display-none');
+                map.updateSize();
+                $('#addScnt').removeClass('display-none');
                 $.each(aircraftType.fieldList, function (i, field) {
-                    if (field.active) {
-                        if (field.id.substring(0, 6) === 'radio_') {
-                            $('#' + field.id).parent().parent().removeClass('display-none');
-                            $('#' + field.id).parent().parent().parent().removeClass('display-none');
-                            $('#addScnt').removeClass('display-none');
-                        }
-                        else {
-                            $('#' + field.id).parent().removeClass('display-none');
-                            $('#map-container').removeClass('display-none');
-                            $('#addScnt').removeClass('display-none');
-                            map.updateSize();
-
-                            if (field.mandatory) {
-                                $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '*</label>\n')
-                                $('#' + field.id).attr('placeholder', field.placeholder).prop('required', true);
-                            }
-                            else {
-                                $('#' + field.id).parent().children('label').remove();
-                                $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + '</label>\n')
-                                $('#' + field.id).attr('placeholder', field.placeholder);
-                            }
-                        }
-                    }
+                    processField(field);
                 });
             }
         });
@@ -190,7 +197,7 @@ function initializeChangeHandlers() {
             map.addLayer(lyr2);
         }
         else {
-           map.removeLayer(lyr2);
+            map.removeLayer(lyr2);
         }
     });
 
