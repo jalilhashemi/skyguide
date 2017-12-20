@@ -3,15 +3,15 @@ var actualAircraftTypeList;
 var map;
 var layer;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
-
 var iconGeometry;
+var restUrl = 'http://localhost:8080';
+
 
 $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
-    initializeMap();
 
-    submitApplication();
+    //submitApplication();
 
     var url = new URL(window.location.href);
     var key = url.searchParams.get("key");
@@ -19,9 +19,12 @@ $(document).ready(function () {
     var edit = url.searchParams.get("edit");
     console.log(edit);
 
+});
+
+function initializeDropdowns() {
     $.ajax({
         crossOrigin: true,
-        url: 'http://localhost:8080/information',
+        url: restUrl + '/information',
         type: 'GET',
         dataType: 'json'
     })
@@ -32,7 +35,7 @@ $(document).ready(function () {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
-});
+}
 
 function appendSelection(data) {
     $.each(data, function (i, item) {
@@ -43,7 +46,18 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
+    initializeDropdowns();
+    initializeDateRangePicker();
+    initializeTooltips();
+    initializeMap();
+
+}
+
+function initializeTooltips() {
     $('[data-toggle="tooltip"]').tooltip();
+}
+
+function initializeDateRangePicker() {
     $(function () {
         $('input[name="daterange"]').daterangepicker({
             locale: {
@@ -54,16 +68,22 @@ function initializeForm() {
 }
 
 function initializeChangeHandlers() {
-    window.addEventListener('load', function () {
-        var form = document.getElementById('needs-validation');
-        form.addEventListener('submit', function (event) {
-            if (form.checkValidity() === false) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
+
+    var form = document.getElementById('needs-validation');
+    form.addEventListener('submit', function (event) {
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        else {
+            // here to send data
+            event.preventDefault();
+            submitApplication();
+            console.log("submitted");
+        }
+        form.classList.add('was-validated');
     }, false);
+
 
     $(document).on('change', '#type_of_activity', function () {
         $('#container_fields').children('div .form-group').addClass('display-none');
@@ -80,7 +100,7 @@ function initializeChangeHandlers() {
             if ($('#type_of_activity').val() == activityType.name) {
                 if (activityType.aircraftTypeList.length > 1) {
                     $('#type_of_aircraft').parent().show();
-                    $('#type_of_aircraft').find('option').remove().end().append("<option value='-1'>Select the aircraft type</option>");
+                    $('#type_of_aircraft').find('option').remove().end().append("<option value=''>Select the aircraft type</option>");
                     actualAircraftTypeList = activityType.aircraftTypeList;
                     $.each(activityType.aircraftTypeList, function (i, aircraftType) {
                         $('#type_of_aircraft').append($('<option>', {
@@ -170,7 +190,7 @@ function initializeChangeHandlers() {
             map.addLayer(lyr2);
         }
         else {
-            map.removeLayer(lyr2);
+           map.removeLayer(lyr2);
         }
     });
 
@@ -300,11 +320,15 @@ function initializeChangeHandlers() {
 
         }
         if (position != null) {
-            $('#field_gps_coord').css("border-color", '#28a745');
+            $('#field_gps_coord').addClass('.is-valid');
+            $('#field_gps_coord').removeClass('.is-invalid')
+            //$('#field_gps_coord').css("border-color", '#28a745');
             setMarker(position);
         }
         else {
-            $('#field_gps_coord').css("border-color", '#dc3545');
+            $('#field_gps_coord').addClass('.is-invalid');
+            $('#field_gps_coord').removeClass('.is-valid');
+            //$('#field_gps_coord').css("border-color", '#dc3545');
         }
 
         /*
@@ -339,11 +363,14 @@ function initializeChangeHandlers() {
                 */
 
     });
+
+    // $(document).on('change', '#field_time_schedule_until', validateHhMm($('#field_time_schedule_until')));
+
+    //$(document).on('change', '#field_time_schedule_from', validateHhMm($('#field_time_schedule_from')));
 }
 
 function initializeMap() {
 
-    // middle of the map (init state)
     var lat = 46.78;
     var lon = 9.3;
 
@@ -466,7 +493,6 @@ function initializeMap() {
 }
 
 function setView(loc) {
-
     map.getView().setCenter(loc);
     map.getView().setResolution(50);
 }
@@ -480,9 +506,12 @@ function setMarker(pos) {
 }
 
 function submitApplication() {
+
+
+    // submit to server
     $.ajax({
         crossOrigin: true,
-        url: 'http://localhost:8080/applications',
+        url: url + '/applications',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         data: '{"email":"jalil.hashemi@students.fhnw.ch","name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
