@@ -5,7 +5,7 @@ var layer;
 var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 var iconGeometry;
 var restUrl = 'http://localhost:8080';
-
+var timeIndex = 0;
 
 $(document).ready(function () {
     initializeForm();
@@ -196,26 +196,32 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '#addScnt', function () {
-        event.preventDefault();
-        var $template = $('#time_template'),
-            $clone = $template
+        timeIndex++;
+        //event.preventDefault();
+        var template = $('#time_template'),
+            clone = template
                 .clone()
                 .removeClass('display-none')
                 .removeAttr('id')
+                .attr('data-time-index', timeIndex)
                 .addClass('time_field')
-                .insertBefore($template),
-            $option = $clone.find('[name="option[]"]');
+                .insertBefore(template);
+            //$option = $clone.find('[name="option[]"]');
+
+        clone
+            .find('[name="from"]').attr('name', 'time[' + timeIndex + '].from').end()
+            .find('[name="to"]').attr('name', 'time[' + timeIndex + '].to').end();
 
         // Add new field
         //$('#time_container').formValidation('addField', option);
     });
 
     $(document).on('click', '.remove_time_button', function () {
-        var $row = $(this).parents('.form-row'),
-            $option = $row.find('[name="option[]"]');
+        timeIndex--;
+        var row = $(this).parents('.form-row');
 
         // Remove element containing the option
-        $row.remove();
+        row.remove();
     });
 
     $(document).on('change', '#check-layer-icao', function () {
@@ -542,11 +548,13 @@ function submitApplication() {
         function(index){
             var input = $(this);
             data[input.attr('name')] = input.val();
+
            // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
         }
     );
     console.log(data);
 
+    /*
     // submit to server
     $.ajax({
         crossOrigin: true,
@@ -562,4 +570,5 @@ function submitApplication() {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
+        */
 }
