@@ -24,12 +24,17 @@ h1 {
 .btn-sky {
     background: #0159a0;
     cursor: pointer;
-    height: 30px;
     padding: 0 20px;
     border: none;
-    border-radius: 0;
+    /*border-radius: 0;*/
     float: right;
-    margin-bottom:50px;
+    height: 45px;
+    width: 100%;
+}
+
+#btn_submit{
+
+    margin: 20px 0 50px 0;
 }
 
 .map {
@@ -40,7 +45,7 @@ h1 {
 .select-field-sky {
     font-size: 14px;
     font-weight: 300;
-    /*border: none;*/
+    /*border: none;
     /*-webkit-appearance: none;*/
 }
 
@@ -58,7 +63,6 @@ h1 {
     margin-top: 37px;
 }
 
-#addScnt{
-    margin-top: 15px;
-    align-items: center;
+#btn_add {
+    margin-top: 27px;
 }

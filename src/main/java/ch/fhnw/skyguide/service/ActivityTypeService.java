@@ -53,13 +53,13 @@ public class ActivityTypeService {
         Field dateFromUntilFieldActive = new Field("field_date_from_until", "Date from / Until", "",false, true);
         Field dateFromUntilFieldInactive = new Field("field_date_from_until", "Date from / Until", "",false, false);
 
-        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "Time schedule (from)", "--:--",true, true);
-        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "Time schedule (from)", "--:--",false, true);
-        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "Time schedule (from)","--:--", false, false);
+        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "Time schedule (from)", "HH:MM",true, true);
+        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "Time schedule (from)", "HH:MM",false, true);
+        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "Time schedule (from)","HH:MM", false, false);
 
-        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "Time schedule (until)", "--:--",true, true);
-        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "Time schedule (until)", "--:--",false, true);
-        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "Time schedule (until)", "--:--",false, false);
+        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",true, true);
+        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",false, true);
+        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",false, false);
 
         Field durationFieldMandatory = new Field("field_duration", "Duration", "Duration", true, true);
         Field durationFieldActive = new Field("field_duration", "Duration", "Duration", false, true);
