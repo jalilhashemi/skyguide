@@ -92,6 +92,7 @@ function showField(field) {
 function processField(field) {
     if (field.active) {
         if (field.id.substring(0, 6) === 'radio_') {
+            //$('#' + field.id).prop('required', true);
             $('#' + field.id).parent().parent().removeClass('display-none');
             $('#' + field.id).parent().parent().parent().removeClass('display-none');
             $('#' + field.id).parent().parent().attr('title', field.tooltip);
@@ -217,7 +218,6 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '.remove_time_button', function () {
-        timeIndex--;
         var row = $(this).parents('.form-row');
 
         // Remove element containing the option
