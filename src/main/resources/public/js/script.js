@@ -18,7 +18,7 @@ $(document).ready(function () {
     var key = url.searchParams.get("key");
     console.log('url key: ' + key);
     var edit = url.searchParams.get("edit");
-    console.log('url edit: '+edit);
+    console.log('url edit: ' + edit);
 
 });
 
@@ -107,7 +107,7 @@ function processField(field) {
 
 function initializeChangeHandlers() {
 
-    $(document).on('submit', '#needs-validation', function() {
+    $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -122,20 +122,20 @@ function initializeChangeHandlers() {
         form.classList.add('was-validated');
     })
 
-   /* var form = document.getElementById('needs-validation');
-    form.addEventListener('submit', function (event) {
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else {
-            // here to send data
-            event.preventDefault();
-            submitApplication();
-            console.log("submitted");
-        }
-        form.classList.add('was-validated');
-    }, false);*/
+    /* var form = document.getElementById('needs-validation');
+     form.addEventListener('submit', function (event) {
+         if (form.checkValidity() === false) {
+             event.preventDefault();
+             event.stopPropagation();
+         }
+         else {
+             // here to send data
+             event.preventDefault();
+             submitApplication();
+             console.log("submitted");
+         }
+         form.classList.add('was-validated');
+     }, false);*/
 
 
     $(document).on('change', '#type_of_activity', function () {
@@ -195,23 +195,23 @@ function initializeChangeHandlers() {
 
     });
 
-    $(document).on('click', '#addScnt', function() {
+    $(document).on('click', '#addScnt', function () {
         event.preventDefault();
         var $template = $('#time_template'),
-            $clone    = $template
+            $clone = $template
                 .clone()
                 .removeClass('display-none')
                 .removeAttr('id')
                 .addClass('time_field')
                 .insertBefore($template),
-            $option   = $clone.find('[name="option[]"]');
+            $option = $clone.find('[name="option[]"]');
 
         // Add new field
         //$('#time_container').formValidation('addField', option);
     });
 
-    $(document).on('click', '.remove_time_button', function() {
-        var $row    = $(this).parents('.form-row'),
+    $(document).on('click', '.remove_time_button', function () {
+        var $row = $(this).parents('.form-row'),
             $option = $row.find('[name="option[]"]');
 
         // Remove element containing the option
@@ -536,6 +536,16 @@ function setMarker(pos) {
 
 function submitApplication() {
 
+    var data = {};
+
+    $('form input, form select').each(
+        function(index){
+            var input = $(this);
+            data[input.attr('name')] = input.val();
+           // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
+        }
+    );
+    console.log(data);
 
     // submit to server
     $.ajax({
