@@ -73,6 +73,7 @@ function hideAllFields() {
     $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
     $('#map-container').addClass('display-none');
     $('#addScnt').addClass('display-none');
+    $('.time_field').addClass('display-none');
 
     $('.form-check-inline').parent().addClass('display-none');
     $('.form-check-inline').addClass('display-none');
@@ -190,6 +191,29 @@ function initializeChangeHandlers() {
             }
         });
 
+    });
+
+    $(document).on('click', '#addScnt', function() {
+        event.preventDefault();
+        var $template = $('#time_template'),
+            $clone    = $template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                .addClass('time_field')
+                .insertBefore($template),
+            $option   = $clone.find('[name="option[]"]');
+
+        // Add new field
+        //$('#time_container').formValidation('addField', option);
+    });
+
+    $(document).on('click', '.remove_time_button', function() {
+        var $row    = $(this).parents('.form-row'),
+            $option = $row.find('[name="option[]"]');
+
+        // Remove element containing the option
+        $row.remove();
     });
 
     $(document).on('change', '#check-layer-icao', function () {
