@@ -327,9 +327,9 @@ function initializeChangeHandlers() {
 
         }
         if (position != null) {
+            // validate the field
             $('#field_gps_coord').addClass('.is-valid');
-            $('#field_gps_coord').removeClass('.is-invalid')
-            //$('#field_gps_coord').css("border-color", '#28a745');
+            $('#field_gps_coord').removeClass('.is-invalid');
             setMarker(position);
         }
         else {
@@ -370,10 +370,6 @@ function initializeChangeHandlers() {
                 */
 
     });
-
-    // $(document).on('change', '#field_time_schedule_until', validateHhMm($('#field_time_schedule_until')));
-
-    //$(document).on('change', '#field_time_schedule_from', validateHhMm($('#field_time_schedule_from')));
 }
 
 function initializeMap() {
