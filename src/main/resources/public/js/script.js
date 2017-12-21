@@ -41,7 +41,7 @@ function initializeDropdowns() {
 function appendSelection(data) {
     $.each(data, function (i, item) {
         $('#type_of_activity').append($('<option>', {
-            text: item.name
+            text: item.label
         }));
     });
 }
@@ -85,7 +85,7 @@ function hideAllFields() {
  */
 function showField(field) {
     $('#' + field.id).parent().children('label').remove();
-    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.name + (field.mandatory ? '*' : '') + '</label>\n')
+    $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.label + (field.mandatory ? '*' : '') + '</label>\n')
     $('#' + field.id).attr('placeholder', field.placeholder).prop('required', field.mandatory ? true : false);
 }
 
@@ -146,7 +146,7 @@ function initializeChangeHandlers() {
 
         //
         $.each(informationJSON, function (j, activityType) {
-            if ($('#type_of_activity').val() == activityType.name) {
+            if ($('#type_of_activity').val() == activityType.label) {
                 // it's a activity type with multiple aircraft type
                 if (activityType.aircraftTypeList.length > 1) {
                     actualAircraftTypeList = activityType.aircraftTypeList;
@@ -160,7 +160,7 @@ function initializeChangeHandlers() {
                     // append all aircraft types
                     $.each(activityType.aircraftTypeList, function (i, aircraftType) {
                         $('#type_of_aircraft').append($('<option>', {
-                            text: aircraftType.name
+                            text: aircraftType.label
                         }));
                     });
                 }
@@ -183,7 +183,7 @@ function initializeChangeHandlers() {
         hideAllFields();
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
-            if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.name) {
+            if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
                 $('#map-container').removeClass('display-none');
                 map.updateSize();
                 $('#addScnt').removeClass('display-none');
