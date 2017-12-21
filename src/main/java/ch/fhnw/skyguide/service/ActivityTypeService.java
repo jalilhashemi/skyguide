@@ -11,11 +11,11 @@ public class ActivityTypeService {
 
     private List<ActivityType> listActivityType = new ArrayList<>();
 
-    private final String FIELD_HEIGHT_ALTITUDE_ID = "field_height_altitude";
-    private final String FIELD_HEIGHT_ALTITUDE_NAME = "Height / Altitude";
+    //private final String FIELD_HEIGHT_ALTITUDE_ID = "field_height_altitude";
+    //private final String FIELD_HEIGHT_ALTITUDE_NAME = "Height / Altitude";
 
     public ActivityType getActivityTypeByName(String name) {
-        Predicate<ActivityType> activityTypePredicate = a -> a.getName().equals(name);
+        Predicate<ActivityType> activityTypePredicate = a -> a.getLabel().equals(name);
         ActivityType obj = listActivityType.stream().filter(activityTypePredicate).findFirst().get();
         return obj;
     }
@@ -27,7 +27,7 @@ public class ActivityTypeService {
     private List<AircraftType> listAircraftType = new ArrayList<>();
 
     public AircraftType getAircraftTypeByName(String name) {
-        Predicate<AircraftType> aircraftTypePredicate = a -> a.getName().equals(name);
+        Predicate<AircraftType> aircraftTypePredicate = a -> a.getLabel().equals(name);
         AircraftType obj = listAircraftType.stream().filter(aircraftTypePredicate).findFirst().get();
         return obj;
     }
@@ -37,85 +37,85 @@ public class ActivityTypeService {
     }
 
     {
-        Field callsignFieldMandatory = new Field("field_callsign", "Callsign", "Callsign", true, true);
-        Field callsignFieldActive = new Field("field_callsign", "Callsign", "Callsign",false, true);
-        Field callsignFieldInactive = new Field("field_callsign", "Callsign", "Callsign",false, false);
+        Field callsignFieldMandatory = new Field("field_callsign", "callsign","Callsign", "Callsign", true, true);
+        Field callsignFieldActive = new Field("field_callsign", "callsign", "Callsign", "Callsign",false, true);
+        Field callsignFieldInactive = new Field("field_callsign", "callsign", "Callsign", "Callsign",false, false);
 
-        Field departureFieldMandatory = new Field("field_departure", "Departure","Departure", true, true);
-        Field departureFieldActive = new Field("field_departure", "Departure", "Departure",false, true);
-        Field departureFieldInactive = new Field("field_departure", "Departure", "Departure",false, false);
+        Field departureFieldMandatory = new Field("field_departure","departure", "Departure","From", true, true);
+        Field departureFieldActive = new Field("field_departure","departure" ,"Departure", "From",false, true);
+        Field departureFieldInactive = new Field("field_departure","departure", "Departure", "From",false, false);
 
-        Field destinationFieldMandatory = new Field("field_destination", "Destination", "Destination", true, true);
-        Field destinationFieldActive = new Field("field_destination", "Destination", "Destination", false, true);
-        Field destinationFieldInactive = new Field("field_destination", "Destination", "Destination", false, false);
+        Field destinationFieldMandatory = new Field("field_destination","destination", "Destination", "To", true, true);
+        Field destinationFieldActive = new Field("field_destination","destination", "Destination", "To", false, true);
+        Field destinationFieldInactive = new Field("field_destination","destination", "Destination", "To", false, false);
 
-        Field dateFromUntilFieldMandatory = new Field("field_date_from_until", "Date from / Until", "",true, true);
-        Field dateFromUntilFieldActive = new Field("field_date_from_until", "Date from / Until", "",false, true);
-        Field dateFromUntilFieldInactive = new Field("field_date_from_until", "Date from / Until", "",false, false);
+        Field dateFromUntilFieldMandatory = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",true, true);
+        Field dateFromUntilFieldActive = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",false, true);
+        Field dateFromUntilFieldInactive = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",false, false);
 
-        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "Time schedule (from)", "HH:MM",true, true);
-        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "Time schedule (from)", "HH:MM",false, true);
-        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "Time schedule (from)","HH:MM", false, false);
+        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM",true, true);
+        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM",false, true);
+        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)","HH:MM", false, false);
 
-        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",true, true);
-        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",false, true);
-        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "Time schedule (until)", "HH:MM",false, false);
+        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",true, true);
+        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",false, true);
+        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",false, false);
 
-        Field durationFieldMandatory = new Field("field_duration", "Duration", "Duration", true, true);
-        Field durationFieldActive = new Field("field_duration", "Duration", "Duration", false, true);
-        Field durationFieldInactive = new Field("field_duration", "Duration", "Duration", false, false);
+        Field durationFieldMandatory = new Field("field_duration","duration", "Duration", "HH", true, true);
+        Field durationFieldActive = new Field("field_duration","duration", "Duration", "HH", false, true);
+        Field durationFieldInactive = new Field("field_duration","duration", "Duration", "HH", false, false);
 
-        Field locationFieldMandatory = new Field("field_location", "Location", "Location",true, true);
-        Field locationdeFieldActive = new Field("field_location", "Location", "Location",false, true);
-        Field locationFieldInactive = new Field("field_location", "Location", "Location",false, false);
+        Field locationFieldMandatory = new Field("field_location","location", "Location", "Location",true, true);
+        Field locationdeFieldActive = new Field("field_location","location", "Location", "Location",false, true);
+        Field locationFieldInactive = new Field("field_location","location", "Location", "Location",false, false);
 
-        Field heightAltitudeFieldMandatory = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, "",true, true);
-        Field heightAltitudeFieldActive = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, "",true, true);
-        Field heightAltitudeFieldInactive = new Field(FIELD_HEIGHT_ALTITUDE_ID, FIELD_HEIGHT_ALTITUDE_NAME, "",false, false);
+        Field heightAltitudeFieldMandatory = new Field("field_height_altitude","", "Height / Altitude", "",true, true);
+        Field heightAltitudeFieldActive = new Field("field_height_altitude", "","Height / Altitude","",true, true);
+        Field heightAltitudeFieldInactive = new Field("field_height_altitude","", "Height / Altitude", "",false, false);
 
-        Field heightAltitudeFlRadioMandatory = new Field("radio_height_fl", "FL", "",true, true);
-        Field heightAltitudeFlRadioActive = new Field("radio_height_fl", "FL", "",false, true);
+        Field heightAltitudeFlRadioMandatory = new Field("radio_height_fl","", "FL", "",true, true);
+        Field heightAltitudeFlRadioActive = new Field("radio_height_fl","", "FL", "",false, true);
         heightAltitudeFlRadioActive.setTooltip("This is the FL Tooltip.");
-        Field heightAltitudeFlRadioInactive = new Field("radio_height_fl", "FL", "",false, false);
+        Field heightAltitudeFlRadioInactive = new Field("radio_height_fl","", "FL", "",false, false);
 
-        Field heightAltitudeFtAmslRadiodMandatory = new Field("radio_height_ft_amsl", "ft AMSL", "",true, true);
-        Field heightAltitudeFtAmslRadioActive = new Field("radio_height_ft_amsl", "ft AMSL", "",false, true);
+        Field heightAltitudeFtAmslRadiodMandatory = new Field("radio_height_ft_amsl","", "ft AMSL", "",true, true);
+        Field heightAltitudeFtAmslRadioActive = new Field("radio_height_ft_amsl","", "ft AMSL", "",false, true);
         heightAltitudeFtAmslRadioActive.setTooltip("This is the ft AMSL Tooltip.");
-        Field heightAltitudeFtAmslRadioInactive = new Field("radio_height_ft_amsl", "ft AMSL", "",false, false);
+        Field heightAltitudeFtAmslRadioInactive = new Field("radio_height_ft_amsl","", "ft AMSL", "",false, false);
 
-        Field heightAltitudeFtGndRadioMandatory = new Field("radio_height_ft_gnd", "ft GND", "",true, true);
-        Field heightAltitudeFtGndRadioActive = new Field("radio_height_ft_gnd", "ft GND", "",false, true);
+        Field heightAltitudeFtGndRadioMandatory = new Field("radio_height_ft_gnd", "","ft GND", "",true, true);
+        Field heightAltitudeFtGndRadioActive = new Field("radio_height_ft_gnd", "","ft GND", "",false, true);
         heightAltitudeFtGndRadioActive.setTooltip("This is the ft GND Tooltip.");
-        Field heightAltitudeFtGndRadioInactive = new Field("radio_height_ft_gnd", "ft GND", "",false, false);
+        Field heightAltitudeFtGndRadioInactive = new Field("radio_height_ft_gnd", "","ft GND", "",false, false);
 
-        Field heightAltitudeMGndRadioMandatory = new Field("radio_height_m_gnd", "m GND", "",true, true);
-        Field heightAltitudeMGndRadioActive = new Field("radio_height_m_gnd", "m GND", "",false, true);
+        Field heightAltitudeMGndRadioMandatory = new Field("radio_height_m_gnd", "","m GND", "",true, true);
+        Field heightAltitudeMGndRadioActive = new Field("radio_height_m_gnd", "","m GND", "",false, true);
         heightAltitudeMGndRadioActive.setTooltip("This is the m GND Tooltip.");
-        Field heightAltitudeMGndRadioInactive = new Field("radio_height_m_gnd", "m GND", "",false, false);
+        Field heightAltitudeMGndRadioInactive = new Field("radio_height_m_gnd","", "m GND", "",false, false);
 
-        Field beamDirectionFieldMandatory = new Field("field_beam_direction", "Beam direction", "",true, true);
-        Field beamDirectionFieldActive = new Field("field_beam_direction", "Beam direction", "",false, true);
-        Field beamDirectionFieldInactive = new Field("field_beam_direction", "Beam direction", "",false, false);
+        Field beamDirectionFieldMandatory = new Field("field_beam_direction","beamDirection", "Beam direction", "",true, true);
+        Field beamDirectionFieldActive = new Field("field_beam_direction","beamDirection", "Beam direction", "",false, true);
+        Field beamDirectionFieldInactive = new Field("field_beam_direction","beamDirection", "Beam direction", "",false, false);
 
-        Field payloadAttachedObjFieldMandatory = new Field("field_payload_attached_obj", "Payload / Attached object", "",true, true);
-        Field payloadAttachedObjFieldActive = new Field("field_payload_attached_obj", "Payload / Attached object", "",false, true);
-        Field payloadAttachedObjFieldInactive = new Field("field_payload_attached_obj", "Payload / Attached object", "",false, false);
+        Field payloadAttachedObjFieldMandatory = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",true, true);
+        Field payloadAttachedObjFieldActive = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",false, true);
+        Field payloadAttachedObjFieldInactive = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",false, false);
 
-        Field amountFieldMandatory = new Field("field_amount", "Amount", "",true, true);
-        Field amountFieldActive = new Field("field_amount", "Amount", "",false, true);
-        Field amountFieldInactive = new Field("field_amount", "Amount", "",false, false);
+        Field amountFieldMandatory = new Field("field_amount","amount", "Amount", "",true, true);
+        Field amountFieldActive = new Field("field_amount","amount", "Amount", "",false, true);
+        Field amountFieldInactive = new Field("field_amount","amount", "Amount", "",false, false);
 
-        Field gpsCoordFieldMandatory = new Field("field_gps_coord", "Coordinate (latitude, longitude)", "",true, true);
-        Field gpsCoordFieldActive = new Field("field_gps_coord", "Coordinate (latitude, longitude)", "",false, true);
-        Field gpsCoordFieldInactive = new Field("field_gps_coord", "Coordinate (latitude, longitude)", "",false, false);
+        Field gpsCoordFieldMandatory = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",true, true);
+        Field gpsCoordFieldActive = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",false, true);
+        Field gpsCoordFieldInactive = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",false, false);
 
-        Field radiusFieldMandatory = new Field("field_radius", "Radius", "",true, true);
-        Field radiusFieldActive = new Field("field_radius", "Radius", "",false, true);
-        Field radiusFieldInactive = new Field("field_radius", "Radius", "",false, false);
+        Field radiusFieldMandatory = new Field("field_radius","radius", "Radius", "Meter",true, true);
+        Field radiusFieldActive = new Field("field_radius","radius", "Radius", "Meter",false, true);
+        Field radiusFieldInactive = new Field("field_radius","radius", "Radius", "Meter",false, false);
 
-        Field selfDeclarationFieldMandatory = new Field("textfield_self_declaration", "Self declaration", "",true, true);
-        Field selfDeclarationFieldActive = new Field("textfield_self_declaration", "Self declaration", "",false, true);
-        Field selfDeclarationFieldInactive = new Field("textfield_self_declaration", "Self declaration", "",false, false);
+        Field selfDeclarationFieldMandatory = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",true, true);
+        Field selfDeclarationFieldActive = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",false, true);
+        Field selfDeclarationFieldInactive = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",false, false);
 
         ActivityType skyLanternActivityType = new ActivityType("Sky Lantern");
         AircraftType defaultSkyLanternActivityType = new AircraftType("");
@@ -1018,7 +1018,7 @@ public class ActivityTypeService {
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         listActivityType.add(airshowAerobaticFlightActivityType);
 
-        listActivityType.sort((o1, o2)->o1.getName().compareTo(o2.getName()));
+        listActivityType.sort((o1, o2)->o1.getLabel().compareTo(o2.getLabel()));
     }
 
 }

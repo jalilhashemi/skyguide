@@ -5,19 +5,25 @@ import java.util.List;
 
 public class ActivityType {
     private String name;
+    private String label;
     private List<AircraftType> aircraftTypeList;
 
-    public ActivityType(String name) {
-        this.name = name;
+    public ActivityType(String label) {
+        this.name = "activityType";
+        this.label = label;
         aircraftTypeList = new ArrayList<>();
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public List<AircraftType> getAircraftTypeList() {

@@ -48,7 +48,7 @@
         <div class="form-group col-md-6">
             <label for="input_applicant_name">Applicant Name*</label>
             <input type="text" class="form-control input-field-sky" id="input_applicant_name"
-                   placeholder="Applicant Name"
+                   placeholder="Applicant Name" name="name"
                    required>
             <div class="invalid-feedback">
                 Please provide a name.
@@ -58,14 +58,14 @@
             <label for="input_company_name">Company name</label>
             <input type="text" class="form-control input-field-sky" id="input_company_name"
                    aria-describedby="companyNameHint"
-                   placeholder="Company">
+                   placeholder="Company" name="company">
             <small id="companyNameHint" class="form-text text-muted">If Company is available.</small>
         </div>
     </div>
     <div class="form-group">
         <label for="input_applicant_reference">Applicant reference</label>
         <input type="text" class="form-control input-field-sky" id="input_applicant_reference"
-               placeholder="Applicant reference">
+               placeholder="Applicant reference" name="reference">
         <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
             application
         </small>
@@ -73,6 +73,7 @@
     <div class="form-group">
         <label for="input_applicant_phone">Applicant Phone*</label>
         <input type="tel" class="form-control input-field-sky" id="input_applicant_phone" placeholder="Applicant Phone"
+               name="phone"
                required>
         <div class="invalid-feedback">
             Please provide a phone number.
@@ -80,7 +81,7 @@
     </div>
     <div class="form-group">
         <label for="input_applicant_email">Applicant Email*</label>
-        <input type="email" class="form-control input-field-sky" id="input_applicant_email"
+        <input type="email" class="form-control input-field-sky" id="input_applicant_email" name="email"
                placeholder="Applicant Email"
                required>
         <div class="invalid-feedback">
@@ -207,32 +208,37 @@
                 <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
-            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                 data-placement="top"
                  title="">
                 <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_fl"
-                           value="FL">FL
+                           value="FL" name="test" required>FL
                 </label>
             </div>
-            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                 data-placement="top"
                  title="">
                 <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_amsl"
-                           value="ft AMSL">ft AMSL
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                           id="radio_height_ft_amsl"
+                           value="ft AMSL" name="test" required>ft AMSL
                 </label>
             </div>
-            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                 data-placement="top"
                  title="">
                 <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_ft_gnd"
-                           value="ft GND">ft GND
+                           value="ft GND" name="test" required>ft GND
                 </label>
             </div>
-            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip" data-placement="top"
+            <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                 data-placement="top"
                  title="">
                 <label class="form-check-label">
                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="radio_height_m_gnd"
-                           value="m GND">m GND
+                           value="m GND" name="test" required>m GND
                 </label>
             </div>
         </div>
@@ -264,12 +270,12 @@
     </div>
     <div class="form-group">
         <label for="textfield_remark">Remark</label>
-        <textarea type="text" class="form-control textarea-field-sky my-textarea" id="textfield_remark"></textarea>
+        <textarea type="text" class="form-control textarea-field-sky my-textarea" id="textfield_remark"
+                  name="remark"></textarea>
         <div class="invalid-feedback">
         </div>
     </div>
     <button type="submit" class="btn btn-primary btn-sky" id="btn_submit">Submit</button>
 </form>
-
 </body>
 </html>
