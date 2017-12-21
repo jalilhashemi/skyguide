@@ -137,7 +137,7 @@
             </div>
         </div>
         <div class="form-row" id="p_scents">
-            <div class="form-group col-md-6 display-none">
+            <div class="form-group col-md-5 display-none">
                 <input type="text" class="form-control input-field-sky"
                        id="field_time_schedule_from" name="option[]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
                 <div class="invalid-feedback">
@@ -149,32 +149,32 @@
                 <div class="invalid-feedback">
                 </div>
             </div>
-            <div class="form-group col-md-1 display-none" id="addScnt">
-                <button type="button" class="btn btn-primary btn-sky" id="btn_add">
+            <div class="form-group col-md-2 display-none" id="addScnt">
+                <button type="button" class="btn btn-outline-dark">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </button>
             </div>
         </div>
         <div>
-            <div class="form-row display-none" id="time_template">
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control input-field-sky"
-                           name="option[]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM" required>
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
-                <div class="form-group col-md-5">
-                    <input type="text" class="form-control input-field-sky"
-                           name="option[]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM" required>
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
-                <div class="form-group col-md-1 remove_time_button">
-                    <button type="button" class="btn btn-primary btn-sky">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    </button>
+        <div class="form-row display-none" id="time_template">
+            <div class="form-group col-md-5">
+                <input type="text" class="form-control input-field-sky"
+                       name="option[]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
+                <div class="invalid-feedback">
                 </div>
             </div>
+            <div class="form-group col-md-5">
+                <input type="text" class="form-control input-field-sky"
+                       name="option[]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group col-md-2 remove_time_button">
+                <button type="button" class="btn btn-outline-dark">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
         </div>
         <div class="form-group display-none">
             <input type="text" class="form-control input-field-sky" id="field_location">
@@ -268,7 +268,7 @@
         <div class="invalid-feedback">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary btn-sky" id="btn_submit">Submit</button>
+    <button type="submit" class="btn btn-primary btn-sky">Submit</button>
 </form>
 
 </body>
