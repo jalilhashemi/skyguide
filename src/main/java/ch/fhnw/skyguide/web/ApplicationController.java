@@ -9,13 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/applications")
 public class ApplicationController {
 
@@ -33,6 +30,9 @@ public class ApplicationController {
 
     @Autowired
     CoordinateRepository coordinateRepository;
+
+    @Autowired
+    TimeRepository timeRepository;
 
     @Autowired
     EmailSender emailSender;
@@ -87,6 +87,12 @@ public class ApplicationController {
 
         applicationDTO.setCoordinates(coordinatesDTO);
 
+        List<TimeDTO> timesDTO = new ArrayList<>();
+        for (Time t : application.getTimes())
+            timesDTO.add(convertToDto(t));
+
+        applicationDTO.setTimes(timesDTO);
+
 
         return applicationDTO;
     }
@@ -105,6 +111,14 @@ public class ApplicationController {
 
         application.setCoordinates(coordinates);
 
+        Set<Time> times = new HashSet<>();
+        for(TimeDTO t : applicationDTO.getTimes()) {
+            Time time = timeRepository.save(convertToEntity(t));
+            times.add(time);
+        }
+
+        application.setTimes(times);
+
         return application;
     }
 
@@ -114,6 +128,14 @@ public class ApplicationController {
 
     private Coordinate convertToEntity(CoordinateDTO coordinateDTO) {
         return modelMapper.map(coordinateDTO, Coordinate.class);
+    }
+
+    private TimeDTO convertToDto(Time time) {
+        return modelMapper.map(time, TimeDTO.class);
+    }
+
+    private Time convertToEntity(TimeDTO timeDTO) {
+        return modelMapper.map(timeDTO, Time.class);
     }
 
 }

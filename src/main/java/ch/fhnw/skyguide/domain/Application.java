@@ -3,7 +3,6 @@ package ch.fhnw.skyguide.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @JsonIgnoreProperties({"id", "viewKey", "adminKey"})
@@ -22,8 +21,8 @@ public class Application {
     private String departure;
     private String destination;
     private String dateFromUntil;
-    private String timeFrom;
-    private String timeUntil;
+  /*  private String timeFrom;
+    private String timeUntil;*/
     private String duration;
     private String location;
     private String beamDirection;
@@ -36,6 +35,7 @@ public class Application {
     private AircraftType aircraftType;
     private HeightType heightType;
     private Set<Coordinate> coordinates;
+    private Set<Time> times;
 
     public Application(){
 
@@ -137,22 +137,6 @@ public class Application {
 
     public void setDateFromUntil(String dateFromUntil) {
         this.dateFromUntil = dateFromUntil;
-    }
-
-    public String getTimeFrom() {
-        return timeFrom;
-    }
-
-    public void setTimeFrom(String timeFrom) {
-        this.timeFrom = timeFrom;
-    }
-
-    public String getTimeUntil() {
-        return timeUntil;
-    }
-
-    public void setTimeUntil(String timeUntil) {
-        this.timeUntil = timeUntil;
     }
 
     public String getDuration() {
@@ -257,5 +241,15 @@ public class Application {
 
     public void setCoordinates(Set<Coordinate> coordinates) {
         this.coordinates = coordinates;
+    }
+
+    @ManyToMany
+    @JoinTable(name = "application_time", joinColumns = @JoinColumn(name = "application_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "time_id", referencedColumnName = "id"))
+    public Set<Time> getTimes() {
+        return times;
+    }
+
+    public void setTimes(Set<Time> times) {
+        this.times = times;
     }
 }

@@ -25,6 +25,7 @@ public class ApplicationDTO {
     private String payloadAttachedObj;
     private String amount;
     private List<CoordinateDTO> coordinates;
+    private List<TimeDTO> times;
     private String radius;
     private String selfDeclaration;
     private String remark;
@@ -218,5 +219,13 @@ public class ApplicationDTO {
 
     public void setCoordinates(List<CoordinateDTO> coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public List<TimeDTO> getTimes() {
+        return times;
+    }
+
+    public void setTimes(List<TimeDTO> times) {
+        this.times = times;
     }
 }

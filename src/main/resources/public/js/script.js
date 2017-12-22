@@ -68,14 +68,14 @@ function initializeDateRangePicker() {
         });
     });
 
-/*
-    $('input[name="dateFromUntil"]').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-    });
+    /*
+        $('input[name="dateFromUntil"]').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
 
-    $('input[name="dateFromUntil"]').on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
-    });*/
+        $('input[name="dateFromUntil"]').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });*/
 
 }
 
@@ -116,7 +116,7 @@ function processField(field) {
             //$('#' + field.id).prop('required', true);
             $('#' + field.id).parent().removeClass('display-none');
             $('#' + field.id).parent().parent().removeClass('display-none');
-            $('#' + field.id).prop('required',true);
+            $('#' + field.id).prop('required', true);
             //$('#' + field.id).parent().attr('title', field.tooltip);
             initializeTooltips();
             $('#addScnt').removeClass('display-none');
@@ -234,13 +234,13 @@ function initializeChangeHandlers() {
                 .attr('data-time-index', timeIndex)
                 .addClass('time_field')
                 .insertBefore(template);
-            //$option = $clone.find('[name="option[]"]');
+        //$option = $clone.find('[name="option[]"]');
 
         clone
-            .find('[name="from"]').attr('name', 'time[' + timeIndex + '].from')
-            .addClass('data').end()
-            .find('[name="to"]').attr('name', 'time[' + timeIndex + '].to')
-            .addClass('data').end();
+            .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
+            .prop('required', true).end()
+            .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
+            .prop('required', true).end();
 
         // Add new field
         //$('#time_container').formValidation('addField', option);
@@ -574,24 +574,53 @@ function submitApplication() {
     var data = {};
 
     $('.data').each(
-        function(index){
+        function (index) {
             var input = $(this);
             data[input.attr('name')] = input.val();
 
-           // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
+            // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
         }
     );
-    data["heightType"]=$('input[name=heightType]:checked').val();
+    data["heightType"] = $('input[name=heightType]:checked').val();
+
+    // get the time ranges
+    var startArray = [];
+    var endArray = [];
+    var times = [];
+
+    $.each($('input[name^="start"]'), function (i, time) {
+        if ($(this).val() != "")
+            startArray.push($(this).val());
+    });
+
+    $.each($('input[name^="end"]'), function (i, time) {
+        if ($(this).val() != "")
+            endArray.push($(this).val());
+    });
+
+    $.each(startArray, function (i, item) {
+        times.push('{"start":"' + startArray[i] + '","end":"' + endArray[i] + '"}');
+    });
+
+    data['times'] = times;
+
+    // TODO: coordinate
+   /* var coordinates = [];
+
+    if ($('#field_gps_coord').val() != "") {
+        var tmp = $('#field_gps_coord').val().split(';');
+    }*/
+
     console.log(data);
 
-    /*
+
     // submit to server
-    $.ajax({
+ /*   $.ajax({
         crossOrigin: true,
-        url: url + '/applications',
+        url: restUrl + '/applications',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
-        data: '{"email":"jalil.hashemi@students.fhnw.ch","name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
+        data: '{"email":"jalil.hashemi@students.fhnw.ch", "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
         dataType: 'json'
     })
         .done(function (json) {
@@ -600,5 +629,5 @@ function submitApplication() {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
-        */
+*/
 }
