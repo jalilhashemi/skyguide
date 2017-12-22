@@ -60,12 +60,23 @@ function initializeTooltips() {
 
 function initializeDateRangePicker() {
     $(function () {
-        $('input[name="daterange"]').daterangepicker({
+        $('input[name="dateFromUntil"]').daterangepicker({
+            //autoUpdateInput: false,
             locale: {
-                format: 'MM.DD.YYYY'
+                format: 'DD.MM.YYYY'
             }
         });
     });
+
+/*
+    $('input[name="dateFromUntil"]').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+    });
+
+    $('input[name="dateFromUntil"]').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val('');
+    });*/
+
 }
 
 function hideAllFields() {
@@ -75,8 +86,14 @@ function hideAllFields() {
     $('#addScnt').addClass('display-none');
     $('.time_field').addClass('display-none');
 
-    $('.form-check-inline').parent().addClass('display-none');
-    $('.form-check-inline').addClass('display-none');
+
+    $('.custom-control-input').parent().addClass('display-none');
+    $('.custom-control-input').addClass('display-none');
+    $('.custom-control-input').prop('checked', false);
+    $('.custom-control-input').prop('required', false);
+
+    // empty all fields
+    $('input.data').val('');
 }
 
 /**
@@ -84,26 +101,31 @@ function hideAllFields() {
  * @param field The JSON field object from /information service
  */
 function showField(field) {
+    $('#' + field.id).parent().removeClass('display-none');
     $('#' + field.id).parent().children('label').remove();
     $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.label + (field.mandatory ? '*' : '') + '</label>\n')
-    $('#' + field.id).attr('placeholder', field.placeholder).prop('required', field.mandatory ? true : false);
+    $('#' + field.id)
+        .attr('placeholder', field.placeholder)
+        //.attr('name', field.name)
+        .prop('required', field.mandatory ? true : false);
 }
 
 function processField(field) {
     if (field.active) {
         if (field.id.substring(0, 6) === 'radio_') {
             //$('#' + field.id).prop('required', true);
+            $('#' + field.id).parent().removeClass('display-none');
             $('#' + field.id).parent().parent().removeClass('display-none');
-            $('#' + field.id).parent().parent().parent().removeClass('display-none');
-            $('#' + field.id).parent().parent().attr('title', field.tooltip);
+            $('#' + field.id).prop('required',true);
+            //$('#' + field.id).parent().attr('title', field.tooltip);
             initializeTooltips();
             $('#addScnt').removeClass('display-none');
         }
         else {
-            $('#' + field.id).parent().removeClass('display-none');
             showField(field);
         }
     }
+
 }
 
 function initializeChangeHandlers() {
@@ -142,8 +164,11 @@ function initializeChangeHandlers() {
     $(document).on('change', '#type_of_activity', function () {
         hideAllFields();
 
-        // and hide the aircraft type selection
-        $('#type_of_aircraft').parent().hide();
+        // and hide the aircraft type selection and empty value
+        $('#type_of_aircraft').parent().hide()
+            .prop('required', false);
+        $('#type_of_aircraft').val('');
+
 
         //
         $.each(informationJSON, function (j, activityType) {
@@ -153,7 +178,8 @@ function initializeChangeHandlers() {
                     actualAircraftTypeList = activityType.aircraftTypeList;
 
                     // show the dropdown
-                    $('#type_of_aircraft').parent().show();
+                    $('#type_of_aircraft').parent().show()
+                        .prop('required', true);
 
                     // remove all options and append default text
                     $('#type_of_aircraft').find('option').remove().end().append("<option value=''>Select the aircraft type</option>");
@@ -204,14 +230,17 @@ function initializeChangeHandlers() {
                 .clone()
                 .removeClass('display-none')
                 .removeAttr('id')
+                //.prop('required', true)
                 .attr('data-time-index', timeIndex)
                 .addClass('time_field')
                 .insertBefore(template);
             //$option = $clone.find('[name="option[]"]');
 
         clone
-            .find('[name="from"]').attr('name', 'time[' + timeIndex + '].from').end()
-            .find('[name="to"]').attr('name', 'time[' + timeIndex + '].to').end();
+            .find('[name="from"]').attr('name', 'time[' + timeIndex + '].from')
+            .addClass('data').end()
+            .find('[name="to"]').attr('name', 'time[' + timeIndex + '].to')
+            .addClass('data').end();
 
         // Add new field
         //$('#time_container').formValidation('addField', option);
@@ -544,7 +573,7 @@ function submitApplication() {
 
     var data = {};
 
-    $('form input, form select').each(
+    $('.data').each(
         function(index){
             var input = $(this);
             data[input.attr('name')] = input.val();
@@ -552,6 +581,7 @@ function submitApplication() {
            // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
         }
     );
+    data["heightType"]=$('input[name=heightType]:checked').val();
     console.log(data);
 
     /*
