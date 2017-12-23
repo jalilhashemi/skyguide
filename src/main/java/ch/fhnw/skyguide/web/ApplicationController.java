@@ -55,7 +55,8 @@ public class ApplicationController {
         application.setViewKey(UUID.randomUUID().toString());
         if (application != null) {
             application = applicationRepository.save(application);
-            emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
+            // activate mail sender
+           // emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
             return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);

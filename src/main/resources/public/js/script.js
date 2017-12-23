@@ -2,10 +2,29 @@ var informationJSON;
 var actualAircraftTypeList;
 var map;
 var layer;
-var lyr2 = ga.layer.create('ch.bazl.luftfahrtkarten-icao');
 var iconGeometry;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
+
+var source = new ol.source.Vector();
+var vector = new ol.layer.Vector({
+    source: source,
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#FF0000',
+            width: 2
+        }),
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: '#FF0000'
+            })
+        })
+    })
+});
 
 $(document).ready(function () {
     initializeForm();
@@ -19,7 +38,6 @@ $(document).ready(function () {
     console.log('url key: ' + key);
     var edit = url.searchParams.get("edit");
     console.log('url edit: ' + edit);
-
 });
 
 function initializeDropdowns() {
@@ -129,6 +147,7 @@ function processField(field) {
 }
 
 function initializeChangeHandlers() {
+
 
     $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
@@ -255,10 +274,10 @@ function initializeChangeHandlers() {
 
     $(document).on('change', '#check-layer-icao', function () {
         if ($('#check-layer-icao').is(':checked')) {
-            map.addLayer(lyr2);
+            setLayerVisible(1, true);
         }
         else {
-            map.removeLayer(lyr2);
+            setLayerVisible(1, false);
         }
     });
 
@@ -431,7 +450,97 @@ function initializeChangeHandlers() {
                 */
 
     });
+
+      $(document).on('click', '#btn_draw_rectangle',function () {
+
+          $("#map").addClass("drawing");
+
+          var boxStyle = new ol.style.Style({
+              fill: new ol.style.Fill({
+                  color: 'rgba(255, 0, 0, 0.3)'
+              }),
+              stroke: new ol.style.Stroke({
+                  color: '#FF0000',
+                  width:2
+              })
+          });;
+
+          var overlay = new ol.FeatureOverlay({
+              map: map,
+              style: boxStyle
+          });
+
+          var dragBox = new ol.interaction.DragBox({
+              style: boxStyle
+          });
+          map.addInteraction(dragBox);
+
+          dragBox.on('boxstart', function(evt) {
+              overlay.getFeatures().clear();
+          });
+
+          dragBox.on('boxend', function(evt) {
+              var bbox = dragBox.getGeometry().getExtent();
+
+              console.log(bbox[3]);
+              overlay.addFeature(new ol.Feature(dragBox.getGeometry()));
+              map.removeInteraction(dragBox);
+              $("#map").removeClass("drawing");
+          });
+      });
+
+      // has an error yet
+    $(document).on('click', '#btn_draw_point', function () {
+        var iconStyle = new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: 'rgba(255,0,0,0.3)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'rgba(255,0,0,0.8)',
+                    width: 3
+                })
+            })
+        });
+
+        var overlay = new ol.FeatureOverlay({
+            map: map,
+            style: iconStyle
+        });
+
+        var pointMarker = new ol.Feature({
+            geometry: new ol.geom.Point(),
+            style: iconStyle
+        });
+
+        overlay.addFeature(pointMarker);
+
+
+     /*   var draw, snap; // global so we can remove them later
+        // var typeSelect = document.getElementById('type');
+
+        draw = new ol.interaction.Draw({
+            source: source,
+            type: 'Point'
+        });
+
+       // not working console.log(draw.getGeometry().getExtent());
+
+          map.addInteraction(draw);
+          snap = new ol.interaction.Snap({source: source});
+          map.addInteraction(snap);
+*/
+    });
 }
+
+function setLayerVisible(layerIndex, isVisible) {
+    //  map.getLayers()[layerIndex].setVisible(isVisible);
+    map.getLayers().forEach(function (layer, idx) {
+        if (idx == layerIndex)
+            layer.setVisible(isVisible);
+    });
+};
 
 function initializeMap() {
 
@@ -439,54 +548,54 @@ function initializeMap() {
     var lon = 9.3;
 
     var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-
-    iconGeometry = new ol.geom.Point(loc);
-
-    var iconStyle = new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 10,
-            fill: new ol.style.Fill({
-                color: 'rgba(255,0,0,0.3)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(255,0,0,0.8)',
-                width: 3
-            })
-        })
-        /*Icon(({
-            anchor: [0.5, 46],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'pixels',
-            opacity: 0.9,
-            src: 'img/marker.png'
-        }))*/
-    });
-
-    var pointMarker = new ol.Feature({
-        geometry: iconGeometry,
-        style: iconStyle
-        /*,name: 'Null Island',
-        population: 4000,
-        rainfall: 500*/
-    });
-
-    pointMarker.setStyle(iconStyle);
-
-
-    var modify = new ol.interaction.Modify({
-        features: new ol.Collection([pointMarker]),
-        style: iconStyle
-    });
-
-    // pointMarker.set('visible', false);
-
-    var vectorLayer = new ol.source.Vector({
-        features: [pointMarker]
-    });
-
-    layer = new ol.layer.Vector({
-        source: vectorLayer
-    });
+    //
+    //    iconGeometry = new ol.geom.Point(loc);
+    //
+    //    var iconStyle = new ol.style.Style({
+    //        image: new ol.style.Circle({
+    //            radius: 10,
+    //            fill: new ol.style.Fill({
+    //                color: 'rgba(255,0,0,0.3)'
+    //            }),
+    //            stroke: new ol.style.Stroke({
+    //                color: 'rgba(255,0,0,0.8)',
+    //                width: 3
+    //            })
+    //        })
+    //        /*Icon(({
+    //            anchor: [0.5, 46],
+    //            anchorXUnits: 'fraction',
+    //            anchorYUnits: 'pixels',
+    //            opacity: 0.9,
+    //            src: 'img/marker.png'
+    //        }))*/
+    // });
+    // /*
+    //    var pointMarker = new ol.Feature({
+    //        geometry: iconGeometry,
+    //        style: iconStyle
+    //        /*,name: 'Null Island',
+    //        population: 4000,
+    //        rainfall: 500*/
+    //
+    // pointMarker.setStyle(iconStyle);
+    //
+    //
+    // var modify = new ol.interaction.Modify({
+    //     features: new ol.Collection([pointMarker]),
+    //     style: iconStyle
+    // });
+    //
+    // // pointMarker.set('visible', false);
+    //
+    //
+    // var vectorLayer = new ol.source.Vector({
+    //     features: [pointMarker]
+    // });
+    //
+    // layer = new ol.layer.Vector({
+    //     source: vectorLayer
+    // });
 
     map = new ga.Map({
 
@@ -496,25 +605,26 @@ function initializeMap() {
         // Define the layers to display
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
-            layer
+            ga.layer.create('ch.bazl.luftfahrtkarten-icao'),
+            vector
         ],
-        crossOrigin: 'null',
+        crossOrigin: 'null'//,
         // Create a view
         //  view: view,
 
         // disable scrolling on map
-        interactions: ol.interaction.defaults({mouseWheelZoom: false})
+        //    interactions: ol.interaction.defaults({mouseWheelZoom: false})
+
     });
 
-    layer.setVisible(false);
-
-    //layer.redraw();
+    //layer.setVisible(false);
 
     map.getView().setCenter(loc);
     map.getView().setResolution(500);
 
-    //   map.addInteraction(modify);
+    setLayerVisible(1, false);
 
+    /*
     map.on('singleclick', function (evt) {
         layer.setVisible(true);
         iconGeometry.setCoordinates(evt.coordinate);
@@ -547,6 +657,7 @@ function initializeMap() {
 
     }, pointMarker);
 
+
     pointMarker.on('change', function () {
         var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
 
@@ -554,20 +665,21 @@ function initializeMap() {
         $('#field_longitude').val(gps[0]);
 
     });
+    */
 }
 
-function setView(loc) {
-    map.getView().setCenter(loc);
-    map.getView().setResolution(50);
-}
-
-function setMarker(pos) {
-    layer.setVisible(true);
-    //var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-
-    setView([pos[0], pos[1]]);
-    iconGeometry.setCoordinates([pos[0], pos[1]]);
-}
+// function setView(loc) {
+//     map.getView().setCenter(loc);
+//     map.getView().setResolution(50);
+// }
+//
+// function setMarker(pos) {
+//     layer.setVisible(true);
+//     //var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+//
+//     setView([pos[0], pos[1]]);
+//     iconGeometry.setCoordinates([pos[0], pos[1]]);
+// }
 
 function submitApplication() {
 
@@ -605,29 +717,29 @@ function submitApplication() {
     data['times'] = times;
 
     // TODO: coordinate
-   /* var coordinates = [];
+    /* var coordinates = [];
 
-    if ($('#field_gps_coord').val() != "") {
-        var tmp = $('#field_gps_coord').val().split(';');
-    }*/
+     if ($('#field_gps_coord').val() != "") {
+         var tmp = $('#field_gps_coord').val().split(';');
+     }*/
 
     console.log(data);
 
 
     // submit to server
- /*   $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/applications',
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: '{"email":"jalil.hashemi@students.fhnw.ch", "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
-        dataType: 'json'
-    })
-        .done(function (json) {
-            console.log(json);
-        })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-        });
-*/
+    /*   $.ajax({
+           crossOrigin: true,
+           url: restUrl + '/applications',
+           type: 'POST',
+           contentType: "application/json; charset=utf-8",
+           data: '{"email":"jalil.hashemi@students.fhnw.ch", "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
+           dataType: 'json'
+       })
+           .done(function (json) {
+               console.log(json);
+           })
+           .fail(function (xhr, status, errorThrown) {
+               console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+           });
+   */
 }
