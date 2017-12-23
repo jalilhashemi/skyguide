@@ -8,7 +8,7 @@ var timeIndex = 0;
 
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
-    source: source,
+    source: source/*,
     style: new ol.style.Style({
         fill: new ol.style.Fill({
             color: 'rgba(255, 0, 0, 0.3)'
@@ -23,7 +23,7 @@ var vector = new ol.layer.Vector({
                 color: '#FF0000'
             })
         })
-    })
+    })*/
 });
 
 $(document).ready(function () {
@@ -451,9 +451,28 @@ function initializeChangeHandlers() {
 
     });
 
-      $(document).on('click', '#btn_draw_rectangle',function () {
+    $(document).on('click', '#btn_draw_rectangle', function () {
 
-          $("#map").addClass("drawing");
+        var rect = new ol.interaction.Draw({
+            source: source,
+            //style: iconStyle,
+            type: 'Circle',
+            geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
+        });
+
+        map.addInteraction(rect);
+
+
+        rect.on('drawend', function (evt) {
+            console.info('drawend');
+            //console.info(evt);
+            var feature = evt.feature;
+            map.removeInteraction(rect);
+            console.log(feature.getGeometry().getExtent());
+        });
+
+
+        /*  $("#map").addClass("drawing");
 
           var boxStyle = new ol.style.Style({
               fill: new ol.style.Fill({
@@ -461,9 +480,10 @@ function initializeChangeHandlers() {
               }),
               stroke: new ol.style.Stroke({
                   color: '#FF0000',
-                  width:2
+                  width: 2
               })
-          });;
+          });
+          ;
 
           var overlay = new ol.FeatureOverlay({
               map: map,
@@ -475,62 +495,165 @@ function initializeChangeHandlers() {
           });
           map.addInteraction(dragBox);
 
-          dragBox.on('boxstart', function(evt) {
+          dragBox.on('boxstart', function (evt) {
               overlay.getFeatures().clear();
           });
 
-          dragBox.on('boxend', function(evt) {
+          dragBox.on('boxend', function (evt) {
               var bbox = dragBox.getGeometry().getExtent();
 
               console.log(bbox[3]);
               overlay.addFeature(new ol.Feature(dragBox.getGeometry()));
               map.removeInteraction(dragBox);
               $("#map").removeClass("drawing");
-          });
-      });
+          });*/
+    });
 
-      // has an error yet
     $(document).on('click', '#btn_draw_point', function () {
-        var iconStyle = new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 10,
-                fill: new ol.style.Fill({
-                    color: 'rgba(255,0,0,0.3)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255,0,0,0.8)',
-                    width: 3
-                })
-            })
-        });
+        drawFigure('Point');
+        /* var iconStyle = new ol.style.Style({
+             image: new ol.style.Circle({
+                 radius: 10,
+                 fill: new ol.style.Fill({
+                     color: 'rgba(255,0,0,0.3)'
+                 }),
+                 stroke: new ol.style.Stroke({
+                     color: 'rgba(255,0,0,0.8)',
+                     width: 3
+                 })
+             })
+         });
 
-        var overlay = new ol.FeatureOverlay({
-            map: map,
-            style: iconStyle
-        });
+         var point = new ol.interaction.Draw({
+             source: source,
+             style: iconStyle,
+             type: 'Point',
+             geometryFunction: function (coords, geom) {
+                 if (!geom) {
+                     geom = new ol.geom.Point(null);
+                 }
+                 console.info(coords);
+                 geom.setCoordinates(coords);
+                 return geom;
+             }
+         });
+         map.addInteraction(point);
 
-        var pointMarker = new ol.Feature({
-            geometry: new ol.geom.Point(),
-            style: iconStyle
-        });
 
-        overlay.addFeature(pointMarker);
+         point.on('drawend', function (evt) {
+             console.info('drawend');
+             //console.info(evt);
+             var feature = evt.feature;
+             map.removeInteraction(point);
+             console.log(feature.getGeometry().getExtent());
+         });
+
+ */
 
 
-     /*   var draw, snap; // global so we can remove them later
-        // var typeSelect = document.getElementById('type');
+        /*   var pointMarker = new ol.Feature({
+               geometry: new ol.geom.Point(),
+               style: iconStyle
+           });
+   */
+        // overlay.addFeature(pointMarker);
 
-        draw = new ol.interaction.Draw({
+
+        /*   var draw, snap; // global so we can remove them later
+           // var typeSelect = document.getElementById('type');
+
+           draw = new ol.interaction.Draw({
+               source: source,
+               type: 'Point'
+           });
+
+          // not working console.log(draw.getGeometry().getExtent());
+
+             map.addInteraction(draw);
+             snap = new ol.interaction.Snap({source: source});
+             map.addInteraction(snap);
+   */
+    });
+
+    $(document).on('click', '#btn_draw_polygon', function () {
+        drawFigure('Polygon');
+    });
+
+    $(document).on('click', '#btn_draw_circle', function () {
+        var circle = new ol.interaction.Draw({
             source: source,
-            type: 'Point'
+            //style: iconStyle,
+            type: 'Circle',
+            geometryFunction: new ol.geom.Point()
         });
 
-       // not working console.log(draw.getGeometry().getExtent());
+        map.addInteraction(circle);
 
-          map.addInteraction(draw);
-          snap = new ol.interaction.Snap({source: source});
-          map.addInteraction(snap);
-*/
+
+        circle.on('drawend', function (evt) {
+            console.info('drawend');
+            //console.info(evt);
+            var feature = evt.feature;
+            map.removeInteraction(circle);
+            console.log(feature.getGeometry().getExtent());
+        });
+    });
+
+}
+
+function drawFigure(figureType) {
+    var iconStyle = new ol.style.Style({
+        image: new ol.style.Circle({
+            radius: 10,
+            fill: new ol.style.Fill({
+                color: 'rgba(255,0,0,0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'rgba(255,0,0,0.8)',
+                width: 3
+            })
+        })
+    });
+
+    var type;
+    if (figureType === 'Rectangle') {
+        type = 'Circle';
+    }
+    else {
+        type = figureType;
+    }
+
+    var point = new ol.interaction.Draw({
+        source: source,
+        //style: iconStyle,
+        type: figureType,
+        geometryFunction: function (coords, geom) {
+            if (!geom) {
+                if (figureType === 'Point')
+                    geom = new ol.geom.Point(null);
+                /* else if(figureType === 'Rectangle') {
+                     geom = ol.interaction.Draw.createBox();
+                 }*/
+                else if (figureType === 'Polygon')
+                    geom = new ol.geom.Polygon(null);
+                else if (figureType === 'Circle')
+                    geom = new ol.geom.Circle(null);
+            }
+            console.info(coords);
+            geom.setCoordinates(coords);
+            return geom;
+        }
+    });
+
+    map.addInteraction(point);
+
+
+    point.on('drawend', function (evt) {
+        console.info('drawend');
+        //console.info(evt);
+        var feature = evt.feature;
+        map.removeInteraction(point);
+        console.log(feature.getGeometry().getExtent());
     });
 }
 
