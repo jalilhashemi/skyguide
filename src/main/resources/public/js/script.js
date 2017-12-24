@@ -8,7 +8,7 @@ var timeIndex = 0;
 
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
-    source: source/*,
+    source: source,
     style: new ol.style.Style({
         fill: new ol.style.Fill({
             color: 'rgba(255, 0, 0, 0.3)'
@@ -23,7 +23,7 @@ var vector = new ol.layer.Vector({
                 color: '#FF0000'
             })
         })
-    })*/
+    })
 });
 
 $(document).ready(function () {
@@ -548,7 +548,6 @@ function initializeChangeHandlers() {
             source: source,
             //style: iconStyle,
             type: 'Circle'
-            //geometryFunction: new ol.geom.Point()
         });
 
         map.addInteraction(circle);
@@ -557,35 +556,8 @@ function initializeChangeHandlers() {
         map.addInteraction(snap);
 
         circle.on('drawend', function (evt) {
-            var feature = evt.feature;
-            map.removeInteraction(circle);
-            console.log("created Circle: " + feature.getGeometry().getExtent());
-
-
-            // Create a select interaction and add it to the map:
-            selectInteraction = new ol.interaction.Select();
-            map.addInteraction(selectInteraction);
-            // select feature:
-            selectInteraction.getFeatures().push(feature);
-            // do something after drawing (e.g. saving):
-
-            console.log("created " + figureType + ": " + feature.getGeometry().getExtent());
-
-            // Create a modify interaction and add to the map:
-            modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
-            map.addInteraction(modifyInteraction);
-
-            // set listener on "modifyend":
-            modifyInteraction.on('modifyend', function(e) {
-                // get features:
-            //    var collection = e.features;
-                // There's only one feature, so get the first and only one:
-            //    var featureClone = collection.item(0).clone();
-                // do something after modifying (e.g. saving):
-                console.log("modified: " +feature.getGeometry().getExtent());
-            });
-
-
+            var geometry = evt.feature.getGeometry();
+            console.log("created circle: " + geometry.getExtent());
         });
     });
 
@@ -625,7 +597,7 @@ function drawFigure(figureType) {
                 /* else if(figureType === 'Rectangle') {
                      geom = ol.interaction.Draw.createBox();
                  }*/
-                 if (figureType === 'Polygon')
+                if (figureType === 'Polygon')
                     geom = new ol.geom.Polygon(null);
                 else if (figureType === 'Circle')
                     geom = new ol.geom.Circle(null);
@@ -645,31 +617,38 @@ function drawFigure(figureType) {
         //console.info(evt);
         var feature = evt.feature;
         map.removeInteraction(point);
+        /*
+                // Create a select interaction and add it to the map:
+                selectInteraction = new ol.interaction.Select();
+                map.addInteraction(selectInteraction);
 
-        // Create a select interaction and add it to the map:
-        selectInteraction = new ol.interaction.Select();
-        map.addInteraction(selectInteraction);
-        // select feature:
-        selectInteraction.getFeatures().push(feature);
-        // do something after drawing (e.g. saving):
+
+
+                // select feature:
+                selectInteraction.getFeatures().push(feature);
+                // do something after drawing (e.g. saving):
+
+        */
+        snap = new ol.interaction.Snap({source: source});
+        map.addInteraction(snap);
 
         console.log("created " + figureType + ": " + feature.getGeometry().getExtent());
         $('#field_gps_coord').val(feature.getGeometry().getExtent());
+        /*
+                // Create a modify interaction and add to the map:
+                modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
+                map.addInteraction(modifyInteraction);
 
-        // Create a modify interaction and add to the map:
-        modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
-        map.addInteraction(modifyInteraction);
-
-        // set listener on "modifyend":
-        modifyInteraction.on('modifyend', function(e) {
-            // get features:
-          //  var collection = e.features;
-            // There's only one feature, so get the first and only one:
-         //   var featureClone = collection.item(0).clone();
-            // do something after modifying (e.g. saving):
-            console.log("modified: " +feature.getGeometry().getExtent());
-        });
-
+                // set listener on "modifyend":
+                modifyInteraction.on('modifyend', function(e) {
+                    // get features:
+                  //  var collection = e.features;
+                    // There's only one feature, so get the first and only one:
+                 //   var featureClone = collection.item(0).clone();
+                    // do something after modifying (e.g. saving):
+                    console.log("modified: " +feature.getGeometry().getExtent());
+                });
+        */
     });
 }
 
@@ -752,7 +731,7 @@ function initializeMap() {
         //  view: view,
 
         // disable scrolling on map
-            interactions: ol.interaction.defaults({mouseWheelZoom: false})
+        interactions: ol.interaction.defaults({mouseWheelZoom: false})
 
     });
 
