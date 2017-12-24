@@ -5,7 +5,8 @@ var layer;
 var iconGeometry;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
-
+var Modify;
+var Draw;
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
     source: source,
@@ -69,6 +70,7 @@ function initializeForm() {
     initializeDateRangePicker();
     initializeTooltips();
     initializeMap();
+    initDrawTool();
 
 }
 
@@ -474,77 +476,20 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '#btn_draw_point', function () {
-        drawFigure('Point');
-        /* var iconStyle = new ol.style.Style({
-             image: new ol.style.Circle({
-                 radius: 10,
-                 fill: new ol.style.Fill({
-                     color: 'rgba(255,0,0,0.3)'
-                 }),
-                 stroke: new ol.style.Stroke({
-                     color: 'rgba(255,0,0,0.8)',
-                     width: 3
-                 })
-             })
-         });
-
-         var point = new ol.interaction.Draw({
-             source: source,
-             style: iconStyle,
-             type: 'Point',
-             geometryFunction: function (coords, geom) {
-                 if (!geom) {
-                     geom = new ol.geom.Point(null);
-                 }
-                 console.info(coords);
-                 geom.setCoordinates(coords);
-                 return geom;
-             }
-         });
-         map.addInteraction(point);
-
-
-         point.on('drawend', function (evt) {
-             console.info('drawend');
-             //console.info(evt);
-             var feature = evt.feature;
-             map.removeInteraction(point);
-             console.log(feature.getGeometry().getExtent());
-         });
-
- */
-
-
-        /*   var pointMarker = new ol.Feature({
-               geometry: new ol.geom.Point(),
-               style: iconStyle
-           });
-   */
-        // overlay.addFeature(pointMarker);
-
-
-        /*   var draw, snap; // global so we can remove them later
-           // var typeSelect = document.getElementById('type');
-
-           draw = new ol.interaction.Draw({
-               source: source,
-               type: 'Point'
-           });
-
-          // not working console.log(draw.getGeometry().getExtent());
-
-             map.addInteraction(draw);
-             snap = new ol.interaction.Snap({source: source});
-             map.addInteraction(snap);
-   */
+        Draw.setActive(true, 'Point');
+        Modify.setActive(false);
     });
 
     $(document).on('click', '#btn_draw_polygon', function () {
-        drawFigure('Polygon');
+        Draw.setActive(true, 'Polygon');
+        Modify.setActive(false);
     });
 
     $(document).on('click', '#btn_draw_circle', function () {
-        var circle = new ol.interaction.Draw({
+        Draw.setActive(true, 'Circle');
+        Modify.setActive(false);
+
+      /*  var circle = new ol.interaction.Draw({
             source: source,
             //style: iconStyle,
             type: 'Circle'
@@ -552,15 +497,140 @@ function initializeChangeHandlers() {
 
         map.addInteraction(circle);
 
-        snap = new ol.interaction.Snap({source: source});
-        map.addInteraction(snap);
-
         circle.on('drawend', function (evt) {
             var geometry = evt.feature.getGeometry();
             console.log("created circle: " + geometry.getExtent());
+            map.removeInteraction(circle);
         });
+
+        var snap = new ol.interaction.Snap({
+            source: vector.getSource()
+        });
+        map.addInteraction(snap);
+*/
     });
 
+    $(document).on('click', '#btn_draw_path', function () {
+        Draw.setActive(true, 'LineString');
+        Modify.setActive(false);
+    });
+
+    $(document).on('click', '#btn_draw_modify', function () {
+        Draw.setActive(false);
+        Modify.setActive(true);
+    });
+
+}
+
+function initDrawTool() {
+
+     Modify = {
+        init: function () {
+            this.select = new ol.interaction.Select();
+            map.addInteraction(this.select);
+
+            this.modify = new ol.interaction.Modify({
+                features: this.select.getFeatures()
+            });
+            map.addInteraction(this.modify);
+
+            this.setEvents();
+        },
+        setEvents: function () {
+            var selectedFeatures = this.select.getFeatures();
+
+            this.select.on('change:active', function () {
+                selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
+            });
+        },
+        setActive: function (active) {
+            this.select.setActive(active);
+            this.modify.setActive(active);
+        }
+    };
+
+    Modify.init();
+
+// TODO: mode draw or modify
+    var optionsForm; // = document.getElementById('options-form');
+
+     Draw = {
+        init: function () {
+            map.addInteraction(this.Point);
+            this.Point.setActive(false);
+            map.addInteraction(this.LineString);
+            this.LineString.setActive(false);
+            map.addInteraction(this.Polygon);
+            this.Polygon.setActive(false);
+            map.addInteraction(this.Circle);
+            this.Circle.setActive(false);
+        },
+        Point: new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: 'Point'
+        }),
+        LineString: new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: 'LineString'
+        }),
+        Polygon: new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: 'Polygon'
+        }),
+        Circle: new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: 'Circle'
+        }),
+        getActive: function () {
+            return this.activeType ? this[this.activeType].getActive() : false;
+        },
+        // TODO: set the type of drawing
+        setActive: function (active, type) {
+            //var type = 'LineString'; // temp
+            if (active) {
+                this.activeType && this[this.activeType].setActive(false, null);
+                this[type].setActive(true);
+                this.activeType = type;
+            } else {
+                this.activeType && this[this.activeType].setActive(false, null);
+                this.activeType = null;
+            }
+        }
+    };
+    Draw.init();
+
+
+// TODO: changing draw and modify
+    /**
+     * Let user change the geometry type.
+     * @param {Event} e Change event.
+     */
+ /*   optionsForm.onchange = function (e) {
+        var type = e.target.getAttribute('name');
+        var value = e.target.value;
+        if (type == 'draw-type') {
+            Draw.getActive() && Draw.setActive(true);
+        } else if (type == 'interaction') {
+            if (value == 'modify') {
+                Draw.setActive(false);
+                Modify.setActive(true);
+            } else if (value == 'draw') {
+                Draw.setActive(true);
+                Modify.setActive(false);
+            }
+        }
+    };*/
+
+ //   Draw.setActive(true);
+    Modify.setActive(false);
+
+// The snap interaction must be added after the Modify and Draw interactions
+// in order for its map browser event handlers to be fired first. Its handlers
+// are responsible of doing the snapping.
+    var snap = new ol.interaction.Snap({
+        source: vector.getSource()
+    });
+    map.addInteraction(snap);
 }
 
 function drawFigure(figureType) {
@@ -578,14 +648,6 @@ function drawFigure(figureType) {
         })
     });
 
-    var type;
-    if (figureType === 'Rectangle') {
-        type = 'Circle';
-    }
-    else {
-        type = figureType;
-    }
-
     var point = new ol.interaction.Draw({
         source: source,
         //style: iconStyle,
@@ -594,15 +656,9 @@ function drawFigure(figureType) {
             if (!geom) {
                 if (figureType === 'Point')
                     geom = new ol.geom.Point(null);
-                /* else if(figureType === 'Rectangle') {
-                     geom = ol.interaction.Draw.createBox();
-                 }*/
-                if (figureType === 'Polygon')
+                else if (figureType === 'Polygon')
                     geom = new ol.geom.Polygon(null);
-                else if (figureType === 'Circle')
-                    geom = new ol.geom.Circle(null);
             }
-            //console.info(coords);
             geom.setCoordinates(coords);
             return geom;
         }
@@ -614,7 +670,6 @@ function drawFigure(figureType) {
     map.addInteraction(snap);
 
     point.on('drawend', function (evt) {
-        //console.info(evt);
         var feature = evt.feature;
         map.removeInteraction(point);
         /*
