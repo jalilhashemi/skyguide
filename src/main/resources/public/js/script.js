@@ -464,49 +464,13 @@ function initializeChangeHandlers() {
 
 
         rect.on('drawend', function (evt) {
-            console.info('drawend');
-            //console.info(evt);
             var feature = evt.feature;
             map.removeInteraction(rect);
-            console.log(feature.getGeometry().getExtent());
+            console.log("created Rectangle: " + feature.getGeometry().getExtent());
         });
+        snap = new ol.interaction.Snap({source: source});
+        map.addInteraction(snap);
 
-
-        /*  $("#map").addClass("drawing");
-
-          var boxStyle = new ol.style.Style({
-              fill: new ol.style.Fill({
-                  color: 'rgba(255, 0, 0, 0.3)'
-              }),
-              stroke: new ol.style.Stroke({
-                  color: '#FF0000',
-                  width: 2
-              })
-          });
-          ;
-
-          var overlay = new ol.FeatureOverlay({
-              map: map,
-              style: boxStyle
-          });
-
-          var dragBox = new ol.interaction.DragBox({
-              style: boxStyle
-          });
-          map.addInteraction(dragBox);
-
-          dragBox.on('boxstart', function (evt) {
-              overlay.getFeatures().clear();
-          });
-
-          dragBox.on('boxend', function (evt) {
-              var bbox = dragBox.getGeometry().getExtent();
-
-              console.log(bbox[3]);
-              overlay.addFeature(new ol.Feature(dragBox.getGeometry()));
-              map.removeInteraction(dragBox);
-              $("#map").removeClass("drawing");
-          });*/
     });
 
     $(document).on('click', '#btn_draw_point', function () {
@@ -583,25 +547,52 @@ function initializeChangeHandlers() {
         var circle = new ol.interaction.Draw({
             source: source,
             //style: iconStyle,
-            type: 'Circle',
-            geometryFunction: new ol.geom.Point()
+            type: 'Circle'
+            //geometryFunction: new ol.geom.Point()
         });
 
         map.addInteraction(circle);
 
+        snap = new ol.interaction.Snap({source: source});
+        map.addInteraction(snap);
 
         circle.on('drawend', function (evt) {
-            console.info('drawend');
-            //console.info(evt);
             var feature = evt.feature;
             map.removeInteraction(circle);
-            console.log(feature.getGeometry().getExtent());
+            console.log("created Circle: " + feature.getGeometry().getExtent());
+
+
+            // Create a select interaction and add it to the map:
+            selectInteraction = new ol.interaction.Select();
+            map.addInteraction(selectInteraction);
+            // select feature:
+            selectInteraction.getFeatures().push(feature);
+            // do something after drawing (e.g. saving):
+
+            console.log("created " + figureType + ": " + feature.getGeometry().getExtent());
+
+            // Create a modify interaction and add to the map:
+            modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
+            map.addInteraction(modifyInteraction);
+
+            // set listener on "modifyend":
+            modifyInteraction.on('modifyend', function(e) {
+                // get features:
+            //    var collection = e.features;
+                // There's only one feature, so get the first and only one:
+            //    var featureClone = collection.item(0).clone();
+                // do something after modifying (e.g. saving):
+                console.log("modified: " +feature.getGeometry().getExtent());
+            });
+
+
         });
     });
 
 }
 
 function drawFigure(figureType) {
+
     var iconStyle = new ol.style.Style({
         image: new ol.style.Circle({
             radius: 10,
@@ -634,12 +625,12 @@ function drawFigure(figureType) {
                 /* else if(figureType === 'Rectangle') {
                      geom = ol.interaction.Draw.createBox();
                  }*/
-                else if (figureType === 'Polygon')
+                 if (figureType === 'Polygon')
                     geom = new ol.geom.Polygon(null);
                 else if (figureType === 'Circle')
                     geom = new ol.geom.Circle(null);
             }
-            console.info(coords);
+            //console.info(coords);
             geom.setCoordinates(coords);
             return geom;
         }
@@ -647,13 +638,38 @@ function drawFigure(figureType) {
 
     map.addInteraction(point);
 
+    snap = new ol.interaction.Snap({source: source});
+    map.addInteraction(snap);
 
     point.on('drawend', function (evt) {
-        console.info('drawend');
         //console.info(evt);
         var feature = evt.feature;
         map.removeInteraction(point);
-        console.log(feature.getGeometry().getExtent());
+
+        // Create a select interaction and add it to the map:
+        selectInteraction = new ol.interaction.Select();
+        map.addInteraction(selectInteraction);
+        // select feature:
+        selectInteraction.getFeatures().push(feature);
+        // do something after drawing (e.g. saving):
+
+        console.log("created " + figureType + ": " + feature.getGeometry().getExtent());
+        $('#field_gps_coord').val(feature.getGeometry().getExtent());
+
+        // Create a modify interaction and add to the map:
+        modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
+        map.addInteraction(modifyInteraction);
+
+        // set listener on "modifyend":
+        modifyInteraction.on('modifyend', function(e) {
+            // get features:
+          //  var collection = e.features;
+            // There's only one feature, so get the first and only one:
+         //   var featureClone = collection.item(0).clone();
+            // do something after modifying (e.g. saving):
+            console.log("modified: " +feature.getGeometry().getExtent());
+        });
+
     });
 }
 
@@ -731,12 +747,12 @@ function initializeMap() {
             ga.layer.create('ch.bazl.luftfahrtkarten-icao'),
             vector
         ],
-        crossOrigin: 'null'//,
+        crossOrigin: 'null',
         // Create a view
         //  view: view,
 
         // disable scrolling on map
-        //    interactions: ol.interaction.defaults({mouseWheelZoom: false})
+            interactions: ol.interaction.defaults({mouseWheelZoom: false})
 
     });
 
