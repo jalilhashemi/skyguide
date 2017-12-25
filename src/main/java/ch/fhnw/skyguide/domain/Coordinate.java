@@ -11,7 +11,7 @@ public class Coordinate {
     private Integer id;
     private String lat;
     private String lon;
-    private Set<Application> applications;
+    private Set<Drawing> drawings;
 
     public Coordinate() {
 
@@ -45,11 +45,11 @@ public class Coordinate {
 
     @ManyToMany(mappedBy = "coordinates")
     @JsonIgnore
-    public Set<Application> getApplications() {
-        return applications;
+    public Set<Drawing> getDrawings() {
+        return drawings;
     }
 
-    public void setApplications(Set<Application> applications) {
-        this.applications = applications;
+    public void setDrawings(Set<Drawing> drawings) {
+        this.drawings = drawings;
     }
 }

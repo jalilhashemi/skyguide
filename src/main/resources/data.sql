@@ -37,3 +37,9 @@ INSERT INTO aircraft_type (name) VALUES
 ('Rotary Wing Aircraft'),
 ('Fixed Wind Aircraft'),
 ('RPAS');
+
+INSERT INTO drawing_type (name) VALUES
+('Point'),
+('Circle'),
+('Path'),
+('Polygon');

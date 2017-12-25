@@ -24,7 +24,7 @@ public class ApplicationDTO {
     private String beamDirection;
     private String payloadAttachedObj;
     private String amount;
-    private List<CoordinateDTO> coordinates;
+    private List<DrawingDTO> drawings;
     private List<TimeDTO> times;
     private String radius;
     private String selfDeclaration;
@@ -213,12 +213,12 @@ public class ApplicationDTO {
         this.heightType = heightType;
     }
 
-    public List<CoordinateDTO> getCoordinates() {
-        return coordinates;
+    public List<DrawingDTO> getDrawings() {
+        return drawings;
     }
 
-    public void setCoordinates(List<CoordinateDTO> coordinates) {
-        this.coordinates = coordinates;
+    public void setDrawings(List<DrawingDTO> drawings) {
+        this.drawings = drawings;
     }
 
     public List<TimeDTO> getTimes() {

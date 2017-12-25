@@ -31,7 +31,7 @@ $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
 
-    //submitApplication();
+    submitApplication();
 
     // for hash link
     var url = new URL(window.location.href);
@@ -454,25 +454,8 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '#btn_draw_rectangle', function () {
-
-        var rect = new ol.interaction.Draw({
-            source: source,
-            //style: iconStyle,
-            type: 'Circle',
-            geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
-        });
-
-        map.addInteraction(rect);
-
-
-        rect.on('drawend', function (evt) {
-            var feature = evt.feature;
-            map.removeInteraction(rect);
-            console.log("created Rectangle: " + feature.getGeometry().getExtent());
-        });
-        snap = new ol.interaction.Snap({source: source});
-        map.addInteraction(snap);
-
+        Draw.setActive(true, 'Rectangle');
+        Modify.setActive(false);
     });
 
     $(document).on('click', '#btn_draw_point', function () {
@@ -488,30 +471,10 @@ function initializeChangeHandlers() {
     $(document).on('click', '#btn_draw_circle', function () {
         Draw.setActive(true, 'Circle');
         Modify.setActive(false);
-
-      /*  var circle = new ol.interaction.Draw({
-            source: source,
-            //style: iconStyle,
-            type: 'Circle'
-        });
-
-        map.addInteraction(circle);
-
-        circle.on('drawend', function (evt) {
-            var geometry = evt.feature.getGeometry();
-            console.log("created circle: " + geometry.getExtent());
-            map.removeInteraction(circle);
-        });
-
-        var snap = new ol.interaction.Snap({
-            source: vector.getSource()
-        });
-        map.addInteraction(snap);
-*/
     });
 
     $(document).on('click', '#btn_draw_path', function () {
-        Draw.setActive(true, 'LineString');
+        Draw.setActive(true, 'Path');
         Modify.setActive(false);
     });
 
@@ -524,7 +487,7 @@ function initializeChangeHandlers() {
 
 function initDrawTool() {
 
-     Modify = {
+    Modify = {
         init: function () {
             this.select = new ol.interaction.Select();
             map.addInteraction(this.select);
@@ -542,6 +505,15 @@ function initDrawTool() {
             this.select.on('change:active', function () {
                 selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
             });
+
+            selectedFeatures.on('add', function(e) {
+                e.element.on('change', function(e) {
+                    var features = vector.getSource().getFeatures();
+                    features.forEach(function(feature) {
+                        console.log(feature.getGeometry().getExtent());
+                    });
+                });
+            });
         },
         setActive: function (active) {
             this.select.setActive(active);
@@ -551,25 +523,25 @@ function initDrawTool() {
 
     Modify.init();
 
-// TODO: mode draw or modify
-    var optionsForm; // = document.getElementById('options-form');
-
-     Draw = {
+    Draw = {
         init: function () {
             map.addInteraction(this.Point);
             this.Point.setActive(false);
-            map.addInteraction(this.LineString);
-            this.LineString.setActive(false);
+            map.addInteraction(this.Path);
+            this.Path.setActive(false);
             map.addInteraction(this.Polygon);
             this.Polygon.setActive(false);
             map.addInteraction(this.Circle);
             this.Circle.setActive(false);
+            map.addInteraction(this.Rectangle);
+            this.Rectangle.setActive(false);
+            this.setEvents();
         },
         Point: new ol.interaction.Draw({
             source: vector.getSource(),
             type: 'Point'
         }),
-        LineString: new ol.interaction.Draw({
+        Path: new ol.interaction.Draw({
             source: vector.getSource(),
             type: 'LineString'
         }),
@@ -581,130 +553,61 @@ function initDrawTool() {
             source: vector.getSource(),
             type: 'Circle'
         }),
+        // new ol.interaction.DragBox({
+        Rectangle: new ol.interaction.Draw({
+            source: vector.getSource(),
+            type: 'Circle',
+            geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
+        }),
         getActive: function () {
             return this.activeType ? this[this.activeType].getActive() : false;
         },
-        // TODO: set the type of drawing
         setActive: function (active, type) {
-            //var type = 'LineString'; // temp
             if (active) {
-                this.activeType && this[this.activeType].setActive(false, null);
+                this.activeType && this[this.activeType].setActive(false);
                 this[type].setActive(true);
                 this.activeType = type;
             } else {
-                this.activeType && this[this.activeType].setActive(false, null);
+                this.activeType && this[this.activeType].setActive(false);
                 this.activeType = null;
             }
+        },
+        setEvents: function () {
+            this.Point.on('drawend', function (evt) {
+                var feature = evt.feature;
+                console.log("created Point: " + feature.getGeometry().getExtent());
+                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+            });
+            this.Path.on('drawend', function (evt) {
+                var feature = evt.feature;
+                console.log("created Path: " + feature.getGeometry().getExtent());
+                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+            });
+            this.Polygon.on('drawend', function (evt) {
+                var feature = evt.feature;
+                console.log("created Polygon: " + feature.getGeometry().getExtent());
+                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+            });
+            this.Circle.on('drawend', function (evt) {
+                var feature = evt.feature;
+                console.log("created Circle: " + feature.getGeometry().getExtent());
+                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+            });
+            this.Rectangle.on('drawend', function (evt) {
+                var feature = evt.feature;
+                console.log("created Rectangle: " + feature.getGeometry().getExtent());
+                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+            });
         }
     };
     Draw.init();
 
-
-// TODO: changing draw and modify
-    /**
-     * Let user change the geometry type.
-     * @param {Event} e Change event.
-     */
- /*   optionsForm.onchange = function (e) {
-        var type = e.target.getAttribute('name');
-        var value = e.target.value;
-        if (type == 'draw-type') {
-            Draw.getActive() && Draw.setActive(true);
-        } else if (type == 'interaction') {
-            if (value == 'modify') {
-                Draw.setActive(false);
-                Modify.setActive(true);
-            } else if (value == 'draw') {
-                Draw.setActive(true);
-                Modify.setActive(false);
-            }
-        }
-    };*/
-
- //   Draw.setActive(true);
     Modify.setActive(false);
 
-// The snap interaction must be added after the Modify and Draw interactions
-// in order for its map browser event handlers to be fired first. Its handlers
-// are responsible of doing the snapping.
     var snap = new ol.interaction.Snap({
         source: vector.getSource()
     });
     map.addInteraction(snap);
-}
-
-function drawFigure(figureType) {
-
-    var iconStyle = new ol.style.Style({
-        image: new ol.style.Circle({
-            radius: 10,
-            fill: new ol.style.Fill({
-                color: 'rgba(255,0,0,0.3)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'rgba(255,0,0,0.8)',
-                width: 3
-            })
-        })
-    });
-
-    var point = new ol.interaction.Draw({
-        source: source,
-        //style: iconStyle,
-        type: figureType,
-        geometryFunction: function (coords, geom) {
-            if (!geom) {
-                if (figureType === 'Point')
-                    geom = new ol.geom.Point(null);
-                else if (figureType === 'Polygon')
-                    geom = new ol.geom.Polygon(null);
-            }
-            geom.setCoordinates(coords);
-            return geom;
-        }
-    });
-
-    map.addInteraction(point);
-
-    snap = new ol.interaction.Snap({source: source});
-    map.addInteraction(snap);
-
-    point.on('drawend', function (evt) {
-        var feature = evt.feature;
-        map.removeInteraction(point);
-        /*
-                // Create a select interaction and add it to the map:
-                selectInteraction = new ol.interaction.Select();
-                map.addInteraction(selectInteraction);
-
-
-
-                // select feature:
-                selectInteraction.getFeatures().push(feature);
-                // do something after drawing (e.g. saving):
-
-        */
-        snap = new ol.interaction.Snap({source: source});
-        map.addInteraction(snap);
-
-        console.log("created " + figureType + ": " + feature.getGeometry().getExtent());
-        $('#field_gps_coord').val(feature.getGeometry().getExtent());
-        /*
-                // Create a modify interaction and add to the map:
-                modifyInteraction = new ol.interaction.Modify({ features: selectInteraction.getFeatures() });
-                map.addInteraction(modifyInteraction);
-
-                // set listener on "modifyend":
-                modifyInteraction.on('modifyend', function(e) {
-                    // get features:
-                  //  var collection = e.features;
-                    // There's only one feature, so get the first and only one:
-                 //   var featureClone = collection.item(0).clone();
-                    // do something after modifying (e.g. saving):
-                    console.log("modified: " +feature.getGeometry().getExtent());
-                });
-        */
-    });
 }
 
 function setLayerVisible(layerIndex, isVisible) {
@@ -905,7 +808,7 @@ function submitApplication() {
            url: restUrl + '/applications',
            type: 'POST',
            contentType: "application/json; charset=utf-8",
-           data: '{"email":"jalil.hashemi@students.fhnw.ch", "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch", "coordinates" : [{"lat":"46.6", "lon":"7.3"},{"lat":"45.5", "lon":"8.7"}]}',
+           data: '{"email":"jalil.hashemi@students.fhnw.ch", "drawings" : [{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]},{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}',
            dataType: 'json'
        })
            .done(function (json) {
@@ -914,5 +817,5 @@ function submitApplication() {
            .fail(function (xhr, status, errorThrown) {
                console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
            });
-   */
+*/
 }

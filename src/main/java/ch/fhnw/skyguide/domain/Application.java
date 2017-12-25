@@ -34,7 +34,7 @@ public class Application {
     private ActivityType activityType;
     private AircraftType aircraftType;
     private HeightType heightType;
-    private Set<Coordinate> coordinates;
+    private Set<Drawing> drawings;
     private Set<Time> times;
 
     public Application(){
@@ -234,13 +234,13 @@ public class Application {
     }
 
     @ManyToMany
-    @JoinTable(name = "application_coordinate", joinColumns = @JoinColumn(name = "application_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "coordinate_id", referencedColumnName = "id"))
-    public Set<Coordinate> getCoordinates() {
-        return coordinates;
+    @JoinTable(name = "application_drawing", joinColumns = @JoinColumn(name = "application_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "drawing_id", referencedColumnName = "id"))
+    public Set<Drawing> getDrawings() {
+        return drawings;
     }
 
-    public void setCoordinates(Set<Coordinate> coordinates) {
-        this.coordinates = coordinates;
+    public void setDrawings(Set<Drawing> drawings) {
+        this.drawings = drawings;
     }
 
     @ManyToMany

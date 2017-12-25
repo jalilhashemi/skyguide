@@ -32,6 +32,12 @@ public class ApplicationController {
     CoordinateRepository coordinateRepository;
 
     @Autowired
+    DrawingRepository drawingRepository;
+
+    @Autowired
+    DrawingTypeRepository drawingTypeRepository;
+
+    @Autowired
     TimeRepository timeRepository;
 
     @Autowired
@@ -82,18 +88,17 @@ public class ApplicationController {
         applicationDTO.setAircraftType(application.getAircraftType().getName());
         applicationDTO.setHeightType(application.getHeightType().getName());
 
-        List<CoordinateDTO> coordinatesDTO = new ArrayList<>();
-        for (Coordinate c : application.getCoordinates())
-            coordinatesDTO.add(convertToDto(c));
+        List<DrawingDTO> drawingsDTO = new ArrayList<>();
+        for (Drawing d : application.getDrawings())
+            drawingsDTO.add(convertToDto(d));
 
-        applicationDTO.setCoordinates(coordinatesDTO);
+        applicationDTO.setDrawings(drawingsDTO);
 
         List<TimeDTO> timesDTO = new ArrayList<>();
         for (Time t : application.getTimes())
             timesDTO.add(convertToDto(t));
 
         applicationDTO.setTimes(timesDTO);
-
 
         return applicationDTO;
     }
@@ -104,13 +109,13 @@ public class ApplicationController {
         application.setAircraftType(aircraftTypeRepository.findByName(applicationDTO.getAircraftType()));
         application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
 
-        Set<Coordinate> coordinates = new HashSet<>();
-        for(CoordinateDTO c : applicationDTO.getCoordinates()) {
-            Coordinate coordinate = coordinateRepository.save(convertToEntity(c));
-            coordinates.add(coordinate);
+        Set<Drawing> drawings = new HashSet<>();
+        for(DrawingDTO d : applicationDTO.getDrawings()) {
+            Drawing drawing = drawingRepository.save(convertToEntity(d));
+            drawings.add(drawing);
         }
 
-        application.setCoordinates(coordinates);
+        application.setDrawings(drawings);
 
         Set<Time> times = new HashSet<>();
         for(TimeDTO t : applicationDTO.getTimes()) {
@@ -121,6 +126,34 @@ public class ApplicationController {
         application.setTimes(times);
 
         return application;
+    }
+
+    private DrawingDTO convertToDto(Drawing drawing) {
+        DrawingDTO drawingDTO = modelMapper.map(drawing, DrawingDTO.class);
+        drawingDTO.setDrawingType(drawing.getDrawingType().getName());
+
+        List<CoordinateDTO> coordinatesDTO = new ArrayList<>();
+        for (Coordinate c : drawing.getCoordinates())
+            coordinatesDTO.add(convertToDto(c));
+
+        drawingDTO.setCoordinates(coordinatesDTO);
+
+        return drawingDTO;
+    }
+
+    private Drawing convertToEntity(DrawingDTO  drawingDTO) {
+        Drawing drawing = modelMapper.map(drawingDTO, Drawing.class);
+        drawing.setDrawingType(drawingTypeRepository.findByName(drawingDTO.getDrawingType()));
+
+        Set<Coordinate> coordinates = new HashSet<>();
+        for(CoordinateDTO c : drawingDTO.getCoordinates()) {
+            Coordinate coordinate = coordinateRepository.save(convertToEntity(c));
+            coordinates.add(coordinate);
+        }
+
+        drawing.setCoordinates(coordinates);
+
+        return drawing;
     }
 
     private CoordinateDTO convertToDto(Coordinate coordinate) {
