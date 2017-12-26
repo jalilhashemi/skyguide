@@ -7,6 +7,7 @@ var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
 var Modify;
 var Draw;
+var drawings = [];
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
     source: source,
@@ -31,7 +32,7 @@ $(document).ready(function () {
     initializeForm();
     initializeChangeHandlers();
 
-    submitApplication();
+    //submitApplication();
 
     // for hash link
     var url = new URL(window.location.href);
@@ -153,6 +154,7 @@ function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
+        submitApplication();
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -409,10 +411,28 @@ function initializeChangeHandlers() {
 
         }
         if (position != null) {
+            var gps = ol.proj.transform(position, 'EPSG:21781', 'EPSG:4326');
+            setView([position[0], position[1]]);
             // validate the field
             $('#field_gps_coord').addClass('.is-valid');
             $('#field_gps_coord').removeClass('.is-invalid');
-            setMarker(position);
+            if (source.getFeatures().length != 0) {
+                source.getFeatures()[0].getGeometry().setCoordinates(position);
+                drawings = [];
+                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                console.log(drawings);
+            }
+            else {
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Point(position)
+                });
+                source.addFeature(feature);
+
+                drawings = [];
+                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                console.log(drawings);
+            }
+
         }
         else {
             $('#field_gps_coord').addClass('.is-invalid');
@@ -506,12 +526,15 @@ function initDrawTool() {
                 selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
             });
 
-            selectedFeatures.on('add', function(e) {
-                e.element.on('change', function(e) {
+            selectedFeatures.on('add', function (e) {
+                e.element.on('change', function (e) {
                     var features = vector.getSource().getFeatures();
-                    features.forEach(function(feature) {
-                        console.log(feature.getGeometry().getExtent());
-                    });
+                    var geometry = features[0].getGeometry().getCoordinates();
+                    var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
+                    drawings = [];
+                    drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                    console.log(drawings);
+                    $('#field_gps_coord').val(gps);
                 });
             });
         },
@@ -575,28 +598,27 @@ function initDrawTool() {
         setEvents: function () {
             this.Point.on('drawend', function (evt) {
                 var feature = evt.feature;
-                console.log("created Point: " + feature.getGeometry().getExtent());
-                $('#field_gps_coord').val(feature.getGeometry().getExtent());
+                var geometry = feature.getGeometry().getCoordinates();
+                var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
+                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                console.log(drawings);
+                $('#field_gps_coord').val(gps);
             });
             this.Path.on('drawend', function (evt) {
                 var feature = evt.feature;
                 console.log("created Path: " + feature.getGeometry().getExtent());
-                $('#field_gps_coord').val(feature.getGeometry().getExtent());
             });
             this.Polygon.on('drawend', function (evt) {
                 var feature = evt.feature;
                 console.log("created Polygon: " + feature.getGeometry().getExtent());
-                $('#field_gps_coord').val(feature.getGeometry().getExtent());
             });
             this.Circle.on('drawend', function (evt) {
                 var feature = evt.feature;
                 console.log("created Circle: " + feature.getGeometry().getExtent());
-                $('#field_gps_coord').val(feature.getGeometry().getExtent());
             });
             this.Rectangle.on('drawend', function (evt) {
                 var feature = evt.feature;
                 console.log("created Rectangle: " + feature.getGeometry().getExtent());
-                $('#field_gps_coord').val(feature.getGeometry().getExtent());
             });
         }
     };
@@ -624,54 +646,6 @@ function initializeMap() {
     var lon = 9.3;
 
     var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-    //
-    //    iconGeometry = new ol.geom.Point(loc);
-    //
-    //    var iconStyle = new ol.style.Style({
-    //        image: new ol.style.Circle({
-    //            radius: 10,
-    //            fill: new ol.style.Fill({
-    //                color: 'rgba(255,0,0,0.3)'
-    //            }),
-    //            stroke: new ol.style.Stroke({
-    //                color: 'rgba(255,0,0,0.8)',
-    //                width: 3
-    //            })
-    //        })
-    //        /*Icon(({
-    //            anchor: [0.5, 46],
-    //            anchorXUnits: 'fraction',
-    //            anchorYUnits: 'pixels',
-    //            opacity: 0.9,
-    //            src: 'img/marker.png'
-    //        }))*/
-    // });
-    // /*
-    //    var pointMarker = new ol.Feature({
-    //        geometry: iconGeometry,
-    //        style: iconStyle
-    //        /*,name: 'Null Island',
-    //        population: 4000,
-    //        rainfall: 500*/
-    //
-    // pointMarker.setStyle(iconStyle);
-    //
-    //
-    // var modify = new ol.interaction.Modify({
-    //     features: new ol.Collection([pointMarker]),
-    //     style: iconStyle
-    // });
-    //
-    // // pointMarker.set('visible', false);
-    //
-    //
-    // var vectorLayer = new ol.source.Vector({
-    //     features: [pointMarker]
-    // });
-    //
-    // layer = new ol.layer.Vector({
-    //     source: vectorLayer
-    // });
 
     map = new ga.Map({
 
@@ -693,69 +667,16 @@ function initializeMap() {
 
     });
 
-    //layer.setVisible(false);
-
     map.getView().setCenter(loc);
     map.getView().setResolution(500);
 
     setLayerVisible(1, false);
-
-    /*
-    map.on('singleclick', function (evt) {
-        layer.setVisible(true);
-        iconGeometry.setCoordinates(evt.coordinate);
-
-        var gps = ol.proj.transform(evt.coordinate, 'EPSG:21781', 'EPSG:4326');
-
-        $('#field_latitude').val(gps[1]);
-        $('#field_longitude').val(gps[0]);
-
-        map.removeInteraction(modify);
-        modify = new ol.interaction.Modify({
-            features: new ol.Collection([pointMarker]),
-            style: new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 10,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255,0,0,0.8)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255,0,0,0.8)',
-                        width: 3
-                    })
-                })
-            })
-
-        });
-
-        map.addInteraction(modify);
-
-
-    }, pointMarker);
-
-
-    pointMarker.on('change', function () {
-        var gps = ol.proj.transform(iconGeometry.getCoordinates(), 'EPSG:21781', 'EPSG:4326');
-
-        $('#field_latitude').val(gps[1]);
-        $('#field_longitude').val(gps[0]);
-
-    });
-    */
 }
 
-// function setView(loc) {
-//     map.getView().setCenter(loc);
-//     map.getView().setResolution(50);
-// }
-//
-// function setMarker(pos) {
-//     layer.setVisible(true);
-//     //var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-//
-//     setView([pos[0], pos[1]]);
-//     iconGeometry.setCoordinates([pos[0], pos[1]]);
-// }
+function setView(loc) {
+    map.getView().setCenter(loc);
+    map.getView().setResolution(50);
+}
 
 function submitApplication() {
 
@@ -765,8 +686,6 @@ function submitApplication() {
         function (index) {
             var input = $(this);
             data[input.attr('name')] = input.val();
-
-            // console.log('Type: ' + input.attr('type') + 'Name: ' + input.attr('name') + 'Value: ' + input.val());
         }
     );
     data["heightType"] = $('input[name=heightType]:checked').val();
@@ -792,30 +711,25 @@ function submitApplication() {
 
     data['times'] = times;
 
-    // TODO: coordinate
-    /* var coordinates = [];
+// "drawings" : [{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}
 
-     if ($('#field_gps_coord').val() != "") {
-         var tmp = $('#field_gps_coord').val().split(';');
-     }*/
-
+    var data = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
 
-
     // submit to server
-    /*   $.ajax({
-           crossOrigin: true,
-           url: restUrl + '/applications',
-           type: 'POST',
-           contentType: "application/json; charset=utf-8",
-           data: '{"email":"jalil.hashemi@students.fhnw.ch", "drawings" : [{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]},{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}',
-           dataType: 'json'
-       })
-           .done(function (json) {
-               console.log(json);
-           })
-           .fail(function (xhr, status, errorThrown) {
-               console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-           });
-*/
+    $.ajax({
+        crossOrigin: true,
+        url: restUrl + '/applications',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: data,
+        dataType: 'json'
+    })
+        .done(function (json) {
+            console.log(json);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
+
 }
