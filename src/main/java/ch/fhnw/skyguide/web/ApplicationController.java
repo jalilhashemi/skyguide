@@ -70,14 +70,14 @@ public class ApplicationController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Application> findById(@PathVariable("id") String id) {
+    public ResponseEntity<ApplicationDTO> findById(@PathVariable("id") String id) {
         Application application = applicationRepository.findByAdminKey(id);
         if(application != null)
-            return new ResponseEntity<>(application, HttpStatus.OK);
+            return new ResponseEntity<>(convertToDto(application), HttpStatus.OK);
 
         application = applicationRepository.findByKey(id);
         if(application != null)
-            return new ResponseEntity<>(application, HttpStatus.OK);
+            return new ResponseEntity<>(convertToDto(application), HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

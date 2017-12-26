@@ -42,328 +42,331 @@
 </div>
 <!-- id="needs-validation"-->
 <form class="container" id="needs-validation" novalidate>
-    <h1>Request for coordination of special aerial activities</h1>
-    <h2>1. Applicant information</h2>
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="input_applicant_name">Applicant Name*</label>
-            <input type="text" class="form-control input-field-sky data" id="input_applicant_name"
-                   placeholder="Applicant Name" name="name"
+    <fieldset>
+        <h1>Request for coordination of special aerial activities</h1>
+        <h2>1. Applicant information</h2>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="input_applicant_name">Applicant Name*</label>
+                <input type="text" class="form-control input-field-sky data" id="input_applicant_name"
+                       placeholder="Applicant Name" name="name"
+                       required>
+                <div class="invalid-feedback">
+                    Please provide a name.
+                </div>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="input_company_name">Company name</label>
+                <input type="text" class="form-control input-field-sky data" id="input_company_name"
+                       aria-describedby="companyNameHint"
+                       placeholder="Company" name="company">
+                <small id="companyNameHint" class="form-text text-muted">If Company is available.</small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="input_applicant_reference">Applicant reference</label>
+            <input type="text" class="form-control input-field-sky data" id="input_applicant_reference"
+                   placeholder="Applicant reference" name="reference">
+            <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
+                application
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="input_applicant_phone">Applicant Phone*</label>
+            <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
+                   placeholder="Applicant Phone"
+                   name="phone"
                    required>
             <div class="invalid-feedback">
-                Please provide a name.
+                Please provide a phone number.
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label for="input_company_name">Company name</label>
-            <input type="text" class="form-control input-field-sky data" id="input_company_name"
-                   aria-describedby="companyNameHint"
-                   placeholder="Company" name="company">
-            <small id="companyNameHint" class="form-text text-muted">If Company is available.</small>
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="input_applicant_reference">Applicant reference</label>
-        <input type="text" class="form-control input-field-sky data" id="input_applicant_reference"
-               placeholder="Applicant reference" name="reference">
-        <small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your
-            application
-        </small>
-    </div>
-    <div class="form-group">
-        <label for="input_applicant_phone">Applicant Phone*</label>
-        <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
-               placeholder="Applicant Phone"
-               name="phone"
-               required>
-        <div class="invalid-feedback">
-            Please provide a phone number.
-        </div>
-    </div>
-    <div class="form-group">
-        <label for="input_applicant_email">Applicant Email*</label>
-        <input type="email" class="form-control input-field-sky data" id="input_applicant_email" name="email"
-               placeholder="Applicant Email"
-               required>
-        <div class="invalid-feedback">
-            Please provide an email.
-        </div>
-    </div>
-    <h2>2. Activity information</h2>
-    <div class="form-group">
-        <label for="type_of_activity">Type of activity*</label>
-        <select class="form-control form-control-lg select-field-sky data" id="type_of_activity"
-                name="activityType" required>
-            <option value=''>Select the activity type</option>
-        </select>
-        <div class="invalid-feedback">
-            Please select an activity type.
-        </div>
-    </div>
-    <div class="form-group display-none">
-        <label for="type_of_aircraft">Type of aircraft*</label>
-        <select class="form-control form-control-lg select-field-sky data" id="type_of_aircraft"
-                name="aircraftType">
-            <option value=''>Select the aircraft type</option>
-        </select>
-        <div class="invalid-feedback">
-            Please select an aircraft type.
-        </div>
-    </div>
-    <div id="container_fields">
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data" id="field_callsign"
-                   name="callsign">
+        <div class="form-group">
+            <label for="input_applicant_email">Applicant Email*</label>
+            <input type="email" class="form-control input-field-sky data" id="input_applicant_email" name="email"
+                   placeholder="Applicant Email"
+                   required>
             <div class="invalid-feedback">
+                Please provide an email.
             </div>
         </div>
-        <div class="form-row">
-            <div class="form-group  col-md-6 display-none">
-                <input type="text" class="form-control input-field-sky data" id="field_departure"
-                       name="departure">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group  col-md-6 display-none">
-                <input type="text" class="form-control input-field-sky data" id="field_destination"
-                       name="destination">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group col-md-6 display-none">
-                <input type="text" class="form-control input-field-sky data" id="field_date_from_until"
-                       name="dateFromUntil">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group col-md-6 display-none">
-                <input type="number" min="0" max="99999" class="form-control input-field-sky data" id="field_duration"
-                       name="duration">
-                <div class="invalid-feedback">Must be a positive number
-                </div>
-            </div>
-        </div>
-        <div class="form-row" id="p_scents">
-            <div class="form-group col-md-6 display-none">
-                <input type="text" class="form-control input-field-sky"
-                       id="field_time_schedule_from" name="start[0]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group col-md-5 display-none">
-                <input type="text" class="form-control input-field-sky"
-                       id="field_time_schedule_until" name="end[0]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
-                <div class="invalid-feedback">
-                </div>
-            </div>
-            <div class="form-group col-md-1 display-none" id="addScnt">
-                <button type="button" class="btn btn-primary btn-sky" id="btn_add">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </button>
-            </div>
-        </div>
-        <div>
-            <div class="form-row display-none" id="time_template">
-                <div class="form-group col-md-6">
-                    <input type="text" class="form-control input-field-sky"
-                           name="start" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
-                <div class="form-group col-md-5">
-                    <input type="text" class="form-control input-field-sky "
-                           name="end" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
-                    <div class="invalid-feedback">
-                    </div>
-                </div>
-                <div class="form-group col-md-1 remove_time_button">
-                    <button type="button" class="btn btn-primary btn-sky">
-                        <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-                    </button>
-                </div>
+        <h2>2. Activity information</h2>
+        <div class="form-group">
+            <label for="type_of_activity">Type of activity*</label>
+            <select class="form-control form-control-lg select-field-sky data" id="type_of_activity"
+                    name="activityType" required>
+                <option value=''>Select the activity type</option>
+            </select>
+            <div class="invalid-feedback">
+                Please select an activity type.
             </div>
         </div>
         <div class="form-group display-none">
-            <input type="text" class="form-control input-field-sky data" id="field_location"
-                   name="location">
+            <label for="type_of_aircraft">Type of aircraft*</label>
+            <select class="form-control form-control-lg select-field-sky data" id="type_of_aircraft"
+                    name="aircraftType">
+                <option value=''>Select the aircraft type</option>
+            </select>
             <div class="invalid-feedback">
+                Please select an aircraft type.
             </div>
         </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data" id="field_beam_direction"
-                   name="beamDirection">
-            <div class="invalid-feedback">
+        <div id="container_fields">
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data" id="field_callsign"
+                       name="callsign">
+                <div class="invalid-feedback">
+                </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
-            <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord"
-                    style="border: none; background: white;">
-                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
-            </button>
-            <input type="text" class="form-control input-field-sky" id="field_gps_coord">
-            <div class="invalid-feedback">
+            <div class="form-row">
+                <div class="form-group  col-md-6 display-none">
+                    <input type="text" class="form-control input-field-sky data" id="field_departure"
+                           name="departure">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group  col-md-6 display-none">
+                    <input type="text" class="form-control input-field-sky data" id="field_destination"
+                           name="destination">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_radius"
-                   name="radius">
-            <div class="invalid-feedback">Must be a positive number
+            <div class="form-row">
+                <div class="form-group col-md-6 display-none">
+                    <input type="text" class="form-control input-field-sky data" id="field_date_from_until"
+                           name="dateFromUntil">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group col-md-6 display-none">
+                    <input type="number" min="0" max="99999" class="form-control input-field-sky data"
+                           id="field_duration"
+                           name="duration">
+                    <div class="invalid-feedback">Must be a positive number
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-6 display-none">
-                <input type="number" min="0" max="99999" class="form-control input-field-sky data"
-                       id="field_height_altitude"
-                       name="heightAltitude">
+            <div class="form-row" id="p_scents">
+                <div class="form-group col-md-6 display-none">
+                    <input type="text" class="form-control input-field-sky"
+                           id="field_time_schedule_from" name="start[0]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group col-md-5 display-none">
+                    <input type="text" class="form-control input-field-sky"
+                           id="field_time_schedule_until" name="end[0]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
+                    <div class="invalid-feedback">
+                    </div>
+                </div>
+                <div class="form-group col-md-1 display-none" id="addScnt">
+                    <button type="button" class="btn btn-primary btn-sky" id="btn_add">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <div class="form-row display-none" id="time_template">
+                    <div class="form-group col-md-6">
+                        <input type="text" class="form-control input-field-sky"
+                               name="start" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
+                        <div class="invalid-feedback">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-5">
+                        <input type="text" class="form-control input-field-sky "
+                               name="end" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" placeholder="HH:MM">
+                        <div class="invalid-feedback">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-1 remove_time_button">
+                        <button type="button" class="btn btn-primary btn-sky">
+                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group display-none">
+                <input type="text" class="form-control input-field-sky data" id="field_location"
+                       name="location">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data" id="field_beam_direction"
+                       name="beamDirection">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <button type="button" aria-hidden="true" data-toggle="modal" data-target="#info_gps_coord"
+                        style="border: none; background: white;">
+                    <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+                </button>
+                <input type="text" class="form-control input-field-sky" id="field_gps_coord">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_radius"
+                       name="radius">
                 <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
-            <div class="custom-controls-stacked d-block display-none">
-                <label class="custom-control custom-radio display-none">
-                    <input class="custom-control-input" type="radio" name="heightType" id="radio_height_fl"
-                           value="FL">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">FL</span>
-                </label>
-            </div>
-            <div class="custom-controls-stacked d-block display-none">
-                <label class="custom-control custom-radio display-none">
-                    <input class="custom-control-input" type="radio" name="heightType" id="radio_height_ft_amsl"
-                           value="ft AMSL">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">ft AMSL</span>
-                </label>
-            </div>
-            <div class="custom-controls-stacked d-block display-none">
-                <label class="custom-control custom-radio display-none">
-                    <input class="custom-control-input" type="radio" name="heightType" id="radio_height_ft_gnd"
-                           value="ft GND">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">ft GND</span>
-                </label>
-            </div>
-            <div class="custom-controls-stacked d-block display-none" style="margin-top:37px">
-                <label class="custom-control custom-radio display-none">
-                    <input class="custom-control-input" type="radio" name="heightType" id="radio_height_m_gnd"
-                           value="m GND">
-                    <span class="custom-control-indicator"></span>
-                    <span class="custom-control-description">m GND</span>
-                </label>
-            </div>
-        </div>
 
-        <!--     <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
-              data-placement="top"
-              title="">
-             <label class="form-check-label">
-                 <input class="form-check-input" type="radio" name="heightType" id="radio_height_fl"
-                        value="FL" name="test" required>FL
-             </label>
-         </div>
-         <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
-              data-placement="top"
-              title="">
-             <label class="form-check-label">
-                 <input class="form-check-input" type="radio" name="heightType"
-                        id="radio_height_ft_amsl"
-                        value="ft AMSL" name="test" required>ft AMSL
-             </label>
-         </div>
-         <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
-              data-placement="top"
-              title="">
-             <label class="form-check-label">
-                 <input class="form-check-input" type="radio" name="heightType" id="radio_height_ft_gnd"
-                        value="ft GND" name="test" required>ft GND
-             </label>
-         </div>
-         <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
-              data-placement="top"
-              title="">
-             <label class="form-check-label">
-                 <input class="form-check-input" type="radio" name="heightType" id="radio_height_m_gnd"
-                        value="m GND" name="test" required>m GND
-             </label>
-         </div>
-     </div>-->
-        <div id="map-container" class="display-none">
-            <div id="map" class="map panel panel-default  "></div>
-            <div class="form-check ">
-                <label class="form-check-label">
-                    <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
-                    Aeronautical Chart ICAO
-                </label>
-            </div>
             <div class="form-row">
-                <div class="form-group col-md-2" id="draw_point">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_point">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Point
-                    </button>
+                <div class="form-group col-md-6 display-none">
+                    <input type="number" min="0" max="99999" class="form-control input-field-sky data"
+                           id="field_height_altitude"
+                           name="heightAltitude">
+                    <div class="invalid-feedback">Must be a positive number
+                    </div>
                 </div>
-                <div class="form-group col-md-2" id="draw_rectangle">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_rectangle">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Rectangle
-                    </button>
+                <div class="custom-controls-stacked d-block display-none">
+                    <label class="custom-control custom-radio display-none">
+                        <input class="custom-control-input" type="radio" name="heightType" id="radio_height_fl"
+                               value="FL">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">FL</span>
+                    </label>
                 </div>
-                <div class="form-group col-md-2" id="draw_polygon">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_polygon">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Polygon
-                    </button>
+                <div class="custom-controls-stacked d-block display-none">
+                    <label class="custom-control custom-radio display-none">
+                        <input class="custom-control-input" type="radio" name="heightType" id="radio_height_ft_amsl"
+                               value="ft AMSL">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">ft AMSL</span>
+                    </label>
                 </div>
-                <div class="form-group col-md-2" id="draw_circle">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_circle">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Circle
-                    </button>
+                <div class="custom-controls-stacked d-block display-none">
+                    <label class="custom-control custom-radio display-none">
+                        <input class="custom-control-input" type="radio" name="heightType" id="radio_height_ft_gnd"
+                               value="ft GND">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">ft GND</span>
+                    </label>
                 </div>
-                <div class="form-group col-md-2" id="draw_path">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_path">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Path
-                    </button>
-                </div>
-                <div class="form-group col-md-2" id="draw_modify">
-                    <button type="button" class="btn btn-primary btn-sky" id="btn_draw_modify">
-                        <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
-                        Modify
-                    </button>
+                <div class="custom-controls-stacked d-block display-none" style="margin-top:37px">
+                    <label class="custom-control custom-radio display-none">
+                        <input class="custom-control-input" type="radio" name="heightType" id="radio_height_m_gnd"
+                               value="m GND">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">m GND</span>
+                    </label>
                 </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data" id="field_payload_attached_obj"
-                   name="payloadAttachedObj">
-            <div class="invalid-feedback">
+
+            <!--     <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                  data-placement="top"
+                  title="">
+                 <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="heightType" id="radio_height_fl"
+                            value="FL" name="test" required>FL
+                 </label>
+             </div>
+             <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                  data-placement="top"
+                  title="">
+                 <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="heightType"
+                            id="radio_height_ft_amsl"
+                            value="ft AMSL" name="test" required>ft AMSL
+                 </label>
+             </div>
+             <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                  data-placement="top"
+                  title="">
+                 <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="heightType" id="radio_height_ft_gnd"
+                            value="ft GND" name="test" required>ft GND
+                 </label>
+             </div>
+             <div class="form-check form-check-inline col-md-1 display-none" data-toggle="tooltip"
+                  data-placement="top"
+                  title="">
+                 <label class="form-check-label">
+                     <input class="form-check-input" type="radio" name="heightType" id="radio_height_m_gnd"
+                            value="m GND" name="test" required>m GND
+                 </label>
+             </div>
+         </div>-->
+            <div id="map-container" class="display-none">
+                <div id="map" class="map panel panel-default  "></div>
+                <div class="form-check ">
+                    <label class="form-check-label">
+                        <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
+                        Aeronautical Chart ICAO
+                    </label>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-2" id="draw_point">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_point">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Point
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_rectangle">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_rectangle">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Rectangle
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_polygon">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_polygon">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Polygon
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_circle">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_circle">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Circle
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_path">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_path">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Path
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_modify">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_modify">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Modify
+                        </button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="number" min="0" max="99999" class="form-control input-field-sky data" id="field_amount"
-                   name="amount">
-            <div class="invalid-feedback">Must be a positive number
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data" id="field_payload_attached_obj"
+                       name="payloadAttachedObj">
+                <div class="invalid-feedback">
+                </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
+            <div class="form-group  display-none">
+                <input type="number" min="0" max="99999" class="form-control input-field-sky data" id="field_amount"
+                       name="amount">
+                <div class="invalid-feedback">Must be a positive number
+                </div>
+            </div>
+            <div class="form-group  display-none">
             <textarea type="text" class="form-control textarea-field-sky my-textarea data"
                       id="textfield_self_declaration"
                       name="selfDeclaration"></textarea>
+                <div class="invalid-feedback">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="textfield_remark">Remark</label>
+            <textarea type="text" class="form-control textarea-field-sky my-textarea data" id="textfield_remark"
+                      name="remark"></textarea>
             <div class="invalid-feedback">
             </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label for="textfield_remark">Remark</label>
-        <textarea type="text" class="form-control textarea-field-sky my-textarea data" id="textfield_remark"
-                  name="remark"></textarea>
-        <div class="invalid-feedback">
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary btn-sky" id="btn_submit">Submit</button>
+        <button type="submit" class="btn btn-primary btn-sky" id="btn_submit">Submit</button>
+    </fieldset>
 </form>
 </body>
 </html>

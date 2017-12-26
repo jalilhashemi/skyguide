@@ -972,7 +972,7 @@ public class ActivityTypeService {
         rpasAircraftTypeContestActivityType.getFieldList().add(selfDeclarationFieldInactive);
         listActivityType.add(contestActivityType);
 
-        ActivityType airshowAerobaticFlightActivityType = new ActivityType("Airshow / Aerobatic Flight");
+        ActivityType airshowAerobaticFlightActivityType = new ActivityType("Airshow");
         AircraftType rotaryWingAircraftTypeAirshowAerobaticFlightActivityType = new AircraftType("Rotary Wing Aircraft");
         airshowAerobaticFlightActivityType.getAircraftTypeList().add(rotaryWingAircraftTypeAirshowAerobaticFlightActivityType);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(callsignFieldMandatory);

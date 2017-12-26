@@ -35,7 +35,7 @@ INSERT INTO height_type (name) VALUES
 
 INSERT INTO aircraft_type (name) VALUES
 ('Rotary Wing Aircraft'),
-('Fixed Wind Aircraft'),
+('Fixed Wing Aircraft'),
 ('RPAS');
 
 INSERT INTO drawing_type (name) VALUES

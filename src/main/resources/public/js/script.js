@@ -29,18 +29,110 @@ var vector = new ol.layer.Vector({
 });
 
 $(document).ready(function () {
-    initializeForm();
-    initializeChangeHandlers();
 
-    //submitApplication();
-
-    // for hash link
+    // get the url params
     var url = new URL(window.location.href);
-    var key = url.searchParams.get("key");
-    console.log('url key: ' + key);
     var edit = url.searchParams.get("edit");
-    console.log('url edit: ' + edit);
+    var key = url.searchParams.get("key");
+    if (key != null) {
+        console.log('url key: ' + key);
+        console.log('url edit: ' + edit);
+        if (edit != null)
+            showAdminView(key);
+        else
+            showUserView(key);
+    }
+    // standard form view
+    else {
+        initializeForm();
+        initializeChangeHandlers();
+    }
 });
+
+function showAdminView(key) {
+    // not implemented yet
+    alert("admin");
+}
+
+function showUserView(key) {
+    disableAllFields();
+    fillAllFields(key);
+}
+
+function disableAllFields() {
+    $('fieldset').prop('disabled', true);
+}
+
+function fillAllFields(key) {
+    $.ajax({
+        crossOrigin: true,
+        url: restUrl + '/applications/' + key,
+        type: 'GET',
+        dataType: 'json'
+    })
+        .done(function (json) {
+            fillFields(json);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
+
+}
+
+function fillFields(data) {
+    $.ajax({
+        crossOrigin: true,
+        url: restUrl + '/information',
+        type: 'GET',
+        dataType: 'json'
+    })
+        .done(function (json) {
+            initializeDisabledInputs(json, data.activityType, data.aircraftType, data);
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
+}
+
+function initializeDisabledInputs(information, activityType, aircraftType, data) {
+    $('#type_of_activity').append($('<option>', {
+        text: activityType,
+        selected: true
+    }));
+    if (aircraftType != null) {
+        $('#type_of_aircraft').parent().show();
+        $('#type_of_aircraft').append($('<option>', {
+            text: aircraftType,
+            selected: true
+        }));
+
+        $.each(information, function (i, infoItem) {
+            if ($('#type_of_activity').val() == infoItem.label) {
+                $.each(infoItem.aircraftTypeList, function (j, aircraftTypeItem) {
+                    if ($('#type_of_aircraft').val() == aircraftTypeItem.label) {
+                        $.each(aircraftTypeItem.fieldList, function (i, field) {
+                            processField(field);
+                        });
+                    }
+                });
+            }
+        });
+
+        $('.data').each(function (index) {
+                var input = $(this);
+                input.val(data[input.attr('name')]);
+            }
+        );
+
+        $('input[name=heightType]').each(function (index) {
+            if ($(this).val() == data["heightType"])
+                $(this).prop('checked', true);
+        });
+
+        // TODO: show times and coordinates
+
+    }
+}
 
 function initializeDropdowns() {
     $.ajax({
