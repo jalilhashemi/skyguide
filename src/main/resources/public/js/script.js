@@ -285,7 +285,7 @@ function initializeChangeHandlers() {
         }
     });
 
-    $(document).on('keyup', '#field_gps_coord', function () {
+    $(document).on('change', '#field_gps_coord', function () {
 
         /*map.geocode('Payerne');*/
 
@@ -319,10 +319,6 @@ function initializeChangeHandlers() {
         var regexpCoordinate = new RegExp(
             '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
             '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
-        var regexMGRS = new RegExp(MGRS, 'gi');
-        // Grid zone designation for Switzerland + two 100km letters + two digits
-        // It's a limitiation of proj4 and a sensible default (precision is 10km)
-        var MGRSMinimalPrecision = 7;
 
         var roundCoordinates = function (coords) {
             return [Math.round(coords[0] * 1000) / 1000,
@@ -659,8 +655,6 @@ function initializeMap() {
             vector
         ],
         crossOrigin: 'null',
-        // Create a view
-        //  view: view,
 
         // disable scrolling on map
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
