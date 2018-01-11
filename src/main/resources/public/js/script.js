@@ -507,7 +507,7 @@ function initializeChangeHandlers() {
             if (source.getFeatures().length != 0) {
                 source.getFeatures()[0].getGeometry().setCoordinates(position);
                 drawings = [];
-                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
                 console.log(drawings);
             }
             else {
@@ -517,7 +517,7 @@ function initializeChangeHandlers() {
                 source.addFeature(feature);
 
                 drawings = [];
-                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
                 console.log(drawings);
             }
 
@@ -620,7 +620,7 @@ function initDrawTool() {
                     var geometry = features[0].getGeometry().getCoordinates();
                     var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
                     drawings = [];
-                    drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                    drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
                     console.log(drawings);
                     $('#field_gps_coord').val(gps);
                 });
@@ -688,7 +688,7 @@ function initDrawTool() {
                 var feature = evt.feature;
                 var geometry = feature.getGeometry().getCoordinates();
                 var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
-                drawings.push('{"drawingType":"Point", "coordinates": [{"lat":"' + gps[0] + '", "lon":"' + gps[1] + '"}]}');
+                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
                 console.log(drawings);
                 $('#field_gps_coord').val(gps);
             });
@@ -792,15 +792,17 @@ function submitApplication() {
     });
 
     $.each(startArray, function (i, item) {
-        times.push('{"start":"' + startArray[i] + '","end":"' + endArray[i] + '"}');
+        times.push({"start": startArray[i], "end": endArray[i]});
     });
 
     data['times'] = times;
+    data['drawings'] = drawings;
 
-// "drawings" : [{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}
+    //  data['drawings']=  '[{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}]';
 
-    var data = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
+    var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
+    console.log(success);
 
     // submit to server
     $.ajax({
@@ -808,7 +810,7 @@ function submitApplication() {
         url: restUrl + '/applications',
         type: 'POST',
         contentType: "application/json; charset=utf-8",
-        data: data,
+        data: JSON.stringify(data),
         dataType: 'json'
     })
         .done(function (json) {
