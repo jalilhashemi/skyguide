@@ -798,11 +798,16 @@ function submitApplication() {
     data['times'] = times;
     data['drawings'] = drawings;
 
+    if (data['heightType'] == undefined)
+        data['heightType'] = 'none';
+
+    if (data['aircraftType'] == '')
+        data['aircraftType'] = 'none';
+
     //  data['drawings']=  '[{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}]';
 
     var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
-    console.log(success);
 
     // submit to server
     $.ajax({

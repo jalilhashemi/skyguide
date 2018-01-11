@@ -28,6 +28,7 @@ INSERT INTO activity_type (name) VALUES
 ('Weather Balloon');
 
 INSERT INTO height_type (name) VALUES
+('none'),
 ('ft AMSL'),
 ('ft GND'),
 ('m GND'),
@@ -35,6 +36,7 @@ INSERT INTO height_type (name) VALUES
 
 
 INSERT INTO aircraft_type (name) VALUES
+('none'),
 ('Rotary Wing Aircraft'),
 ('Fixed Wing Aircraft'),
 ('RPAS'),
