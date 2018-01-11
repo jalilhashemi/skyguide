@@ -6,7 +6,7 @@ public class ApplicationDTO {
     private String name;
     private String company;
     private String reference;
-    private Integer phone;
+    private String phone;
     private String email;
 
     private String callsign;
@@ -61,11 +61,11 @@ public class ApplicationDTO {
         this.reference = reference;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

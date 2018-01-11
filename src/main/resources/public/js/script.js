@@ -246,7 +246,7 @@ function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
-        submitApplication();
+       // submitApplication();
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -258,7 +258,7 @@ function initializeChangeHandlers() {
             console.log("submitted");
         }
         form.classList.add('was-validated');
-    })
+    });
 
     /* var form = document.getElementById('needs-validation');
      form.addEventListener('submit', function (event) {
@@ -820,6 +820,9 @@ function submitApplication() {
     })
         .done(function (json) {
             console.log(json);
+            hideAllFields();
+            $('#submit_success').modal('show');
+
         })
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
