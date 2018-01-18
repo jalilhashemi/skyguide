@@ -21,8 +21,6 @@ public class Application {
     private String departure;
     private String destination;
     private String dateFromUntil;
-  /*  private String timeFrom;
-    private String timeUntil;*/
     private String duration;
     private String location;
     private String beamDirection;
@@ -37,7 +35,7 @@ public class Application {
     private Set<Drawing> drawings;
     private Set<Time> times;
 
-    public Application(){
+    public Application() {
 
     }
 

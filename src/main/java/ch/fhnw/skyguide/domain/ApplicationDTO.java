@@ -8,7 +8,6 @@ public class ApplicationDTO {
     private String reference;
     private String phone;
     private String email;
-
     private String callsign;
     private String departure;
     private String destination;
@@ -17,10 +16,7 @@ public class ApplicationDTO {
     private String timeUntil;
     private String duration;
     private String location;
-
     private String heightType;
-    //heigh and its radio buttons should be checked
-
     private String beamDirection;
     private String payloadAttachedObj;
     private String amount;
@@ -29,13 +25,8 @@ public class ApplicationDTO {
     private String radius;
     private String selfDeclaration;
     private String remark;
-
-    //
     private String activityType;
     private String aircraftType;
-
-
-
 
     public String getName() {
         return name;

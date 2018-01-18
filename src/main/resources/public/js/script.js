@@ -1,8 +1,6 @@
 var informationJSON;
 var actualAircraftTypeList;
 var map;
-var layer;
-var iconGeometry;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
 var Modify;
@@ -180,25 +178,17 @@ function initializeDateRangePicker() {
             }
         });
     });
-
-    /*
-        $('input[name="dateFromUntil"]').on('apply.daterangepicker', function(ev, picker) {
-            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-        });
-
-        $('input[name="dateFromUntil"]').on('cancel.daterangepicker', function(ev, picker) {
-            $(this).val('');
-        });*/
-
 }
 
+/**
+ * Hide all custom fields.
+ */
 function hideAllFields() {
     $('#container_fields').children('div .form-group').addClass('display-none');
     $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
     $('#map-container').addClass('display-none');
     $('#addScnt').addClass('display-none');
     $('.time_field').addClass('display-none');
-
 
     $('.custom-control-input').parent().addClass('display-none');
     $('.custom-control-input').addClass('display-none');
@@ -219,18 +209,17 @@ function showField(field) {
     $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.label + (field.mandatory ? '*' : '') + '</label>\n')
     $('#' + field.id)
         .attr('placeholder', field.placeholder)
-        //.attr('name', field.name)
         .prop('required', field.mandatory ? true : false);
 }
+
 
 function processField(field) {
     if (field.active) {
         if (field.id.substring(0, 6) === 'radio_') {
-            //$('#' + field.id).prop('required', true);
             $('#' + field.id).parent().removeClass('display-none');
             $('#' + field.id).parent().parent().removeClass('display-none');
             $('#' + field.id).prop('required', true);
-            //$('#' + field.id).parent().attr('title', field.tooltip);
+            // $('#' + field.id).parent().attr('title', field.tooltip);
             initializeTooltips();
             $('#addScnt').removeClass('display-none');
         }
@@ -243,10 +232,9 @@ function processField(field) {
 
 function initializeChangeHandlers() {
 
-
     $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
-       // submitApplication();
+        // submitApplication();
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
@@ -260,22 +248,6 @@ function initializeChangeHandlers() {
         form.classList.add('was-validated');
     });
 
-    /* var form = document.getElementById('needs-validation');
-     form.addEventListener('submit', function (event) {
-         if (form.checkValidity() === false) {
-             event.preventDefault();
-             event.stopPropagation();
-         }
-         else {
-             // here to send data
-             event.preventDefault();
-             submitApplication();
-             console.log("submitted");
-         }
-         form.classList.add('was-validated');
-     }, false);*/
-
-
     $(document).on('change', '#type_of_activity', function () {
         hideAllFields();
 
@@ -284,8 +256,6 @@ function initializeChangeHandlers() {
             .prop('required', false);
         $('#type_of_aircraft').val('');
 
-
-        //
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.label) {
                 // it's a activity type with multiple aircraft type
@@ -339,7 +309,6 @@ function initializeChangeHandlers() {
 
     $(document).on('click', '#addScnt', function () {
         timeIndex++;
-        //event.preventDefault();
         var template = $('#time_template'),
             clone = template
                 .clone()
@@ -349,16 +318,12 @@ function initializeChangeHandlers() {
                 .attr('data-time-index', timeIndex)
                 .addClass('time_field')
                 .insertBefore(template);
-        //$option = $clone.find('[name="option[]"]');
 
         clone
             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
             .prop('required', true).end()
             .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
             .prop('required', true).end();
-
-        // Add new field
-        //$('#time_container').formValidation('addField', option);
     });
 
     $(document).on('click', '.remove_time_button', function () {
@@ -379,10 +344,8 @@ function initializeChangeHandlers() {
 
     $(document).on('change', '#field_gps_coord', function () {
 
+        // if geocode is needed
         /*map.geocode('Payerne');*/
-
-        var lat = 46.84089;
-        var lon = 9.3;
 
         var defaultEpsg = 'EPSG:21781';
 
@@ -392,13 +355,15 @@ function initializeChangeHandlers() {
 
         var query = $('#field_gps_coord').val();
 
+        // source of the search transition code
+        // https://github.com/geoadmin/mf-geoadmin3/blob/17ba14f3047bf4692752b36a1295172fa396177d/src/components/search/SearchService.js
+
         var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
         var DMSMinute = '[0-9]{1,2}[\'|′]';
         var DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
             '[0-9]+\\b)("|\'\'|′′|″)';
         var DMSNorth = '[N]';
         var DMSEast = '[E]';
-        var MGRS = '^3[123][\\sa-z]{3}[\\s\\d]*';
         var regexpDMSN = new RegExp(DMSDegree +
             '(' + DMSMinute + ')?\\s*' +
             '(' + DMSSecond + ')?\\s*' +
@@ -525,40 +490,7 @@ function initializeChangeHandlers() {
         else {
             $('#field_gps_coord').addClass('.is-invalid');
             $('#field_gps_coord').removeClass('.is-valid');
-            //$('#field_gps_coord').css("border-color", '#dc3545');
         }
-
-        /*
-                    var sr = '?';
-                    var epsgCode = map.getView().getProjection().getCode();
-                    sr += 'sr=' + epsgCode.split(':')[1] + '&';
-
-                    $.ajax({
-                        crossOrigin: true,
-                        url: 'https://api3.geo.admin.ch/rest/services/api/SearchServer' + sr + '&searchText=' + $('#field_latitude_longitude').val() + '&type=locations&lang=de',
-                        type: 'GET',
-                        dataType: 'json'
-                    })
-                        .done(function (json) {
-                            console.log(json);
-                            if (fuzzy)
-
-                                setMarker(json.results[0].attrs.lat, json.results[0].attrs.lon)
-                        })
-                        .fail(function (xhr, status, errorThrown) {
-                            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-                        });
-
-        */
-        // '/rest/services/{Topic}/MapServer/{Layer}/{Feature}' + sr
-
-        /*
-                lat = $('#field_latitude').val();
-                lon = $(this).val();
-
-                setMarker(lat, lon);
-                */
-
     });
 
     $(document).on('click', '#btn_draw_rectangle', function () {
@@ -730,6 +662,7 @@ function setLayerVisible(layerIndex, isVisible) {
 
 function initializeMap() {
 
+    // default center position
     var lat = 46.78;
     var lon = 9.3;
 
@@ -803,8 +736,6 @@ function submitApplication() {
 
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
-
-    //  data['drawings']=  '[{"drawingType":"Circle", "coordinates": [{"lat" : "46.3", "lon":"7.8"},{"lat" : "46.3", "lon":"7.8"}]}]';
 
     var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);

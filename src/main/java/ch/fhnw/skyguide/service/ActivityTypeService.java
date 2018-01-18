@@ -11,9 +11,6 @@ public class ActivityTypeService {
 
     private List<ActivityType> listActivityType = new ArrayList<>();
 
-    //private final String FIELD_HEIGHT_ALTITUDE_ID = "field_height_altitude";
-    //private final String FIELD_HEIGHT_ALTITUDE_NAME = "Height / Altitude";
-
     public ActivityType getActivityTypeByName(String name) {
         Predicate<ActivityType> activityTypePredicate = a -> a.getLabel().equals(name);
         ActivityType obj = listActivityType.stream().filter(activityTypePredicate).findFirst().get();

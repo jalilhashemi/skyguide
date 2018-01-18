@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class AircraftType{
+public class AircraftType {
 
     private Integer id;
     private String name;
-   // private Set<Application> applications;
 
-    public AircraftType(){}
+    public AircraftType() {
+    }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -32,14 +32,4 @@ public class AircraftType{
         this.name = name;
     }
 
-  /*  @OneToMany(mappedBy = "aircraftType")
-    @JsonIgnore
-    public Set<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(Set<Application> applications) {
-        this.applications = applications;
-    }
-    */
 }

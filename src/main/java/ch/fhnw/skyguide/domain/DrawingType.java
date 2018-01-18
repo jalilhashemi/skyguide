@@ -11,10 +11,11 @@ public class DrawingType {
     private Integer id;
     private String name;
 
-    public DrawingType(){}
+    public DrawingType() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }

@@ -6,18 +6,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-//@Table(name = "height_type")
 public class HeightType {
 
     private Integer id;
     private String name;
-  //  private Set<Application> application;
 
-    public HeightType(){
+    public HeightType() {
     }
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -33,14 +31,4 @@ public class HeightType {
     public void setName(String name) {
         this.name = name;
     }
-
-   /* @OneToMany(mappedBy = "heightType")
-    @JsonIgnore
-    public Set<Application> getApplication() {
-        return application;
-    }
-
-    public void setApplication(Set<Application> application) {
-        this.application = application;
-    }*/
 }

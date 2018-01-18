@@ -19,12 +19,6 @@ public class SkyguideApplication extends SpringBootServletInitializer {
         SpringApplication.run(SkyguideApplication.class, args);
     }
 
-    /*
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(SkyguideApplication.class);
-    }*/
-
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
@@ -35,7 +29,7 @@ public class SkyguideApplication extends SpringBootServletInitializer {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
-        source.setBasenames("i18n/messages");  // name of the resource bundle
+        source.setBasenames("i18n/messages");
         source.setUseCodeAsDefaultMessage(true);
         return source;
     }

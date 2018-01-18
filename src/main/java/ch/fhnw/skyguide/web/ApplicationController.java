@@ -62,7 +62,7 @@ public class ApplicationController {
         if (application != null) {
             application = applicationRepository.save(application);
             // activate mail sender
-           // emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
+            emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
             return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
@@ -72,11 +72,11 @@ public class ApplicationController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<ApplicationDTO> findById(@PathVariable("id") String id) {
         Application application = applicationRepository.findByAdminKey(id);
-        if(application != null)
+        if (application != null)
             return new ResponseEntity<>(convertToDto(application), HttpStatus.OK);
 
         application = applicationRepository.findByKey(id);
-        if(application != null)
+        if (application != null)
             return new ResponseEntity<>(convertToDto(application), HttpStatus.OK);
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -110,7 +110,7 @@ public class ApplicationController {
         application.setHeightType(heightTypeRepository.findByName(applicationDTO.getHeightType()));
 
         Set<Drawing> drawings = new HashSet<>();
-        for(DrawingDTO d : applicationDTO.getDrawings()) {
+        for (DrawingDTO d : applicationDTO.getDrawings()) {
             Drawing drawing = drawingRepository.save(convertToEntity(d));
             drawings.add(drawing);
         }
@@ -118,7 +118,7 @@ public class ApplicationController {
         application.setDrawings(drawings);
 
         Set<Time> times = new HashSet<>();
-        for(TimeDTO t : applicationDTO.getTimes()) {
+        for (TimeDTO t : applicationDTO.getTimes()) {
             Time time = timeRepository.save(convertToEntity(t));
             times.add(time);
         }
@@ -141,12 +141,12 @@ public class ApplicationController {
         return drawingDTO;
     }
 
-    private Drawing convertToEntity(DrawingDTO  drawingDTO) {
+    private Drawing convertToEntity(DrawingDTO drawingDTO) {
         Drawing drawing = modelMapper.map(drawingDTO, Drawing.class);
         drawing.setDrawingType(drawingTypeRepository.findByName(drawingDTO.getDrawingType()));
 
         Set<Coordinate> coordinates = new HashSet<>();
-        for(CoordinateDTO c : drawingDTO.getCoordinates()) {
+        for (CoordinateDTO c : drawingDTO.getCoordinates()) {
             Coordinate coordinate = coordinateRepository.save(convertToEntity(c));
             coordinates.add(coordinate);
         }

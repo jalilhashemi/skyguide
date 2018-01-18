@@ -1,6 +1,5 @@
 --drop database skyguide;
 --create database skyguide;
-
 --use skyguide;
 
 INSERT INTO activity_type (name) VALUES

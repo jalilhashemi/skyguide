@@ -6,17 +6,16 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-//@Table(name = "activity_type")
 public class ActivityType {
 
     private Integer id;
     private String name;
-   // private Set<Application> applications;
 
-    public ActivityType(){}
+    public ActivityType() {
+    }
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -32,15 +31,5 @@ public class ActivityType {
     public void setName(String name) {
         this.name = name;
     }
-
-  /*  @OneToMany
-    @JsonIgnore
-    public Set<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(Set<Application> applications) {
-        this.applications = applications;
-    }*/
 }
 
