@@ -29,7 +29,7 @@ public class EmailSender {
 
             helper.setTo(applicantEmail);
             helper.setSubject("Your Application to skyguide");
-            helper.setText("Link: http://localhost:8080/applications/"+viewKey);
+            helper.setText("Link: http://localhost:8080?key="+viewKey);
 
             sender.send(message);
 

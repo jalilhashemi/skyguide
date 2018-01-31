@@ -32,6 +32,7 @@ public class Application {
     private ActivityType activityType;
     private AircraftType aircraftType;
     private HeightType heightType;
+    private Integer heightAltitude;
     private Set<Drawing> drawings;
     private Set<Time> times;
 
@@ -229,6 +230,14 @@ public class Application {
 
     public void setHeightType(HeightType heightType) {
         this.heightType = heightType;
+    }
+
+    public Integer getHeightAltitude() {
+        return heightAltitude;
+    }
+
+    public void setHeightAltitude(Integer heightAltitude) {
+        this.heightAltitude = heightAltitude;
     }
 
     @ManyToMany

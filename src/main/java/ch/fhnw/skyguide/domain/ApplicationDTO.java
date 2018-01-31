@@ -17,6 +17,7 @@ public class ApplicationDTO {
     private String duration;
     private String location;
     private String heightType;
+    private Integer heightAltitude;
     private String beamDirection;
     private String payloadAttachedObj;
     private String amount;
@@ -202,6 +203,14 @@ public class ApplicationDTO {
 
     public void setHeightType(String heightType) {
         this.heightType = heightType;
+    }
+
+    public Integer getHeightAltitude() {
+        return heightAltitude;
+    }
+
+    public void setHeightAltitude(Integer heightAltitude) {
+        this.heightAltitude = heightAltitude;
     }
 
     public List<DrawingDTO> getDrawings() {

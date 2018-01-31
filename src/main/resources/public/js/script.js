@@ -127,7 +127,30 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                 $(this).prop('checked', true);
         });
 
-        // TODO: show times and coordinates
+        $('#field_gps_coord').val(data["drawings"][0]["coordinates"][0]["lat"] + ", "
+            + data["drawings"][0]["coordinates"][0]["lon"]);
+
+        $.each(data["times"], function (i, time) {
+            if(i > 0) {
+                var template = $('#time_template'),
+                    clone = template
+                        .clone()
+                        .removeClass('display-none')
+                        .removeAttr('id')
+                        //.prop('required', true)
+                        .attr('data-time-index', i)
+                        .addClass('time_field')
+                        .insertBefore(template);
+
+                clone
+                    .find('[name="start"]').attr('name', 'start[' + i + ']')
+                    .prop('required', true).end()
+                    .find('[name="end"]').attr('name', 'end[' + i + ']')
+                    .prop('required', true).end();
+            }
+            $('input[name^="start['+i+']"]').val(time["start"]);
+            $('input[name^="end['+i+']"]').val(time["end"]);
+        });
 
     }
 }
