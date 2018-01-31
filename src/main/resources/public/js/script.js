@@ -219,7 +219,7 @@ function hideAllFields() {
     $('.custom-control-input').prop('required', false);
 
     // empty all fields
-    $('input.data').val('');
+    $('input.data.activity-data').val('');
 }
 
 /**
