@@ -55,6 +55,10 @@ function showAdminView(key) {
 function showUserView(key) {
     disableAllFields();
     fillAllFields(key);
+
+    initializeMap();
+    $('#map-container').removeClass('display-none');
+    map.updateSize();
 }
 
 function disableAllFields() {
@@ -127,11 +131,24 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                 $(this).prop('checked', true);
         });
 
-        $('#field_gps_coord').val(data["drawings"][0]["coordinates"][0]["lat"] + ", "
-            + data["drawings"][0]["coordinates"][0]["lon"]);
+        var gps = [data["drawings"][0]["coordinates"][0]["lat"], data["drawings"][0]["coordinates"][0]["lon"]];
+        console.log(gps);
+
+        $('#field_gps_coord').val(gps[0] + ", "
+            + gps[1]);
+
+        var position = ol.proj.transform(gps, 'EPSG:4326', 'EPSG:21781');
+        console.log(position);
+
+        setView([position[0], position[1]]);
+
+        var feature = new ol.Feature({
+            geometry: new ol.geom.Point(position)
+        });
+        source.addFeature(feature);
 
         $.each(data["times"], function (i, time) {
-            if(i > 0) {
+            if (i > 0) {
                 var template = $('#time_template'),
                     clone = template
                         .clone()
@@ -148,8 +165,8 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                     .find('[name="end"]').attr('name', 'end[' + i + ']')
                     .prop('required', true).end();
             }
-            $('input[name^="start['+i+']"]').val(time["start"]);
-            $('input[name^="end['+i+']"]').val(time["end"]);
+            $('input[name^="start[' + i + ']"]').val(time["start"]);
+            $('input[name^="end[' + i + ']"]').val(time["end"]);
         });
 
     }
