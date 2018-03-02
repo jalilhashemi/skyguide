@@ -165,8 +165,8 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                     .find('[name="end"]').attr('name', 'end[' + i + ']')
                     .prop('required', true).end();
             }
-            $('input[name^="start[' + i + ']"]').val(time["start"]);
-            $('input[name^="end[' + i + ']"]').val(time["end"]);
+            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0,5));
+            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0,5));
         });
 
     }
@@ -756,12 +756,12 @@ function submitApplication() {
 
     $.each($('input[name^="start"]'), function (i, time) {
         if ($(this).val() != "")
-            startArray.push($(this).val());
+            startArray.push($(this).val() + ":00");
     });
 
     $.each($('input[name^="end"]'), function (i, time) {
         if ($(this).val() != "")
-            endArray.push($(this).val());
+            endArray.push($(this).val()+ ":00");
     });
 
     $.each(startArray, function (i, item) {
