@@ -46,3 +46,15 @@ INSERT INTO drawing_type (name) VALUES
 ('Circle'),
 ('Path'),
 ('Polygon');
+
+INSERT INTO field (name, label, placeholder, mandatory) VALUES
+("field_callsign", "Callsign", "Callsign", TRUE),
+("field_callsign", "Callsign", "Callsign", FALSE);
+
+INSERT INTO form_type (activity_type_id, aircraft_type_id) VALUES
+    ((SELECT id from activity_type WHERE name='Airshow'), (SELECT id from aircraft_type WHERE name='Rotary Wing Aircraft' )),
+	((SELECT id from activity_type WHERE name='Calibration Flight'),( SELECT id from aircraft_type WHERE name='Rotary Wing Aircraft') );
+
+INSERT INTO form_type_field(form_type_id, field_id) VALUES
+((SELECT id from form_type WHERE id=1), (SELECT id from field WHERE id=1)),
+((SELECT id from form_type WHERE id=2), (SELECT id from field WHERE id=2));
