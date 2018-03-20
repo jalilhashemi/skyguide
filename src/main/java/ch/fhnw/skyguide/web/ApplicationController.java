@@ -62,7 +62,8 @@ public class ApplicationController {
         if (application != null) {
             application = applicationRepository.save(application);
             // activate mail sender
-            emailSender.send(application.getEmail(), application.getAdminKey(), application.getViewKey());
+            emailSender.send(application);
+                   // application.getEmail(), application.getAdminKey(), application.getViewKey());
             return new ResponseEntity<>(convertToDto(application), HttpStatus.CREATED);
         } else
             return new ResponseEntity<>(HttpStatus.PRECONDITION_FAILED);
