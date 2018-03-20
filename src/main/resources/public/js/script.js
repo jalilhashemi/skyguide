@@ -28,6 +28,7 @@ var vector = new ol.layer.Vector({
 
 $(document).ready(function () {
 
+    $("#icon_loading").hide();
     // get the url params
     var url = new URL(window.location.href);
     var edit = url.searchParams.get("edit");
@@ -45,6 +46,14 @@ $(document).ready(function () {
         initializeForm();
         initializeChangeHandlers();
     }
+
+    // prevent enter for submission
+    $(window).keydown(function(event){
+        if(event.keyCode == 13) {
+            event.preventDefault();
+            return false;
+        }
+    });
 });
 
 function showAdminView(key) {
@@ -283,7 +292,8 @@ function initializeChangeHandlers() {
             // here to send data
             event.preventDefault();
             submitApplication();
-            console.log("submitted");
+            $("#icon_loading").show();
+            $("#btn_submit").attr('disabled','disabled');
         }
         form.classList.add('was-validated');
     });
