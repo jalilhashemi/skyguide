@@ -283,7 +283,6 @@ function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
         var form = document.getElementById('needs-validation');
-        // submitApplication();
         if (form.checkValidity() === false) {
             event.preventDefault();
             event.stopPropagation();
