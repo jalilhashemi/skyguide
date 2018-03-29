@@ -83,6 +83,11 @@ public class ApplicationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+   @RequestMapping(params = "mail", method = RequestMethod.GET)
+   public void mail() {
+        emailSender.send(applicationRepository.findOne(0));
+   }
+
     private ApplicationDTO convertToDto(Application application) {
         ApplicationDTO applicationDTO = modelMapper.map(application, ApplicationDTO.class);
         applicationDTO.setActivityType(application.getActivityType().getName());

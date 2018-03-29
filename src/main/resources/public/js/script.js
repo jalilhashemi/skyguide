@@ -756,6 +756,7 @@ function submitApplication() {
             data[input.attr('name')] = input.val();
         }
     );
+
     data["heightType"] = $('input[name=heightType]:checked').val();
 
     // get the time ranges

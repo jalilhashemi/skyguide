@@ -94,7 +94,8 @@
         <div class="form-group">
             <label for="input_applicant_phone">Applicant Phone*</label>
             <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
-                   placeholder="Applicant Phone"
+                   placeholder="+41 00 123 45 67"
+                   pattern="^[0-9 \+]{10,20}$"
                    name="phone"
                    required>
             <div class="invalid-feedback">

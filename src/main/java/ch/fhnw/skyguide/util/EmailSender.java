@@ -44,26 +44,26 @@ public class EmailSender {
             }
 
             helper.setText(
-                    "Activity Type:\t" + checkInput(application.getActivityType().getName()) + "\n" +
-                            "Aircraft Type:\t" + checkInput(application.getAircraftType().getName()) + "\n" +
-                            "name:\t\t" + checkInput(application.getName()) + "\n" +
-                            "company:\t" + checkInput(application.getCompany()) + "\n" +
-                            "reference:\t" + checkInput(application.getReference()) + "\n" +
-                            "phone:\t\t" + checkInput(application.getPhone()) + "\n" +
-                            "email:\t\t" + checkInput(application.getEmail()) + "\n" +
-                            "callsign:\t\t" + checkInput(application.getCallsign()) + "\n" +
-                            "departure:\t" + checkInput(application.getDeparture()) + "\n" +
-                            "destination:\t" + checkInput(application.getDestination()) + "\n" +
-                            "date:\t\t" + checkInput(application.getDateFromUntil()) + "\n" +
-                            "duration:\t\t" + checkInput(application.getDuration()) + "\n" +
-                            "location:\t\t" +checkInput( application.getLocation()) + "\n" +
-                            "beam dir:\t\t" + checkInput(application.getBeamDirection()) + "\n" +
-                            "payload:\t\t" +checkInput( application.getPayloadAttachedObj()) + "\n" +
-                            "amount:\t\t" + checkInput(application.getAmount()) + "\n" +
-                            "radius:\t\t" + checkInput(application.getRadius()) + "\n" +
-                            "self decl:\t\t" + checkInput(application.getSelfDeclaration()) + "\n" +
-                            "remark:\t\t" + checkInput(application.getRemark()) + "\n" +
-                            "height:\t\t" + application.getHeightAltitude() + " " + application.getHeightType().getName() + "\n" +
+                    "Activity Type:\t" + application.getActivityType().getName() + "\n" +
+                            printAttr("Aircraft Type:\t", application.getAircraftType().getName()) +
+                            "name:\t\t" + application.getName() + "\n" +
+                            printAttr("company:\t", application.getCompany()) +
+                            printAttr("reference:\t", application.getReference()) +
+                            "phone:\t\t" + formatPhone(application.getPhone()) + "\n" +
+                            "email:\t\t" + application.getEmail() + "\n" +
+                            printAttr("callsign:\t\t", application.getCallsign()) +
+                            printAttr("departure:\t", application.getDeparture()) +
+                            printAttr("destination:\t", application.getDestination()) +
+                            printAttr("date:\t\t", application.getDateFromUntil()) +
+                            printAttr("duration:\t\t", application.getDuration() + " h") +
+                            printAttr("location:\t\t", application.getLocation()) +
+                            printAttr("beam dir:\t\t", application.getBeamDirection()) +
+                            printAttr("payload:\t\t", application.getPayloadAttachedObj()) +
+                            printAttr("amount:\t\t", application.getAmount()) +
+                            printAttr("radius:\t\t", application.getRadius()) +
+                            printAttr("self decl:\t\t", application.getSelfDeclaration()) +
+                            printAttr("remark:\t\t", application.getRemark()) +
+                            printAttr("height:\t\t", application.getHeightAltitude() + " " + application.getHeightType().getName()) +
                             "drawings:\n\t" + drawings +
                             "times:\n" + times +
                             "\n\nhttp://localhost:8080?key=" + application.getAdminKey() + "&edit\n"
@@ -85,10 +85,27 @@ public class EmailSender {
         }
     }
 
-    public String checkInput(String in) {
-        if (in == "" || in == null)
-            return "-";
-        else
-            return in;
+    public String formatPhone(String number) {
+        if(number.charAt(3) == ' ') {
+            return number;
+        }
+        else {
+            if (number.charAt(0) == '+')
+                return number.substring(0, 3) + " " + number.substring(3, 5) + " "
+                        + number.substring(5, 8) + " " + number.substring(8, 10) + " " + number.substring(10, 12);
+            else
+                return number.substring(0, 3) + " " + number.substring(3, 6) + " "
+                        + number.substring(6, 8) + " " + number.substring(8, 10);
+        }
+    }
+
+    public String printAttr(String attrName, String val) {
+        if (val == "") {
+            return "";
+
+        } else {
+            return attrName + val + "\n";
+        }
+
     }
 }
