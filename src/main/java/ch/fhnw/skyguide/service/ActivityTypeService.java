@@ -309,7 +309,7 @@ public class ActivityTypeService {
         defaultGasBalloonActivityType.getFieldList().add(freeAnswer4FieldInactive);
         listActivityType.add(gasBalloonActivityType);
 
-        ActivityType skyLightLaserActivityType = new ActivityType("Sky Light / Lase");
+        ActivityType skyLightLaserActivityType = new ActivityType("Sky Light / Laser");
         AircraftType defaultSkyLightLaserActivityType = new AircraftType("");
         skyLightLaserActivityType.getAircraftTypeList().add(defaultSkyLightLaserActivityType);
         defaultSkyLightLaserActivityType.getFieldList().add(callsignFieldInactive);
