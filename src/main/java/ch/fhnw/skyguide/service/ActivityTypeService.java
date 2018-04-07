@@ -412,7 +412,7 @@ public class ActivityTypeService {
 
         ActivityType modelRocketActivityType = new ActivityType("Model Rocket");
         AircraftType defaultModelRocketActivityType = new AircraftType("");
-        modelRocketActivityType.getAircraftTypeList().add(defaultSkyLanternActivityType);
+        modelRocketActivityType.getAircraftTypeList().add(defaultModelRocketActivityType);
         defaultModelRocketActivityType.getFieldList().add(callsignFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(departureFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(destinationFieldInactive);
@@ -436,7 +436,7 @@ public class ActivityTypeService {
         defaultModelRocketActivityType.getFieldList().add(freeAnswer2FieldInactive);
         defaultModelRocketActivityType.getFieldList().add(freeAnswer3FieldInactive);
         defaultModelRocketActivityType.getFieldList().add(freeAnswer4FieldInactive);
-        listActivityType.add(skyLanternActivityType);
+        listActivityType.add(modelRocketActivityType);
 
         ActivityType transportFlightActivityType = new ActivityType("Transport Flight");
         AircraftType rotaryWingAircraftTypeTransportFlightActivityType = new AircraftType("Rotary Wing Aircraft");
