@@ -237,6 +237,9 @@ function hideAllFields() {
     $('#container_fields').children('div .form-group').addClass('display-none');
     $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
     $('#map-container').addClass('display-none');
+    $('#add_area_dropdown').addClass('display-none');
+    $('#altitude_label').addClass('display-none');
+    $('.drawing').addClass('display-none');
     $('#addScnt').addClass('display-none');
     $('.time_field').addClass('display-none');
 
@@ -329,6 +332,8 @@ function initializeChangeHandlers() {
                 else {
                     // things showed anytime
                     $('#map-container').removeClass('display-none');
+                    $('#add_area_dropdown').removeClass('display-none');
+                    $('#altitude_label').removeClass('display-none');
                     map.updateSize();
                     // add time button
                     $('#addScnt').removeClass('display-none');
@@ -347,6 +352,8 @@ function initializeChangeHandlers() {
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
                 $('#map-container').removeClass('display-none');
+                $('#add_area_dropdown').removeClass('display-none');
+                $('#altitude_label').removeClass('display-none');
                 map.updateSize();
                 $('#addScnt').removeClass('display-none');
                 $.each(aircraftType.fieldList, function (i, field) {
@@ -395,18 +402,72 @@ function initializeChangeHandlers() {
     // TODO: continue
     $(document).on('click', '#add_polygon_btn', function () {
         drawingIndex++;
-        var template = $('#polygon_path_template'),
+        var template = $('#polygon_template'),
             clone = template
                 .clone()
                 .removeClass('display-none')
                 .removeAttr('id')
                 //.prop('required', true)
                 .attr('data-drawing-index', drawingIndex)
-              //  .addClass('time_field')
-                .insertBefore(template);
+                .prepend('<h3>Polygon ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
+    });
 
+    $(document).on('click', '#add_circle_btn', function () {
+        drawingIndex++;
+        var template = $('#circle_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+                .prepend('<h3>Circle ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
 
+    });
 
+    $(document).on('click', '#add_path_btn', function () {
+        drawingIndex++;
+        var template = $('#path_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+                .prepend('<h3>Path ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
+    });
+
+    $(document).on('click', '.add_coordinate_path_polygon', function () {
+        var template = $('#coordinate_path_polygon_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                // .attr('data-time-index', timeIndex)
+                //.addClass('time_field')
+                .insertAfter(($(this)).parent());
+
+        /* clone
+             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
+             .prop('required', true).end()
+             .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
+             .prop('required', true).end();*/
+    });
+
+    $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
+        var row = $(this).parents('.form-row');
+
+        // Remove element containing the option
+        row.remove();
     });
 
     $(document).on('change', '#field_gps_coord', function () {
