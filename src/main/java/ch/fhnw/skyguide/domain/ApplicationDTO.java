@@ -28,6 +28,10 @@ public class ApplicationDTO {
     private String remark;
     private String activityType;
     private String aircraftType;
+    private String freeAnswer1;
+    private String freeAnswer2;
+    private String freeAnswer3;
+    private String freeAnswer4;
 
     public String getName() {
         return name;
@@ -179,6 +183,38 @@ public class ApplicationDTO {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getFreeAnswer1() {
+        return freeAnswer1;
+    }
+
+    public void setFreeAnswer1(String freeAnswer1) {
+        this.freeAnswer1 = freeAnswer1;
+    }
+
+    public String getFreeAnswer2() {
+        return freeAnswer2;
+    }
+
+    public void setFreeAnswer2(String freeAnswer2) {
+        this.freeAnswer2 = freeAnswer2;
+    }
+
+    public String getFreeAnswer3() {
+        return freeAnswer3;
+    }
+
+    public void setFreeAnswer3(String freeAnswer3) {
+        this.freeAnswer3 = freeAnswer3;
+    }
+
+    public String getFreeAnswer4() {
+        return freeAnswer4;
+    }
+
+    public void setFreeAnswer4(String freeAnswer4) {
+        this.freeAnswer4 = freeAnswer4;
     }
 
     public String getActivityType() {
