@@ -3,6 +3,7 @@ var actualAircraftTypeList;
 var map;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
+var drawingIndex = 0;
 var Modify;
 var Draw;
 var drawings = [];
@@ -48,8 +49,8 @@ $(document).ready(function () {
     }
 
     // prevent enter for submission
-    $(window).keydown(function(event){
-        if(event.keyCode == 13) {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
@@ -174,8 +175,8 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                     .find('[name="end"]').attr('name', 'end[' + i + ']')
                     .prop('required', true).end();
             }
-            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0,5));
-            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0,5));
+            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0, 5));
+            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0, 5));
         });
 
     }
@@ -236,6 +237,9 @@ function hideAllFields() {
     $('#container_fields').children('div .form-group').addClass('display-none');
     $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
     $('#map-container').addClass('display-none');
+    $('#add_area_dropdown').addClass('display-none');
+    $('#altitude_label').addClass('display-none');
+    $('.drawing').addClass('display-none');
     $('#addScnt').addClass('display-none');
     $('.time_field').addClass('display-none');
 
@@ -292,7 +296,7 @@ function initializeChangeHandlers() {
             event.preventDefault();
             submitApplication();
             $("#icon_loading").show();
-            $("#btn_submit").attr('disabled','disabled');
+            $("#btn_submit").attr('disabled', 'disabled');
         }
         form.classList.add('was-validated');
     });
@@ -328,6 +332,8 @@ function initializeChangeHandlers() {
                 else {
                     // things showed anytime
                     $('#map-container').removeClass('display-none');
+                    $('#add_area_dropdown').removeClass('display-none');
+                    $('#altitude_label').removeClass('display-none');
                     map.updateSize();
                     // add time button
                     $('#addScnt').removeClass('display-none');
@@ -346,6 +352,8 @@ function initializeChangeHandlers() {
         $.each(actualAircraftTypeList, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
                 $('#map-container').removeClass('display-none');
+                $('#add_area_dropdown').removeClass('display-none');
+                $('#altitude_label').removeClass('display-none');
                 map.updateSize();
                 $('#addScnt').removeClass('display-none');
                 $.each(aircraftType.fieldList, function (i, field) {
@@ -391,6 +399,78 @@ function initializeChangeHandlers() {
         }
     });
 
+    // TODO: continue
+    $(document).on('click', '#add_polygon_btn', function () {
+        drawingIndex++;
+        var template = $('#polygon_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+                .prepend('<h3>Polygon ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
+    });
+
+    $(document).on('click', '#add_circle_btn', function () {
+        drawingIndex++;
+        var template = $('#circle_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+                .prepend('<h3>Circle ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
+
+    });
+
+    $(document).on('click', '#add_path_btn', function () {
+        drawingIndex++;
+        var template = $('#path_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+                .prepend('<h3>Path ' + drawingIndex + '</h3>')
+                //  .addClass('time_field')
+                .insertBefore($('#map-container'))
+                .find('input').prop('required', true);
+    });
+
+    $(document).on('click', '.add_coordinate_path_polygon', function () {
+        var template = $('#coordinate_path_polygon_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                // .attr('data-time-index', timeIndex)
+                //.addClass('time_field')
+                .insertAfter(($(this)).parent());
+
+        /* clone
+             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
+             .prop('required', true).end()
+             .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
+             .prop('required', true).end();*/
+    });
+
+    $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
+        var row = $(this).parents('.form-row');
+
+        // Remove element containing the option
+        row.remove();
+    });
+
+    // TODO: provide for new coordinate fields
     $(document).on('change', '#field_gps_coord', function () {
 
         // if geocode is needed
@@ -771,7 +851,7 @@ function submitApplication() {
 
     $.each($('input[name^="end"]'), function (i, time) {
         if ($(this).val() != "")
-            endArray.push($(this).val()+ ":00");
+            endArray.push($(this).val() + ":00");
     });
 
     $.each(startArray, function (i, item) {
@@ -808,5 +888,16 @@ function submitApplication() {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
+}
+
+function addPath() {
+
+}
+
+function addCircle() {
+
+}
+
+function addPolygon() {
 
 }
