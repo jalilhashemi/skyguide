@@ -25,12 +25,8 @@ public class EmailSender {
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-
-
-
             helper.setTo(adminMail);
             helper.setSubject("There is a new Application (Beta)");
-
             String drawings = "";
             for (Drawing d : application.getDrawings()) {
                 drawings += d.getDrawingType().getName() + ": ";
@@ -47,7 +43,6 @@ public class EmailSender {
 
             //helper.setText(
             String htmlMsg = "<table style=\"border-collapse: collapse\">" +
-
                     printAttr("Activity Type", application.getActivityType().getName())+
                     printAttr("Aircraft Type", application.getAircraftType().getName()) +
                     printAttr("Name", application.getName())  +
@@ -74,8 +69,9 @@ public class EmailSender {
                     printAttr("Is it possible to interrupt the mission?", application.getFreeAnswer2()) +
                     printAttr("Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", application.getFreeAnswer3()) +
                     printAttr("Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", application.getFreeAnswer4()) +
-                    "</table>";
+                    "</table>" +
 
+                    "<p>" + "Link to the application: http://localhost:8080?key=" + application.getViewKey() + "</p>";
 
             message.setContent(htmlMsg, "text/html");
             sender.send(message);
@@ -83,34 +79,34 @@ public class EmailSender {
             helper.setTo(application.getEmail());
             helper.setSubject("Your Application to skyguide");
             helper.setText("http://localhost:8080?key=" + application.getAdminKey() + "&edit\n");
-            helper.setText("Link: http://localhost:8080?key=" + application.getViewKey());
-
-
             sender.send(message);
 
             return true;
         } catch (
                 Exception e)
-
         {
             return false;
         }
     }
 
     public String formatPhone(String number) {
-                return number.substring(0, 3) + " " + number.substring(3, 6) + " "
-                        + number.substring(6, 8) + " " + number.substring(8, 10);
+        return number.substring(0, 3) + " " + number.substring(3, 6) + " "
+                + number.substring(6, 8) + " " + number.substring(8, 10);
     }
 
     public String printAttr(String attrName, String val) {
         if (val == "") {
             return "";
-        } else {
+        }
+        if(val == null) {
+            return "";
+        }
+        else {
             //return attrName + val + "\n";
             return "<tr>\n" +
-                    "    <b><td style=\"width:20%; border: 1px solid black; padding: 5px; text-align: left;\">"+attrName+"</td></b>" +
-                    "    <td style=\"width:80%; border: 1px solid black; padding: 5px; text-align: left;\">"+val+"</td>" +
-                    "  </tr>";
+                    "<b><td style=\"width:20%; border: 1px solid black; padding: 5px; text-align: left;\">" + attrName + "</td></b>" +
+                    "<td style=\"width:80%; border: 1px solid black; padding: 5px; text-align: left;\">" + val + "</td>" +
+                    "</tr>";
         }
     }
 }
