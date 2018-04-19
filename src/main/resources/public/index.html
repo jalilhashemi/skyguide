@@ -94,10 +94,11 @@
         <div class="form-group">
             <label for="input_applicant_phone">Applicant Phone*</label>
             <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
-                   placeholder="+41 00 123 45 67"
-                   pattern="^[0-9 \+]{10,20}$"
+                   placeholder="0001234567"
+                   pattern="^[0-9]{10}$"
                    name="phone"
                    required>
+            <small class="form-text text-muted">Only swiss phone numbers in the format shown</small>
             <div class="invalid-feedback">
                 Please provide a phone number.
             </div>

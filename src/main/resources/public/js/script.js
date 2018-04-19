@@ -470,6 +470,7 @@ function initializeChangeHandlers() {
         row.remove();
     });
 
+    // TODO: provide for new coordinate fields
     $(document).on('change', '#field_gps_coord', function () {
 
         // if geocode is needed
