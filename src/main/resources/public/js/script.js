@@ -3,6 +3,7 @@ var actualAircraftTypeList;
 var map;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
+var drawingIndex = 0;
 var Modify;
 var Draw;
 var drawings = [];
@@ -48,8 +49,8 @@ $(document).ready(function () {
     }
 
     // prevent enter for submission
-    $(window).keydown(function(event){
-        if(event.keyCode == 13) {
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
             event.preventDefault();
             return false;
         }
@@ -174,8 +175,8 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
                     .find('[name="end"]').attr('name', 'end[' + i + ']')
                     .prop('required', true).end();
             }
-            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0,5));
-            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0,5));
+            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0, 5));
+            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0, 5));
         });
 
     }
@@ -292,7 +293,7 @@ function initializeChangeHandlers() {
             event.preventDefault();
             submitApplication();
             $("#icon_loading").show();
-            $("#btn_submit").attr('disabled','disabled');
+            $("#btn_submit").attr('disabled', 'disabled');
         }
         form.classList.add('was-validated');
     });
@@ -389,6 +390,23 @@ function initializeChangeHandlers() {
         else {
             setLayerVisible(1, false);
         }
+    });
+
+    // TODO: continue
+    $(document).on('click', '#add_polygon_btn', function () {
+        drawingIndex++;
+        var template = $('#polygon_path_template'),
+            clone = template
+                .clone()
+                .removeClass('display-none')
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-drawing-index', drawingIndex)
+              //  .addClass('time_field')
+                .insertBefore(template);
+
+
+
     });
 
     $(document).on('change', '#field_gps_coord', function () {
@@ -771,7 +789,7 @@ function submitApplication() {
 
     $.each($('input[name^="end"]'), function (i, time) {
         if ($(this).val() != "")
-            endArray.push($(this).val()+ ":00");
+            endArray.push($(this).val() + ":00");
     });
 
     $.each(startArray, function (i, item) {
@@ -808,5 +826,16 @@ function submitApplication() {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
+}
+
+function addPath() {
+
+}
+
+function addCircle() {
+
+}
+
+function addPolygon() {
 
 }
