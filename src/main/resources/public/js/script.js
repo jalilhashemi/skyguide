@@ -112,6 +112,7 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
     }));
     if (aircraftType != null) {
         $('#type_of_aircraft').parent().show();
+        $('#type_of_aircraft').prop('required', true);
         $('#type_of_aircraft').append($('<option>', {
             text: aircraftType,
             selected: true
@@ -285,6 +286,7 @@ function processField(field) {
 function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
+        event.preventDefault();
         var form = document.getElementById('needs-validation');
         if (form.checkValidity() === false) {
             event.preventDefault();
@@ -298,10 +300,11 @@ function initializeChangeHandlers() {
             $("#btn_submit").attr('disabled', 'disabled');
         }
         form.classList.add('was-validated');
+       // submitApplication();
 
 
     });
-    $(document).on('change', '#field_time_schedule_until', function () {
+    $(document).on('keyup', '#field_time_schedule_until', function () {
 
         var start_time = $("#field_time_schedule_from").val();
         var end_time = $("#field_time_schedule_until").val();
@@ -313,29 +316,30 @@ function initializeChangeHandlers() {
         var end = new Date("November 13, 2013 " + end_time);
         end = end.getTime();
 
-
-        if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(start_time)) {
+        var timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+        if (timeRegex.test(start_time)) {
             makeValid($('#field_time_schedule_from'));
         }
         else {
             makeInvalid($('#field_time_schedule_from'));
         }
-        if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
-            $('#field_time_schedule_until').addClass('is-valid was-validated');
-            $('#field_time_schedule_until').removeClass('is-invalid was-validated');
-        }
-        else {
-            $('#field_time_schedule_until').removeClass('is-valid was-validated');
-            $('#field_time_schedule_until').addClass('is-invalid was-validated');
-        }
+
         if (end < start) {
-            $('#field_time_schedule_until').removeClass('is-valid was-validated');
-            $('#field_time_schedule_until').addClass('is-invalid was-validated');
+
+            //makeInvalid($('#field_time_schedule_until'));
         }
         else {
+            makeValid($('#field_time_schedule_until'));
+        }
+     /*   if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
             $('#field_time_schedule_until').addClass('is-valid was-validated');
             $('#field_time_schedule_until').removeClass('is-invalid was-validated');
         }
+        else {
+            $('#field_time_schedule_until').removeClass('is-valid was-validated');
+            $('#field_time_schedule_until').addClass('is-invalid was-validated');
+        }
+        */
     });
 
     $(document).on('change', '#type_of_activity', function () {
@@ -343,7 +347,7 @@ function initializeChangeHandlers() {
 
         // and hide the aircraft type selection and empty value
         $('#type_of_aircraft').parent().hide()
-            .prop('required', false);
+        $('#type_of_aircraft').prop('required', false);
         $('#type_of_aircraft').val('');
 
         $.each(informationJSON, function (j, activityType) {
@@ -353,11 +357,11 @@ function initializeChangeHandlers() {
                     actualAircraftTypeList = activityType.aircraftTypeList;
 
                     // show the dropdown
-                    $('#type_of_aircraft').parent().show()
-                        .prop('required', true);
+                    $('#type_of_aircraft').parent().show();
+
 
                     // remove all options and append default text
-                    $('#type_of_aircraft').find('option').remove().end().append("<option value=''>Select the aircraft type</option>");
+                    $('#type_of_aircraft').find('option').remove().end().append("<option value>Select the aircraft type</option>");
 
                     // append all aircraft types
                     $.each(activityType.aircraftTypeList, function (i, aircraftType) {
@@ -365,6 +369,8 @@ function initializeChangeHandlers() {
                             text: aircraftType.label
                         }));
                     });
+
+                    $('#type_of_aircraft').prop('required', true);
                 }
                 else {
                     // things showed anytime
@@ -442,7 +448,7 @@ function initializeChangeHandlers() {
             clone = template
                 .clone()
                 .removeClass('display-none')
-                .removeAttr('id')
+                .attr('id', 'drawing' + drawingIndex)
                 //.prop('required', true)
                 .attr('data-drawing-index', drawingIndex)
                 .prepend('<h3>Polygon ' + drawingIndex + '</h3>')
@@ -457,7 +463,7 @@ function initializeChangeHandlers() {
             clone = template
                 .clone()
                 .removeClass('display-none')
-                .removeAttr('id')
+                .attr('id', 'drawing' + drawingIndex)
                 //.prop('required', true)
                 .attr('data-drawing-index', drawingIndex)
                 .prepend('<h3>Circle ' + drawingIndex + '</h3>')
@@ -473,7 +479,7 @@ function initializeChangeHandlers() {
             clone = template
                 .clone()
                 .removeClass('display-none')
-                .removeAttr('id')
+                .attr('id', 'drawing' + drawingIndex)
                 //.prop('required', true)
                 .attr('data-drawing-index', drawingIndex)
                 .prepend('<h3>Path ' + drawingIndex + '</h3>')
@@ -901,11 +907,17 @@ function submitApplication() {
 
     var drawings = [];
 
-    var drawing1;
-    drawings.push(drawing1);
+    var drawing1 = {};
+
+    $.each($('#drawing1 .gps'), function (i, item) {
+        console.log(item.val());
+    });
+
+    //console.log(drawingDivs[0].find('input'));
+    //drawing1['']
+    //drawings.push(drawing1);
 
     data['drawings'] = drawings;
-
 
     if (data['heightType'] == undefined)
         data['heightType'] = 'none';
@@ -945,6 +957,7 @@ function makeInvalid(inputField) {
     inputField.addClass('custom-select.is-invalid');
     inputField.removeClass('custom-select:valid');
     inputField.addClass('custom-select:invalid');
+    inputField.addClass('was-validated');
 }
 
 function makeValid(inputField) {
@@ -955,7 +968,7 @@ function makeValid(inputField) {
     inputField.addClass('custom-select.is-valid');
     inputField.removeClass('custom-select.is-invalid');
     inputField.addClass('custom-select:valid');
-    inputField.removeClass('custom-select:invalid');
+    inputField.addClass('was-validated');
 }
 
 function addPath() {
