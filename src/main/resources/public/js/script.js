@@ -28,7 +28,6 @@ var vector = new ol.layer.Vector({
 });
 
 $(document).ready(function () {
-
     $("#icon_loading").hide();
     // get the url params
     var url = new URL(window.location.href);
@@ -299,6 +298,44 @@ function initializeChangeHandlers() {
             $("#btn_submit").attr('disabled', 'disabled');
         }
         form.classList.add('was-validated');
+
+
+    });
+    $(document).on('change', '#field_time_schedule_until', function () {
+
+        var start_time = $("#field_time_schedule_from").val();
+        var end_time = $("#field_time_schedule_until").val();
+
+        //convert both time into timestamp
+        var start = new Date("November 13, 2013 " + start_time);
+        start = start.getTime();
+
+        var end = new Date("November 13, 2013 " + end_time);
+        end = end.getTime();
+
+
+        if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(start_time)) {
+            makeValid($('#field_time_schedule_from'));
+        }
+        else {
+            makeInvalid($('#field_time_schedule_from'));
+        }
+        if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
+            $('#field_time_schedule_until').addClass('is-valid was-validated');
+            $('#field_time_schedule_until').removeClass('is-invalid was-validated');
+        }
+        else {
+            $('#field_time_schedule_until').removeClass('is-valid was-validated');
+            $('#field_time_schedule_until').addClass('is-invalid was-validated');
+        }
+        if (end < start) {
+            $('#field_time_schedule_until').removeClass('is-valid was-validated');
+            $('#field_time_schedule_until').addClass('is-invalid was-validated');
+        }
+        else {
+            $('#field_time_schedule_until').addClass('is-valid was-validated');
+            $('#field_time_schedule_until').removeClass('is-invalid was-validated');
+        }
     });
 
     $(document).on('change', '#type_of_activity', function () {
@@ -399,7 +436,6 @@ function initializeChangeHandlers() {
         }
     });
 
-    // TODO: continue
     $(document).on('click', '#add_polygon_btn', function () {
         drawingIndex++;
         var template = $('#polygon_template'),
@@ -859,7 +895,17 @@ function submitApplication() {
     });
 
     data['times'] = times;
+    //data['drawings'] = drawings;
+
+    // TODO: Jalil: get drawing data and save to drawings object
+
+    var drawings = [];
+
+    var drawing1;
+    drawings.push(drawing1);
+
     data['drawings'] = drawings;
+
 
     if (data['heightType'] == undefined)
         data['heightType'] = 'none';
@@ -867,7 +913,7 @@ function submitApplication() {
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
 
-    var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
+    // var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
 
     // submit to server
@@ -888,6 +934,28 @@ function submitApplication() {
         .fail(function (xhr, status, errorThrown) {
             console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
         });
+}
+
+function makeInvalid(inputField) {
+    inputField.removeClass('form-control:valid');
+    inputField.addClass('form-control:invalid');
+    inputField.removeClass('form-control.is-valid');
+    inputField.addClass('form-control.is-invalid');
+    inputField.removeClass('custom-select.is-valid');
+    inputField.addClass('custom-select.is-invalid');
+    inputField.removeClass('custom-select:valid');
+    inputField.addClass('custom-select:invalid');
+}
+
+function makeValid(inputField) {
+    inputField.addClass('form-control:valid');
+    inputField.removeClass('form-control:invalid');
+    inputField.addClass('form-control.is-valid');
+    inputField.removeClass('form-control.is-invalid');
+    inputField.addClass('custom-select.is-valid');
+    inputField.removeClass('custom-select.is-invalid');
+    inputField.addClass('custom-select:valid');
+    inputField.removeClass('custom-select:invalid');
 }
 
 function addPath() {
