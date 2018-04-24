@@ -286,6 +286,7 @@ function processField(field) {
 function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
+        /*
         event.preventDefault();
         var form = document.getElementById('needs-validation');
         if (form.checkValidity() === false) {
@@ -300,7 +301,9 @@ function initializeChangeHandlers() {
             $("#btn_submit").attr('disabled', 'disabled');
         }
         form.classList.add('was-validated');
-       // submitApplication();
+        */
+
+        submitApplication();
 
 
     });
@@ -907,11 +910,34 @@ function submitApplication() {
 
     var drawings = [];
 
-    var drawing1 = {};
+    var drawing1 =[] ;
+    var d1g1 = $('#drawing1 .gps1').val();
+    var d1g2 = $('#drawing1 .gps2').val();
+    var d1g3 = $('#drawing1 .gps3').val();
+    drawing1.push(d1g1, d1g2, d1g3);
 
-    $.each($('#drawing1 .gps'), function (i, item) {
-        console.log(item.val());
-    });
+
+    var drawingPolygon =[] ;
+    var d1g1 = $('#drawing1 .gps1').val();
+    var d1g2 = $('#drawing1 .gps2').val();
+    var d1g3 = $('#drawing1 .gps3').val();
+    var al1 = $('#drawing1 #field_altitude_polygon').val();
+    drawingPolygon.push(d1g1, d1g2, d1g3, al1);
+    console.log(drawingPolygon);
+
+    var drawingCircle =[] ;
+    var d2g1 = $('#drawing2 .gps1').val();
+    var rad = $('#drawing2 #field_radius_circle').val();
+    var al2 = $('#drawing2 #field_altitude_circle').val();
+    drawingCircle.push(d2g1, rad, al2);
+    console.log(drawingCircle);
+
+    var drawingPath =[] ;
+    var d3g1 = $('#drawing3 .gps1').val();
+    var d3g2 = $('#drawing3 .gps2').val();
+    var al3 = $('#drawing3 #field_altitude_path').val();
+    drawingPath.push(d3g1, d3g2, al3);
+    console.log(drawingPath);
 
     //console.log(drawingDivs[0].find('input'));
     //drawing1['']
