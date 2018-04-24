@@ -286,25 +286,20 @@ function processField(field) {
 function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
-        /*
-        event.preventDefault();
-        var form = document.getElementById('needs-validation');
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else {
-            // here to send data
-            event.preventDefault();
-            submitApplication();
-            $("#icon_loading").show();
-            $("#btn_submit").attr('disabled', 'disabled');
-        }
-        form.classList.add('was-validated');
-        */
 
-        submitApplication();
-
+         var form = document.getElementById('needs-validation');
+          if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+          }
+          else {
+              // here to send data
+              event.preventDefault();
+              submitApplication();
+              $("#icon_loading").show();
+              $("#btn_submit").attr('disabled', 'disabled');
+          }
+          form.classList.add('was-validated');
 
     });
     $(document).on('keyup', '#field_time_schedule_until', function () {
@@ -334,15 +329,15 @@ function initializeChangeHandlers() {
         else {
             makeValid($('#field_time_schedule_until'));
         }
-     /*   if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
-            $('#field_time_schedule_until').addClass('is-valid was-validated');
-            $('#field_time_schedule_until').removeClass('is-invalid was-validated');
-        }
-        else {
-            $('#field_time_schedule_until').removeClass('is-valid was-validated');
-            $('#field_time_schedule_until').addClass('is-invalid was-validated');
-        }
-        */
+        /*   if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
+               $('#field_time_schedule_until').addClass('is-valid was-validated');
+               $('#field_time_schedule_until').removeClass('is-invalid was-validated');
+           }
+           else {
+               $('#field_time_schedule_until').removeClass('is-valid was-validated');
+               $('#field_time_schedule_until').addClass('is-invalid was-validated');
+           }
+           */
     });
 
     $(document).on('change', '#type_of_activity', function () {
@@ -492,20 +487,13 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '.add_coordinate_path_polygon', function () {
+        var index = $(this).find('button').attr('data-gps-index');
         var template = $('#coordinate_path_polygon_template'),
             clone = template
                 .clone()
                 .removeClass('display-none')
                 .removeAttr('id')
-                // .attr('data-time-index', timeIndex)
-                //.addClass('time_field')
                 .insertAfter(($(this)).parent());
-
-        /* clone
-             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
-             .prop('required', true).end()
-             .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
-             .prop('required', true).end();*/
     });
 
     $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
@@ -906,42 +894,39 @@ function submitApplication() {
     data['times'] = times;
     //data['drawings'] = drawings;
 
-    // TODO: Jalil: get drawing data and save to drawings object
-
     var drawings = [];
 
-    var drawing1 =[] ;
-    var d1g1 = $('#drawing1 .gps1').val();
-    var d1g2 = $('#drawing1 .gps2').val();
-    var d1g3 = $('#drawing1 .gps3').val();
-    drawing1.push(d1g1, d1g2, d1g3);
+    var i = 1;
+    while ($('#drawing' + i).val() != undefined) {
+        var drawing = {};
+
+        drawing['altitude'] = $('#drawing' + i + ' .altitude').val();
+
+        if ($('#drawing' + i).hasClass('path')) {
+            drawing['drawingType'] = 'Path';
 
 
-    var drawingPolygon =[] ;
-    var d1g1 = $('#drawing1 .gps1').val();
-    var d1g2 = $('#drawing1 .gps2').val();
-    var d1g3 = $('#drawing1 .gps3').val();
-    var al1 = $('#drawing1 #field_altitude_polygon').val();
-    drawingPolygon.push(d1g1, d1g2, d1g3, al1);
-    console.log(drawingPolygon);
+        } else if ($('#drawing' + i).hasClass('circle')) {
+            drawing['drawingType'] = 'Circle';
+            drawing['radius'] = $('#drawing' + i + ' .radius').val();
+        }
+        else if ($('#drawing' + i).hasClass('polygon')) {
+            drawing['drawingType'] = 'Polygon';
 
-    var drawingCircle =[] ;
-    var d2g1 = $('#drawing2 .gps1').val();
-    var rad = $('#drawing2 #field_radius_circle').val();
-    var al2 = $('#drawing2 #field_altitude_circle').val();
-    drawingCircle.push(d2g1, rad, al2);
-    console.log(drawingCircle);
+        }
+        drawing['coordinates'] = [];
 
-    var drawingPath =[] ;
-    var d3g1 = $('#drawing3 .gps1').val();
-    var d3g2 = $('#drawing3 .gps2').val();
-    var al3 = $('#drawing3 #field_altitude_path').val();
-    drawingPath.push(d3g1, d3g2, al3);
-    console.log(drawingPath);
+        $('#drawing' + i + ' .gps').each(function (index) {
 
-    //console.log(drawingDivs[0].find('input'));
-    //drawing1['']
-    //drawings.push(drawing1);
+            drawing['coordinates'][index] = {
+                // TODO: split coordinates
+                'lat': $(this).val(),
+                'lon': $(this).val()
+            };
+        });
+        drawings.push(drawing);
+        i++;
+    }
 
     data['drawings'] = drawings;
 
@@ -951,27 +936,27 @@ function submitApplication() {
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
 
-    // var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
+// var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
 
-    // submit to server
-    $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/applications',
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
-        dataType: 'json'
-    })
-        .done(function (json) {
-            console.log(json);
-            hideAllFields();
-            $('#submit_success').modal('show');
+// submit to server
+       $.ajax({
+           crossOrigin: true,
+           url: restUrl + '/applications',
+           type: 'POST',
+           contentType: "application/json; charset=utf-8",
+           data: JSON.stringify(data),
+           dataType: 'json'
+       })
+           .done(function (json) {
+               console.log(json);
+               hideAllFields();
+               $('#submit_success').modal('show');
 
-        })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-        });
+           })
+           .fail(function (xhr, status, errorThrown) {
+               console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+           });
 }
 
 function makeInvalid(inputField) {

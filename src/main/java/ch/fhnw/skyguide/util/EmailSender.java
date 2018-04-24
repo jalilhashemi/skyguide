@@ -30,6 +30,9 @@ public class EmailSender {
             String drawings = "";
             for (Drawing d : application.getDrawings()) {
                 drawings += d.getDrawingType().getName() + ": ";
+                if (d.getRadius() != null)
+                    drawings += "Height: " + d.getAltitude() + "\n";
+                drawings += "Radius: " + d.getRadius() + "\n";
                 for (Coordinate c : d.getCoordinates()) {
                     drawings += "\t" + c.getLat() + ", " + c.getLon() + ";";
                 }
@@ -38,14 +41,14 @@ public class EmailSender {
 
             String times = "";
             for (Time t : application.getTimes()) {
-                times += "\t" + t.getStart().toString().substring(0,5) + " - " + t.getEnd().toString().substring(0,5) + "<br>";
+                times += "\t" + t.getStart().toString().substring(0, 5) + " - " + t.getEnd().toString().substring(0, 5) + "<br>";
             }
 
             //helper.setText(
             String htmlMsg = "<table style=\"border-collapse: collapse\">" +
-                    printAttr("Activity Type", application.getActivityType().getName())+
+                    printAttr("Activity Type", application.getActivityType().getName()) +
                     printAttr("Aircraft Type", application.getAircraftType().getName()) +
-                    printAttr("Name", application.getName())  +
+                    printAttr("Name", application.getName()) +
                     printAttr("Company", application.getCompany()) +
                     printAttr("Reference", application.getReference()) +
                     printAttr("Phone", formatPhone(application.getPhone())) +
@@ -54,15 +57,15 @@ public class EmailSender {
                     printAttr("Departure", application.getDeparture()) +
                     printAttr("Destination", application.getDestination()) +
                     printAttr("Date", application.getDateFromUntil()) +
-                    printAttr("Duration",application.getDuration() + " h") +
+                    printAttr("Duration", application.getDuration() + " h") +
                     printAttr("Location", application.getLocation()) +
                     printAttr("Beam direction", application.getBeamDirection()) +
                     printAttr("Payload", application.getPayloadAttachedObj()) +
                     printAttr("Amount", application.getAmount()) +
-                    printAttr("Radius", application.getRadius()) +
+                    // printAttr("Radius", application.getRadius()) +
                     printAttr("Self declaration", application.getSelfDeclaration()) +
                     printAttr("Remark", application.getRemark()) +
-                    printAttr("Height", application.getHeightAltitude() + " " + application.getHeightType().getName()) +
+                    //  printAttr("Height", application.getHeightAltitude() + " " + application.getHeightType().getName()) +
                     printAttr("Coordinates & Drawings", drawings) +
                     printAttr("Time schedule", times) +
                     printAttr("Are the altitudes flexible or not?", application.getFreeAnswer1()) +
@@ -83,8 +86,7 @@ public class EmailSender {
 
             return true;
         } catch (
-                Exception e)
-        {
+                Exception e) {
             return false;
         }
     }
@@ -98,10 +100,9 @@ public class EmailSender {
         if (val == "") {
             return "";
         }
-        if(val == null) {
+        if (val == null) {
             return "";
-        }
-        else {
+        } else {
             //return attrName + val + "\n";
             return "<tr>\n" +
                     "<b><td style=\"width:20%; border: 1px solid black; padding: 5px; text-align: left;\">" + attrName + "</td></b>" +

@@ -175,7 +175,7 @@
             <div class="form-row" id="p_scents">
                 <div class="form-group col-md-6 display-none">
                     <input type="text" class="form-control input-field-sky"
-                           id="field_time_schedule_from" name="start[0]" >
+                           id="field_time_schedule_from" name="start[0]">
                     <div class="invalid-feedback">
                     </div>
                 </div>
@@ -225,12 +225,12 @@
                 </div>
             </div>
             <div>
-                <div class="display-none drawing" id="path_template">
+                <div class="display-none drawing path" id="path_template">
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_altitude_path">Altitude*</label>
                             <input type="number" min="0" max="99999"
-                                   class="form-control input-field-sky data activity-data"
+                                   class="form-control input-field-sky altitude"
                                    id="field_altitude_path">
                             <div class="invalid-feedback">Must be a positive number
                             </div>
@@ -242,7 +242,7 @@
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
-                            <input type="text" class="form-control input-field-sky" id="gps_path"
+                            <input type="text" class="form-control input-field-sky gps" id="gps_path"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
@@ -253,14 +253,14 @@
 
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control input-field-sky"
+                            <input type="text" class="form-control input-field-sky gps"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
                         </div>
-                        <div class="form-group col-md-1  add_coordinate_path_polygon">
+                        <div class="form-group col-md-1 add_coordinate_path_polygon ">
                             <button tabindex="-1" type="button" class="btn btn-primary btn-sky "
-                                    id="add_gps_path" placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                    id="add_gps_path" placeholder="47°09′43.999″ N 7°40′33.646″E" data-gps-index="3">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -269,13 +269,13 @@
             </div>
 
             <div>
-                <div class="display-none drawing" id="polygon_template">
+                <div class="display-none drawing polygon" id="polygon_template">
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
                             <label for="field_altitude_polygon">Altitude*</label>
                             <input type="number" min="0" max="99999"
-                                   class="form-control input-field-sky data activity-data"
+                                   class="form-control input-field-sky altitude"
                                    id="field_altitude_polygon">
                             <div class="invalid-feedback">Must be a positive number
                             </div>
@@ -287,7 +287,7 @@
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
-                            <input type="text" class="form-control input-field-sky" id="gps_polygon"
+                            <input type="text" class="form-control input-field-sky gps" id="gps_polygon"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
@@ -298,7 +298,7 @@
 
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control input-field-sky"
+                            <input type="text" class="form-control input-field-sky gps"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
@@ -309,13 +309,13 @@
 
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="text" class="form-control input-field-sky"
+                            <input type="text" class="form-control input-field-sky gps"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
                         </div>
                         <div class="form-group col-md-1 add_coordinate_path_polygon">
-                            <button tabindex="-1" type="button" class="btn btn-primary btn-sky">
+                            <button tabindex="-1" type="button" class="btn btn-primary btn-sky" data-gps-index="4">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -324,12 +324,12 @@
             </div>
 
             <div>
-                <div class="display-none drawing" id="circle_template">
+                <div class="display-none drawing circle" id="circle_template">
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_altitude_circle">Altitude*</label>
                             <input type="number" min="0" max="99999"
-                                   class="form-control input-field-sky data activity-data"
+                                   class="form-control input-field-sky altitude"
                                    id="field_altitude_circle"
                             >
                             <div class="invalid-feedback">Must be a positive number
@@ -342,7 +342,7 @@
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
-                            <input type="text" class="form-control input-field-sky" id="gps_circle"
+                            <input type="text" class="form-control input-field-sky gps" id="gps_circle"
                                    placeholder="47°09′43.999″ N 7°40′33.646″E">
                             <div class="invalid-feedback">
                             </div>
@@ -352,7 +352,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_radius_circle">Radius*</label>
-                            <input id="field_radius_circle" type="text" class="form-control input-field-sky">
+                            <input id="field_radius_circle" type="text" class="form-control input-field-sky radius">
                             <div class="invalid-feedback">
                             </div>
                         </div>
@@ -367,7 +367,7 @@
 
                     </div>
                     <div class="form-group col-md-6">
-                        <input type="text" class="form-control input-field-sky"
+                        <input type="text" class="form-control input-field-sky gps"
                                placeholder="47°09′43.999″ N 7°40′33.646″E">
                         <div class="invalid-feedback">
                         </div>
@@ -377,13 +377,6 @@
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                         </button>
                     </div>
-                </div>
-            </div>
-
-            <div class="form-group  display-none">
-                <input type="number" min="0" max="99999" class="form-control input-field-sky" id="field_radius"
-                       name="radius">
-                <div class="invalid-feedback">Must be a positive number
                 </div>
             </div>
 

@@ -17,13 +17,11 @@ public class ApplicationDTO {
     private String duration;
     private String location;
     private String heightType;
-    private Integer heightAltitude;
     private String beamDirection;
     private String payloadAttachedObj;
     private String amount;
     private List<DrawingDTO> drawings;
     private List<TimeDTO> times;
-    private String radius;
     private String selfDeclaration;
     private String remark;
     private String activityType;
@@ -161,14 +159,6 @@ public class ApplicationDTO {
         this.amount = amount;
     }
 
-    public String getRadius() {
-        return radius;
-    }
-
-    public void setRadius(String radius) {
-        this.radius = radius;
-    }
-
     public String getSelfDeclaration() {
         return selfDeclaration;
     }
@@ -239,14 +229,6 @@ public class ApplicationDTO {
 
     public void setHeightType(String heightType) {
         this.heightType = heightType;
-    }
-
-    public Integer getHeightAltitude() {
-        return heightAltitude;
-    }
-
-    public void setHeightAltitude(Integer heightAltitude) {
-        this.heightAltitude = heightAltitude;
     }
 
     public List<DrawingDTO> getDrawings() {

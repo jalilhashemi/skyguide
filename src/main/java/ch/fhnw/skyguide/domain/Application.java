@@ -26,13 +26,11 @@ public class Application {
     private String beamDirection;
     private String payloadAttachedObj;
     private String amount;
-    private String radius;
     private String selfDeclaration;
     private String remark;
     private ActivityType activityType;
     private AircraftType aircraftType;
     private HeightType heightType;
-    private Integer heightAltitude;
     private Set<Drawing> drawings;
     private Set<Time> times;
     private String freeAnswer1;
@@ -183,14 +181,6 @@ public class Application {
         this.amount = amount;
     }
 
-    public String getRadius() {
-        return radius;
-    }
-
-    public void setRadius(String radius) {
-        this.radius = radius;
-    }
-
     public String getSelfDeclaration() {
         return selfDeclaration;
     }
@@ -267,14 +257,6 @@ public class Application {
 
     public void setHeightType(HeightType heightType) {
         this.heightType = heightType;
-    }
-
-    public Integer getHeightAltitude() {
-        return heightAltitude;
-    }
-
-    public void setHeightAltitude(Integer heightAltitude) {
-        this.heightAltitude = heightAltitude;
     }
 
     @ManyToMany

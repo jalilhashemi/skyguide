@@ -34,101 +34,97 @@ public class ActivityTypeService {
     }
 
     {
-        Field callsignFieldMandatory = new Field("field_callsign", "callsign","Callsign", "Callsign", true, true);
-        Field callsignFieldActive = new Field("field_callsign", "callsign", "Callsign", "Callsign",false, true);
-        Field callsignFieldInactive = new Field("field_callsign", "callsign", "Callsign", "Callsign",false, false);
+        Field callsignFieldMandatory = new Field("field_callsign", "callsign", "Callsign", "Callsign", true, true);
+        Field callsignFieldActive = new Field("field_callsign", "callsign", "Callsign", "Callsign", false, true);
+        Field callsignFieldInactive = new Field("field_callsign", "callsign", "Callsign", "Callsign", false, false);
 
-        Field departureFieldMandatory = new Field("field_departure","departure", "Departure","From", true, true);
-        Field departureFieldActive = new Field("field_departure","departure" ,"Departure", "From",false, true);
-        Field departureFieldInactive = new Field("field_departure","departure", "Departure", "From",false, false);
+        Field departureFieldMandatory = new Field("field_departure", "departure", "Departure", "From", true, true);
+        Field departureFieldActive = new Field("field_departure", "departure", "Departure", "From", false, true);
+        Field departureFieldInactive = new Field("field_departure", "departure", "Departure", "From", false, false);
 
-        Field destinationFieldMandatory = new Field("field_destination","destination", "Destination", "To", true, true);
-        Field destinationFieldActive = new Field("field_destination","destination", "Destination", "To", false, true);
-        Field destinationFieldInactive = new Field("field_destination","destination", "Destination", "To", false, false);
+        Field destinationFieldMandatory = new Field("field_destination", "destination", "Destination", "To", true, true);
+        Field destinationFieldActive = new Field("field_destination", "destination", "Destination", "To", false, true);
+        Field destinationFieldInactive = new Field("field_destination", "destination", "Destination", "To", false, false);
 
-        Field dateFromUntilFieldMandatory = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",true, true);
-        Field dateFromUntilFieldActive = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",false, true);
-        Field dateFromUntilFieldInactive = new Field("field_date_from_until","dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY",false, false);
+        Field dateFromUntilFieldMandatory = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", true, true);
+        Field dateFromUntilFieldActive = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", false, true);
+        Field dateFromUntilFieldInactive = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", false, false);
 
-        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM",true, true);
-        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM",false, true);
-        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)","HH:MM", false, false);
+        Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM", true, true);
+        Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM", false, true);
+        Field timeScheduleFromFieldInactive = new Field("field_time_schedule_from", "timeFrom", "Time schedule (from)", "HH:MM", false, false);
 
-        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",true, true);
-        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",false, true);
-        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM",false, false);
+        Field timeScheduleUntilFieldMandatory = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM", true, true);
+        Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM", false, true);
+        Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM", false, false);
 
-        Field durationFieldMandatory = new Field("field_duration","duration", "Duration", "HH", true, true);
-        Field durationFieldActive = new Field("field_duration","duration", "Duration", "HH", false, true);
-        Field durationFieldInactive = new Field("field_duration","duration", "Duration", "HH", false, false);
+        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration", "HH", true, true);
+        Field durationFieldActive = new Field("field_duration", "duration", "Duration", "HH", false, true);
+        Field durationFieldInactive = new Field("field_duration", "duration", "Duration", "HH", false, false);
 
-        Field locationFieldMandatory = new Field("field_location","location", "Location", "Location",true, true);
-        Field locationdeFieldActive = new Field("field_location","location", "Location", "Location",false, true);
-        Field locationFieldInactive = new Field("field_location","location", "Location", "Location",false, false);
+        Field locationFieldMandatory = new Field("field_location", "location", "Location", "Location", true, true);
+        Field locationdeFieldActive = new Field("field_location", "location", "Location", "Location", false, true);
+        Field locationFieldInactive = new Field("field_location", "location", "Location", "Location", false, false);
 
-        Field heightAltitudeFieldMandatory = new Field("field_height_altitude","", "Height / Altitude", "",true, true);
-        Field heightAltitudeFieldActive = new Field("field_height_altitude", "","Height / Altitude","",true, true);
-        Field heightAltitudeFieldInactive = new Field("field_height_altitude","", "Height / Altitude", "",false, false);
+        Field heightAltitudeFieldMandatory = new Field("field_height_altitude", "", "Height / Altitude", "", true, true);
+        Field heightAltitudeFieldActive = new Field("field_height_altitude", "", "Height / Altitude", "", true, true);
+        Field heightAltitudeFieldInactive = new Field("field_height_altitude", "", "Height / Altitude", "", false, false);
 
-        Field heightAltitudeFlRadioMandatory = new Field("radio_height_fl","", "FL", "",true, true);
-        Field heightAltitudeFlRadioActive = new Field("radio_height_fl","", "FL", "",false, true);
+        Field heightAltitudeFlRadioMandatory = new Field("radio_height_fl", "", "FL", "", true, true);
+        Field heightAltitudeFlRadioActive = new Field("radio_height_fl", "", "FL", "", false, true);
         heightAltitudeFlRadioActive.setTooltip("This is the FL Tooltip.");
-        Field heightAltitudeFlRadioInactive = new Field("radio_height_fl","", "FL", "",false, false);
+        Field heightAltitudeFlRadioInactive = new Field("radio_height_fl", "", "FL", "", false, false);
 
-        Field heightAltitudeFtAmslRadiodMandatory = new Field("radio_height_ft_amsl","", "ft AMSL", "",true, true);
-        Field heightAltitudeFtAmslRadioActive = new Field("radio_height_ft_amsl","", "ft AMSL", "",false, true);
+        Field heightAltitudeFtAmslRadiodMandatory = new Field("radio_height_ft_amsl", "", "ft AMSL", "", true, true);
+        Field heightAltitudeFtAmslRadioActive = new Field("radio_height_ft_amsl", "", "ft AMSL", "", false, true);
         heightAltitudeFtAmslRadioActive.setTooltip("This is the ft AMSL Tooltip.");
-        Field heightAltitudeFtAmslRadioInactive = new Field("radio_height_ft_amsl","", "ft AMSL", "",false, false);
+        Field heightAltitudeFtAmslRadioInactive = new Field("radio_height_ft_amsl", "", "ft AMSL", "", false, false);
 
-        Field heightAltitudeFtGndRadioMandatory = new Field("radio_height_ft_gnd", "","ft GND", "",true, true);
-        Field heightAltitudeFtGndRadioActive = new Field("radio_height_ft_gnd", "","ft GND", "",false, true);
+        Field heightAltitudeFtGndRadioMandatory = new Field("radio_height_ft_gnd", "", "ft GND", "", true, true);
+        Field heightAltitudeFtGndRadioActive = new Field("radio_height_ft_gnd", "", "ft GND", "", false, true);
         heightAltitudeFtGndRadioActive.setTooltip("This is the ft GND Tooltip.");
-        Field heightAltitudeFtGndRadioInactive = new Field("radio_height_ft_gnd", "","ft GND", "",false, false);
+        Field heightAltitudeFtGndRadioInactive = new Field("radio_height_ft_gnd", "", "ft GND", "", false, false);
 
-        Field heightAltitudeMGndRadioMandatory = new Field("radio_height_m_gnd", "","m GND", "",true, true);
-        Field heightAltitudeMGndRadioActive = new Field("radio_height_m_gnd", "","m GND", "",false, true);
+        Field heightAltitudeMGndRadioMandatory = new Field("radio_height_m_gnd", "", "m GND", "", true, true);
+        Field heightAltitudeMGndRadioActive = new Field("radio_height_m_gnd", "", "m GND", "", false, true);
         heightAltitudeMGndRadioActive.setTooltip("This is the m GND Tooltip.");
-        Field heightAltitudeMGndRadioInactive = new Field("radio_height_m_gnd","", "m GND", "",false, false);
+        Field heightAltitudeMGndRadioInactive = new Field("radio_height_m_gnd", "", "m GND", "", false, false);
 
-        Field beamDirectionFieldMandatory = new Field("field_beam_direction","beamDirection", "Beam direction", "",true, true);
-        Field beamDirectionFieldActive = new Field("field_beam_direction","beamDirection", "Beam direction", "",false, true);
-        Field beamDirectionFieldInactive = new Field("field_beam_direction","beamDirection", "Beam direction", "",false, false);
+        Field beamDirectionFieldMandatory = new Field("field_beam_direction", "beamDirection", "Beam direction", "", true, true);
+        Field beamDirectionFieldActive = new Field("field_beam_direction", "beamDirection", "Beam direction", "", false, true);
+        Field beamDirectionFieldInactive = new Field("field_beam_direction", "beamDirection", "Beam direction", "", false, false);
 
-        Field payloadAttachedObjFieldMandatory = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",true, true);
-        Field payloadAttachedObjFieldActive = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",false, true);
-        Field payloadAttachedObjFieldInactive = new Field("field_payload_attached_obj","payloadAttachedObj", "Payload / Attached object", "",false, false);
+        Field payloadAttachedObjFieldMandatory = new Field("field_payload_attached_obj", "payloadAttachedObj", "Payload / Attached object", "", true, true);
+        Field payloadAttachedObjFieldActive = new Field("field_payload_attached_obj", "payloadAttachedObj", "Payload / Attached object", "", false, true);
+        Field payloadAttachedObjFieldInactive = new Field("field_payload_attached_obj", "payloadAttachedObj", "Payload / Attached object", "", false, false);
 
-        Field amountFieldMandatory = new Field("field_amount","amount", "Amount", "",true, true);
-        Field amountFieldActive = new Field("field_amount","amount", "Amount", "",false, true);
-        Field amountFieldInactive = new Field("field_amount","amount", "Amount", "",false, false);
+        Field amountFieldMandatory = new Field("field_amount", "amount", "Amount", "", true, true);
+        Field amountFieldActive = new Field("field_amount", "amount", "Amount", "", false, true);
+        Field amountFieldInactive = new Field("field_amount", "amount", "Amount", "", false, false);
 
-        Field gpsCoordFieldMandatory = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",true, true);
-        Field gpsCoordFieldActive = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",false, true);
-        Field gpsCoordFieldInactive = new Field("field_gps_coord","coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E",false, false);
+        Field gpsCoordFieldMandatory = new Field("field_gps_coord", "coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E", true, true);
+        Field gpsCoordFieldActive = new Field("field_gps_coord", "coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E", false, true);
+        Field gpsCoordFieldInactive = new Field("field_gps_coord", "coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E", false, false);
 
-        Field radiusFieldMandatory = new Field("field_radius","radius", "Radius", "Meter",true, true);
-        Field radiusFieldActive = new Field("field_radius","radius", "Radius", "Meter",false, true);
-        Field radiusFieldInactive = new Field("field_radius","radius", "Radius", "Meter",false, false);
+        Field selfDeclarationFieldMandatory = new Field("textfield_self_declaration", "selfDeclaration", "Self declaration", "", true, true);
+        Field selfDeclarationFieldActive = new Field("textfield_self_declaration", "selfDeclaration", "Self declaration", "", false, true);
+        Field selfDeclarationFieldInactive = new Field("textfield_self_declaration", "selfDeclaration", "Self declaration", "", false, false);
 
-        Field selfDeclarationFieldMandatory = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",true, true);
-        Field selfDeclarationFieldActive = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",false, true);
-        Field selfDeclarationFieldInactive = new Field("textfield_self_declaration","selfDeclaration", "Self declaration", "",false, false);
+        Field freeAnswer1FieldMandatory = new Field("free_answer_1", "freeAnswer1", "Are the altitudes flexible or not?", "", true, true);
+        Field freeAnswer1FieldActive = new Field("free_answer_1", "freeAnswer1", "Are the altitudes flexible or not?", "", false, true);
+        Field freeAnswer1FieldInactive = new Field("free_answer_1", "freeAnswer1", "Are the altitudes flexible or not?", "", false, false);
 
-        Field freeAnswer1FieldMandatory = new Field("free_answer_1","freeAnswer1", "Are the altitudes flexible or not?", "",true, true);
-        Field freeAnswer1FieldActive = new Field("free_answer_1","freeAnswer1", "Are the altitudes flexible or not?", "",false, true);
-        Field freeAnswer1FieldInactive = new Field("free_answer_1","freeAnswer1", "Are the altitudes flexible or not?", "",false, false);
+        Field freeAnswer2FieldMandatory = new Field("free_answer_2", "freeAnswer2", "Is it possible to interrupt the mission?", "", true, true);
+        Field freeAnswer2FieldActive = new Field("free_answer_2", "freeAnswer2", "Is it possible to interrupt the mission?", "", false, true);
+        Field freeAnswer2FieldInactive = new Field("free_answer_2", "freeAnswer2", "Is it possible to interrupt the mission?", "", false, false);
 
-        Field freeAnswer2FieldMandatory = new Field("free_answer_2","freeAnswer2", "Is it possible to interrupt the mission?", "",true, true);
-        Field freeAnswer2FieldActive = new Field("free_answer_2","freeAnswer2", "Is it possible to interrupt the mission?", "",false, true);
-        Field freeAnswer2FieldInactive = new Field("free_answer_2","freeAnswer2", "Is it possible to interrupt the mission?", "",false, false);
+        Field freeAnswer3FieldMandatory = new Field("free_answer_3", "freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "", true, true);
+        Field freeAnswer3FieldActive = new Field("free_answer_3", "freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "", false, true);
+        Field freeAnswer3FieldInactive = new Field("free_answer_3", "freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "", false, false);
 
-        Field freeAnswer3FieldMandatory = new Field("free_answer_3","freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "",true, true);
-        Field freeAnswer3FieldActive = new Field("free_answer_3","freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "",false, true);
-        Field freeAnswer3FieldInactive = new Field("free_answer_3","freeAnswer3", "Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", "",false, false);
-
-        Field freeAnswer4FieldMandatory = new Field("free_answer_4","freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "",true, true);
-        Field freeAnswer4FieldActive = new Field("free_answer_4","freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "",false, true);
-        Field freeAnswer4FieldInactive = new Field("free_answer_4","freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "",false, false);
+        Field freeAnswer4FieldMandatory = new Field("free_answer_4", "freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "", true, true);
+        Field freeAnswer4FieldActive = new Field("free_answer_4", "freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "", false, true);
+        Field freeAnswer4FieldInactive = new Field("free_answer_4", "freeAnswer4", "Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", "", false, false);
 
         ActivityType skyLanternActivityType = new ActivityType("Sky Lantern");
         AircraftType defaultSkyLanternActivityType = new AircraftType("");
@@ -150,7 +146,6 @@ public class ActivityTypeService {
         defaultSkyLanternActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         defaultSkyLanternActivityType.getFieldList().add(amountFieldActive);
         defaultSkyLanternActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultSkyLanternActivityType.getFieldList().add(radiusFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -178,7 +173,6 @@ public class ActivityTypeService {
         defaultWeatherBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         defaultWeatherBalloonActivityType.getFieldList().add(amountFieldActive);
         defaultWeatherBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultWeatherBalloonActivityType.getFieldList().add(radiusFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -206,7 +200,6 @@ public class ActivityTypeService {
         defaultToyBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
         defaultToyBalloonActivityType.getFieldList().add(amountFieldActive);
         defaultToyBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultToyBalloonActivityType.getFieldList().add(radiusFieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -234,7 +227,6 @@ public class ActivityTypeService {
         defaultCaptiveBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(amountFieldActive);
         defaultCaptiveBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultCaptiveBalloonActivityType.getFieldList().add(radiusFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -262,7 +254,6 @@ public class ActivityTypeService {
         defaultHotAirBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(amountFieldActive);
         defaultHotAirBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultHotAirBalloonActivityType.getFieldList().add(radiusFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -290,7 +281,6 @@ public class ActivityTypeService {
         defaultGasBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(amountFieldActive);
         defaultGasBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultGasBalloonActivityType.getFieldList().add(radiusFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -318,7 +308,7 @@ public class ActivityTypeService {
         defaultSkyLightLaserActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultSkyLightLaserActivityType.getFieldList().add(amountFieldInactive);
         defaultSkyLightLaserActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultSkyLightLaserActivityType.getFieldList().add(radiusFieldInactive);
+
         defaultSkyLightLaserActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultSkyLightLaserActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultSkyLightLaserActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -346,7 +336,6 @@ public class ActivityTypeService {
         defaultKiteActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultKiteActivityType.getFieldList().add(amountFieldInactive);
         defaultKiteActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultKiteActivityType.getFieldList().add(radiusFieldInactive);
         defaultKiteActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultKiteActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultKiteActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -374,7 +363,6 @@ public class ActivityTypeService {
         defaultFireworkActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultFireworkActivityType.getFieldList().add(amountFieldInactive);
         defaultFireworkActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultFireworkActivityType.getFieldList().add(radiusFieldInactive);
         defaultFireworkActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultFireworkActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultFireworkActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -402,7 +390,6 @@ public class ActivityTypeService {
         defaultfLightWithHangGliderActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(amountFieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultfLightWithHangGliderActivityType.getFieldList().add(radiusFieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultfLightWithHangGliderActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -430,7 +417,6 @@ public class ActivityTypeService {
         defaultModelRocketActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(amountFieldActive);
         defaultModelRocketActivityType.getFieldList().add(gpsCoordFieldActive);
-        defaultModelRocketActivityType.getFieldList().add(radiusFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(freeAnswer1FieldInactive);
         defaultModelRocketActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -458,7 +444,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeTransportFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -484,7 +469,6 @@ public class ActivityTypeService {
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rpasAircraftTypeTransportFlightActivityType.getFieldList().add(radiusFieldMandatory);
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypeTransportFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -512,7 +496,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer1FieldMandatory);
         fixedWingAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer2FieldMandatory);
@@ -538,7 +521,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -564,7 +546,6 @@ public class ActivityTypeService {
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rpasAircraftTypePhotoFlightActivityType.getFieldList().add(radiusFieldMandatory);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypePhotoFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -592,7 +573,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -618,7 +598,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeTaxiPassengerFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -647,7 +626,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        fixedWingAircraftTypeParachuteActivityType.getFieldList().add(radiusFieldMandatory);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeParachuteActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -673,7 +651,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(radiusFieldMandatory);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeParachuteActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -701,7 +678,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -727,7 +703,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -753,7 +728,6 @@ public class ActivityTypeService {
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(gpsCoordFieldActive);
-        rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(radiusFieldInactive);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(selfDeclarationFieldActive);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypeMilitaryMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -781,7 +755,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -807,7 +780,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -833,7 +805,6 @@ public class ActivityTypeService {
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rpasAircraftTypePoliceMissionActivityType.getFieldList().add(radiusFieldMandatory);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(selfDeclarationFieldActive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypePoliceMissionActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -861,7 +832,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -887,7 +857,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -913,7 +882,6 @@ public class ActivityTypeService {
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(radiusFieldMandatory);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(selfDeclarationFieldActive);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypeSurveyFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -941,7 +909,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -967,7 +934,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeTvRelayFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -995,7 +961,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeTestFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1021,7 +986,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeTestFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1049,7 +1013,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1075,7 +1038,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1100,7 +1062,6 @@ public class ActivityTypeService {
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(radiusFieldInactive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(selfDeclarationFieldActive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypeCalibrationFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1128,7 +1089,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeContestActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeContestActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeContestActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeContestActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeContestActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeContestActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeContestActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1154,7 +1114,6 @@ public class ActivityTypeService {
         gliderAircraftTypeContestActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         gliderAircraftTypeContestActivityType.getFieldList().add(amountFieldInactive);
         gliderAircraftTypeContestActivityType.getFieldList().add(gpsCoordFieldActive);
-        gliderAircraftTypeContestActivityType.getFieldList().add(radiusFieldInactive);
         gliderAircraftTypeContestActivityType.getFieldList().add(selfDeclarationFieldInactive);
         gliderAircraftTypeContestActivityType.getFieldList().add(freeAnswer1FieldInactive);
         gliderAircraftTypeContestActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1180,7 +1139,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeContestActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeContestActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1206,7 +1164,6 @@ public class ActivityTypeService {
         rpasAircraftTypeContestActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rpasAircraftTypeContestActivityType.getFieldList().add(amountFieldInactive);
         rpasAircraftTypeContestActivityType.getFieldList().add(gpsCoordFieldMandatory);
-        rpasAircraftTypeContestActivityType.getFieldList().add(radiusFieldMandatory);
         rpasAircraftTypeContestActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rpasAircraftTypeContestActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rpasAircraftTypeContestActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1234,7 +1191,6 @@ public class ActivityTypeService {
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(amountFieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(radiusFieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         fixedWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1260,7 +1216,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(amountFieldInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(gpsCoordFieldActive);
-        rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(radiusFieldInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(selfDeclarationFieldInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(freeAnswer1FieldInactive);
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(freeAnswer2FieldInactive);
@@ -1268,6 +1223,6 @@ public class ActivityTypeService {
         rotaryWingAircraftTypeAirshowAerobaticFlightActivityType.getFieldList().add(freeAnswer4FieldInactive);
         listActivityType.add(airshowAerobaticFlightActivityType);
 
-        listActivityType.sort((o1, o2)->o1.getLabel().compareTo(o2.getLabel()));
+        listActivityType.sort((o1, o2) -> o1.getLabel().compareTo(o2.getLabel()));
     }
 }
