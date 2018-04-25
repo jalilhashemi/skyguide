@@ -287,57 +287,20 @@ function initializeChangeHandlers() {
 
     $(document).on('submit', '#needs-validation', function () {
 
-         var form = document.getElementById('needs-validation');
-          if (form.checkValidity() === false) {
-              event.preventDefault();
-              event.stopPropagation();
-          }
-          else {
-              // here to send data
-              event.preventDefault();
-              submitApplication();
-              $("#icon_loading").show();
-              $("#btn_submit").attr('disabled', 'disabled');
-          }
-          form.classList.add('was-validated');
-
-    });
-    $(document).on('keyup', '#field_time_schedule_until', function () {
-
-        var start_time = $("#field_time_schedule_from").val();
-        var end_time = $("#field_time_schedule_until").val();
-
-        //convert both time into timestamp
-        var start = new Date("November 13, 2013 " + start_time);
-        start = start.getTime();
-
-        var end = new Date("November 13, 2013 " + end_time);
-        end = end.getTime();
-
-        var timeRegex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-        if (timeRegex.test(start_time)) {
-            makeValid($('#field_time_schedule_from'));
+        var form = document.getElementById('needs-validation');
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
         }
         else {
-            makeInvalid($('#field_time_schedule_from'));
+            // here to send data
+            event.preventDefault();
+            submitApplication();
+            $("#icon_loading").show();
+            $("#btn_submit").attr('disabled', 'disabled');
         }
+        form.classList.add('was-validated');
 
-        if (end < start) {
-
-            //makeInvalid($('#field_time_schedule_until'));
-        }
-        else {
-            makeValid($('#field_time_schedule_until'));
-        }
-        /*   if (/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(end_time)) {
-               $('#field_time_schedule_until').addClass('is-valid was-validated');
-               $('#field_time_schedule_until').removeClass('is-invalid was-validated');
-           }
-           else {
-               $('#field_time_schedule_until').removeClass('is-valid was-validated');
-               $('#field_time_schedule_until').addClass('is-invalid was-validated');
-           }
-           */
     });
 
     $(document).on('change', '#type_of_activity', function () {
@@ -504,154 +467,76 @@ function initializeChangeHandlers() {
     });
 
     // TODO: provide for new coordinate fields
-    $(document).on('change', '#field_gps_coord', function () {
+    $(document).on('keyup', '.gps', function () {
 
+        var coordinates = [];
         // if geocode is needed
         /*map.geocode('Payerne');*/
 
-        var defaultEpsg = 'EPSG:21781';
+        var drawingDiv = $(this).parent().parent().parent();
+        var drawingDivId = drawingDiv.attr('id');
 
-        var position;
-        var extent = map.getView().getProjection().getExtent();
-
-
-        var query = $('#field_gps_coord').val();
-
-        // source of the search transition code
-        // https://github.com/geoadmin/mf-geoadmin3/blob/17ba14f3047bf4692752b36a1295172fa396177d/src/components/search/SearchService.js
-
-        var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
-        var DMSMinute = '[0-9]{1,2}[\'|′]';
-        var DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
-            '[0-9]+\\b)("|\'\'|′′|″)';
-        var DMSNorth = '[N]';
-        var DMSEast = '[E]';
-        var regexpDMSN = new RegExp(DMSDegree +
-            '(' + DMSMinute + ')?\\s*' +
-            '(' + DMSSecond + ')?\\s*' +
-            DMSNorth, 'g');
-        var regexpDMSE = new RegExp(DMSDegree +
-            '(' + DMSMinute + ')?\\s*' +
-            '(' + DMSSecond + ')?\\s*' +
-            DMSEast, 'g');
-        var regexpDMSDegree = new RegExp(DMSDegree, 'g');
-        var regexpCoordinate = new RegExp(
-            '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
-            '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
-
-        var roundCoordinates = function (coords) {
-            return [Math.round(coords[0] * 1000) / 1000,
-                Math.round(coords[1] * 1000) / 1000];
-        };
-
-        // Parse degree EPSG:4326 notation
-        var matchDMSN = query.match(regexpDMSN);
-        var matchDMSE = query.match(regexpDMSE);
-        if (matchDMSN && matchDMSN.length === 1 &&
-            matchDMSE && matchDMSE.length === 1) {
-            var northing = parseFloat(matchDMSN[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
-            var easting = parseFloat(matchDMSE[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
-            var minuteN = matchDMSN[0].match(DMSMinute) ?
-                matchDMSN[0].match(DMSMinute)[0] : '0';
-            northing = northing +
-                parseFloat(minuteN.replace('\'', '').replace('′', '')) / 60;
-            var minuteE = matchDMSE[0].match(DMSMinute) ?
-                matchDMSE[0].match(DMSMinute)[0] : '0';
-            easting = easting +
-                parseFloat(minuteE.replace('\'', '').replace('′', '')) / 60;
-            var secondN =
-                matchDMSN[0].match(DMSSecond) ?
-                    matchDMSN[0].match(DMSSecond)[0] : '0';
-            northing = northing + parseFloat(secondN.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
-            var secondE = matchDMSE[0].match(DMSSecond) ?
-                matchDMSE[0].match(DMSSecond)[0] : '0';
-            easting = easting + parseFloat(secondE.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
-            position = ol.proj.transform([easting, northing],
-                'EPSG:4326', defaultEpsg);
-            if (ol.extent.containsCoordinate(extent, position)) {
-                position = roundCoordinates(position);
-
+        drawingDiv.find('.gps').each(function (index) {
+            var gps = validateCoordinate($(this));
+            if (gps) {
+                coordinates.push(gps);
             }
-        }
+        });
 
-        var match = query.match(regexpCoordinate);
-        if (match) {
-            var left = parseFloat(match[1].replace(/'/g, ''));
-            var right = parseFloat(match[2].replace(/'/g, ''));
-            // Old school entries like '600 000 200 000'
-            if (match[3] != null) {
-                left = parseFloat(match[1].replace(/'/g, '') +
-                    match[2].replace(/'/g, ''));
-                right = parseFloat(match[4].replace(/'/g, '') +
-                    match[5].replace(/'/g, ''));
-            }
-            position = [left > right ? left : right,
-                right < left ? right : left];
+        var radius = drawingDiv.find('.radius').val()
+        var view = map.getView();
+        var projection = view.getProjection();
+        var resolutionAtEquator = view.getResolution();
+        var pointResolution = projection.getPointResolution(resolutionAtEquator, coordinates[0]);
+        var resolutionFactor = resolutionAtEquator / pointResolution;
 
-            // Match LV95
-            if (ol.extent.containsCoordinate(extent, position)) {
-                position = roundCoordinates(position);
+        radius = (radius / ol.proj.METERS_PER_UNIT.m) * resolutionFactor;
 
-            }
-
-            // Match decimal notation EPSG:4326
-            if (left <= 180 && left >= -180 &&
-                right <= 180 && right >= -180) {
-                position = [left > right ? right : left,
-                    right < left ? left : right
-                ];
-                position = ol.proj.transform(position, 'EPSG:4326',
-                    defaultEpsg);
-                if (ol.extent.containsCoordinate(extent, position)) {
-                    position = roundCoordinates(position);
-
-                }
-            }
-
-            // Match LV03 coordinates
-            $.ajax({
-                crossOrigin: true,
-                url: 'http://geodesy.geo.admin.ch/reframe/lv03tolv95?easting=' + position[0] + '&northing=' + position[1],
-                type: 'GET',
-                dataType: 'json'
-            })
-                .done(function (pos) {
-                    if (ol.extent.containsCoordinate(extent, pos)) {
-                        position = roundCoordinates(pos);
-                    }
-                })
-                .fail(function (xhr, status, errorThrown) {
-                    console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-                });
-
-        }
-        if (position != null) {
-            var gps = ol.proj.transform(position, 'EPSG:21781', 'EPSG:4326');
-            setView([position[0], position[1]]);
-            // validate the field
-            $('#field_gps_coord').addClass('.is-valid');
-            $('#field_gps_coord').removeClass('.is-invalid');
-            if (source.getFeatures().length != 0) {
-                source.getFeatures()[0].getGeometry().setCoordinates(position);
-                drawings = [];
-                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
-                console.log(drawings);
+        if (drawingDiv.hasClass('polygon') && coordinates.length > 2) {
+            console.log("polygon " + coordinates);
+            if (source.getFeatureById(drawingDivId) != null) {
+                source.getFeatureById(drawingDivId).getGeometry().setCoordinates([coordinates]);
             }
             else {
                 var feature = new ol.Feature({
-                    geometry: new ol.geom.Point(position)
+                    geometry: new ol.geom.Polygon([coordinates])
                 });
+                feature.setId(drawingDivId);
                 source.addFeature(feature);
+                // TODO: update selection because of modifying interaction
+            }
+        }
 
-                drawings = [];
-                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
-                console.log(drawings);
+        else if (drawingDiv.hasClass('path') && coordinates.length > 1) {
+            console.log("path " + coordinates);
+
+            if (source.getFeatureById(drawingDivId) != null) {
+                source.getFeatureById(drawingDivId).getGeometry().setCoordinates(coordinates);
+            }
+            else {
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.LineString(coordinates)
+                });
+                feature.setId(drawingDivId);
+                source.addFeature(feature);
+                // TODO: update selection because of modifying interaction
+            }
+            //TODO: check radius valid
+        } else if (drawingDiv.hasClass('circle') && coordinates.length > 0) {
+            console.log("circle " + coordinates);
+            if (source.getFeatureById(drawingDivId) != null) {
+                source.getFeatureById(drawingDivId).getGeometry().setCenterAndRadius(coordinates[0], radius);
+            }
+            else {
+
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Circle(coordinates[0], radius)
+                });
+                feature.setId(drawingDivId);
+                source.addFeature(feature);
+                // TODO: update selection because of modifying interaction
             }
 
-        }
-        else {
-            $('#field_gps_coord').addClass('.is-invalid');
-            $('#field_gps_coord').removeClass('.is-valid');
         }
     });
 
@@ -685,6 +570,144 @@ function initializeChangeHandlers() {
         Modify.setActive(true);
     });
 
+    /*  $(document).on('click', '#btn_draw_remove', function () {
+          Draw.setActive(false);
+          Modify.setActive(true, 'Remove');
+      });*/
+
+}
+
+function validateCoordinate(field) {
+    var defaultEpsg = 'EPSG:21781';
+
+    var position;
+    var extent = map.getView().getProjection().getExtent();
+
+
+    var query = field.val();
+
+    // source of the search transition code
+    // https://github.com/geoadmin/mf-geoadmin3/blob/17ba14f3047bf4692752b36a1295172fa396177d/src/components/search/SearchService.js
+
+    var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
+    var DMSMinute = '[0-9]{1,2}[\'|′]';
+    var DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
+        '[0-9]+\\b)("|\'\'|′′|″)';
+    var DMSNorth = '[N]';
+    var DMSEast = '[E]';
+    var regexpDMSN = new RegExp(DMSDegree +
+        '(' + DMSMinute + ')?\\s*' +
+        '(' + DMSSecond + ')?\\s*' +
+        DMSNorth, 'g');
+    var regexpDMSE = new RegExp(DMSDegree +
+        '(' + DMSMinute + ')?\\s*' +
+        '(' + DMSSecond + ')?\\s*' +
+        DMSEast, 'g');
+    var regexpDMSDegree = new RegExp(DMSDegree, 'g');
+    var regexpCoordinate = new RegExp(
+        '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
+        '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
+
+    var roundCoordinates = function (coords) {
+        return [Math.round(coords[0] * 1000) / 1000,
+            Math.round(coords[1] * 1000) / 1000];
+    };
+
+    // Parse degree EPSG:4326 notation
+    var matchDMSN = query.match(regexpDMSN);
+    var matchDMSE = query.match(regexpDMSE);
+    if (matchDMSN && matchDMSN.length === 1 &&
+        matchDMSE && matchDMSE.length === 1) {
+        var northing = parseFloat(matchDMSN[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+        var easting = parseFloat(matchDMSE[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+        var minuteN = matchDMSN[0].match(DMSMinute) ?
+            matchDMSN[0].match(DMSMinute)[0] : '0';
+        northing = northing +
+            parseFloat(minuteN.replace('\'', '').replace('′', '')) / 60;
+        var minuteE = matchDMSE[0].match(DMSMinute) ?
+            matchDMSE[0].match(DMSMinute)[0] : '0';
+        easting = easting +
+            parseFloat(minuteE.replace('\'', '').replace('′', '')) / 60;
+        var secondN =
+            matchDMSN[0].match(DMSSecond) ?
+                matchDMSN[0].match(DMSSecond)[0] : '0';
+        northing = northing + parseFloat(secondN.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
+        var secondE = matchDMSE[0].match(DMSSecond) ?
+            matchDMSE[0].match(DMSSecond)[0] : '0';
+        easting = easting + parseFloat(secondE.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
+        position = ol.proj.transform([easting, northing],
+            'EPSG:4326', defaultEpsg);
+        if (ol.extent.containsCoordinate(extent, position)) {
+            position = roundCoordinates(position);
+
+        }
+    }
+
+    var match = query.match(regexpCoordinate);
+    if (match) {
+        var left = parseFloat(match[1].replace(/'/g, ''));
+        var right = parseFloat(match[2].replace(/'/g, ''));
+        // Old school entries like '600 000 200 000'
+        if (match[3] != null) {
+            left = parseFloat(match[1].replace(/'/g, '') +
+                match[2].replace(/'/g, ''));
+            right = parseFloat(match[4].replace(/'/g, '') +
+                match[5].replace(/'/g, ''));
+        }
+        position = [left > right ? left : right,
+            right < left ? right : left];
+
+        // Match LV95
+        if (ol.extent.containsCoordinate(extent, position)) {
+            position = roundCoordinates(position);
+
+        }
+
+        // Match decimal notation EPSG:4326
+        if (left <= 180 && left >= -180 &&
+            right <= 180 && right >= -180) {
+            position = [left > right ? right : left,
+                right < left ? left : right
+            ];
+            position = ol.proj.transform(position, 'EPSG:4326',
+                defaultEpsg);
+            if (ol.extent.containsCoordinate(extent, position)) {
+                position = roundCoordinates(position);
+
+            }
+        }
+
+        // Match LV03 coordinates
+        $.ajax({
+            crossOrigin: true,
+            url: 'http://geodesy.geo.admin.ch/reframe/lv03tolv95?easting=' + position[0] + '&northing=' + position[1],
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (pos) {
+                if (ol.extent.containsCoordinate(extent, pos)) {
+                    position = roundCoordinates(pos);
+                }
+            })
+            .fail(function (xhr, status, errorThrown) {
+                console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+            });
+
+    }
+
+    if (position != null) {
+        field.addClass('is-valid');
+        field.removeClass('is-invalid');
+        //var gps = ol.proj.transform(position, 'EPSG:21781', 'EPSG:4326');
+        //return {"lat": gps[1], "lon": gps[0]};
+        return position;
+
+    }
+    field.addClass('is-invalid');
+    field.removeClass('is-valid');
+
+
+    return null;
 }
 
 function initDrawTool() {
@@ -761,9 +784,22 @@ function initDrawTool() {
         // new ol.interaction.DragBox({
         Rectangle: new ol.interaction.Draw({
             source: vector.getSource(),
-            type: 'Circle',
-            geometryFunction: ol.interaction.Draw.createRegularPolygon(4)
+            type: 'LineString',
+            geometryFunction: function (coordinates, geometry) {
+                if (!geometry) {
+                    geometry = new ol.geom.Polygon(null);
+                }
+                var start = coordinates[0];
+                var end = coordinates[1];
+                geometry.setCoordinates([
+                    [start, [start[0], end[1]], end, [end[0], start[1]], start]
+                ]);
+                return geometry;
+            },
+            maxPoints: 2
         }),
+
+
         getActive: function () {
             return this.activeType ? this[this.activeType].getActive() : false;
         },
@@ -940,23 +976,23 @@ function submitApplication() {
     console.log(data);
 
 // submit to server
-       $.ajax({
-           crossOrigin: true,
-           url: restUrl + '/applications',
-           type: 'POST',
-           contentType: "application/json; charset=utf-8",
-           data: JSON.stringify(data),
-           dataType: 'json'
-       })
-           .done(function (json) {
-               console.log(json);
-               hideAllFields();
-               $('#submit_success').modal('show');
+    $.ajax({
+        crossOrigin: true,
+        url: restUrl + '/applications',
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(data),
+        dataType: 'json'
+    })
+        .done(function (json) {
+            console.log(json);
+            hideAllFields();
+            $('#submit_success').modal('show');
 
-           })
-           .fail(function (xhr, status, errorThrown) {
-               console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
-           });
+        })
+        .fail(function (xhr, status, errorThrown) {
+            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        });
 }
 
 function makeInvalid(inputField) {

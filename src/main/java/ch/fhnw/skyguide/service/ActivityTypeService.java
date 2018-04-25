@@ -58,7 +58,7 @@ public class ActivityTypeService {
         Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM", false, true);
         Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time schedule (until)", "HH:MM", false, false);
 
-        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration", "HH", true, true);
+        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration in hours (h)", "Duration", true, true);
         Field durationFieldActive = new Field("field_duration", "duration", "Duration", "HH", false, true);
         Field durationFieldInactive = new Field("field_duration", "duration", "Duration", "HH", false, false);
 
@@ -66,7 +66,7 @@ public class ActivityTypeService {
         Field locationdeFieldActive = new Field("field_location", "location", "Location", "Location", false, true);
         Field locationFieldInactive = new Field("field_location", "location", "Location", "Location", false, false);
 
-        Field heightAltitudeFieldMandatory = new Field("field_height_altitude", "", "Height / Altitude", "", true, true);
+        Field heightAltitudeFieldMandatory = new Field("field_height_altitude", "", "Altitude", "", true, true);
         Field heightAltitudeFieldActive = new Field("field_height_altitude", "", "Height / Altitude", "", true, true);
         Field heightAltitudeFieldInactive = new Field("field_height_altitude", "", "Height / Altitude", "", false, false);
 
