@@ -483,14 +483,8 @@ function initializeChangeHandlers() {
             }
         });
 
-        var radius = drawingDiv.find('.radius').val()
-        var view = map.getView();
-        var projection = view.getProjection();
-        var resolutionAtEquator = view.getResolution();
-        var pointResolution = projection.getPointResolution(resolutionAtEquator, coordinates[0]);
-        var resolutionFactor = resolutionAtEquator / pointResolution;
+        var radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
 
-        radius = (radius / ol.proj.METERS_PER_UNIT.m) * resolutionFactor;
 
         if (drawingDiv.hasClass('polygon') && coordinates.length > 2) {
             console.log("polygon " + coordinates);
@@ -575,6 +569,16 @@ function initializeChangeHandlers() {
           Modify.setActive(true, 'Remove');
       });*/
 
+}
+
+function calculateRadius(value, coordinate) {
+    var view = map.getView();
+    var projection = view.getProjection();
+    var resolutionAtEquator = view.getResolution();
+    var pointResolution = projection.getPointResolution(resolutionAtEquator, coordinate);
+    var resolutionFactor = resolutionAtEquator / pointResolution;
+
+    return (value / ol.proj.METERS_PER_UNIT.m) * resolutionFactor;
 }
 
 function validateCoordinate(field) {
@@ -996,36 +1000,11 @@ function submitApplication() {
 }
 
 function makeInvalid(inputField) {
-    inputField.removeClass('form-control:valid');
-    inputField.addClass('form-control:invalid');
-    inputField.removeClass('form-control.is-valid');
-    inputField.addClass('form-control.is-invalid');
-    inputField.removeClass('custom-select.is-valid');
-    inputField.addClass('custom-select.is-invalid');
-    inputField.removeClass('custom-select:valid');
-    inputField.addClass('custom-select:invalid');
-    inputField.addClass('was-validated');
+    inputField.removeClass('is-valid');
+    inputField.addClass('is-invalid');
 }
 
 function makeValid(inputField) {
-    inputField.addClass('form-control:valid');
-    inputField.removeClass('form-control:invalid');
-    inputField.addClass('form-control.is-valid');
-    inputField.removeClass('form-control.is-invalid');
-    inputField.addClass('custom-select.is-valid');
-    inputField.removeClass('custom-select.is-invalid');
-    inputField.addClass('custom-select:valid');
-    inputField.addClass('was-validated');
-}
-
-function addPath() {
-
-}
-
-function addCircle() {
-
-}
-
-function addPolygon() {
-
+    inputField.addClass('is-valid');
+    inputField.removeClass('is-invalid');
 }
