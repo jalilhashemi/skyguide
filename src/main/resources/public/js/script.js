@@ -450,13 +450,7 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '.add_coordinate_path_polygon', function () {
-        var index = $(this).find('button').attr('data-gps-index');
-        var template = $('#coordinate_path_polygon_template'),
-            clone = template
-                .clone()
-                .removeClass('display-none')
-                .removeAttr('id')
-                .insertAfter(($(this)).parent());
+        addCoordinateField($(this).parent());
     });
 
     $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
@@ -569,6 +563,15 @@ function initializeChangeHandlers() {
           Modify.setActive(true, 'Remove');
       });*/
 
+}
+
+function addCoordinateField(addCoordinateField) {
+    var template = $('#coordinate_path_polygon_template'),
+        clone = template
+            .clone()
+            .removeClass('display-none')
+            .removeAttr('id')
+            .insertAfter(addCoordinateField.last());
 }
 
 function calculateRadius(value, coordinate) {
@@ -737,13 +740,28 @@ function initDrawTool() {
 
             selectedFeatures.on('add', function (e) {
                 e.element.on('change', function (e) {
-                    var features = vector.getSource().getFeatures();
-                    var geometry = features[0].getGeometry().getCoordinates();
-                    var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
-                    drawings = [];
-                    drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
-                    console.log(drawings);
-                    $('#field_gps_coord').val(gps);
+                    // TODO: update fields
+                    var drawingId = $(this)[0].getId();
+
+                    var geometry = $(this)[0].getGeometry().getCoordinates();
+                    var gps = [];
+                    // TODO: [0] is because of polygon
+                    geometry[0].forEach(function (item, index) {
+                        gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+                    })
+
+                    while (gps.length > $('#' + drawingId).find('.gps').length)
+                        addCoordinateField($('#' + drawingId).children())
+                    $('#' + drawingId).find('.gps').each(function (index) {
+                        $(this).val(gps[index]);
+                    });
+
+                    // var features = vector.getSource().getFeatures();
+                    // var geometry = features[0].getGeometry().getCoordinates();
+
+                    //  drawings = [];
+                    //drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
+                    //$('#field_gps_coord').val(gps);
                 });
             });
         },
