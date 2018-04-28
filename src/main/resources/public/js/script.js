@@ -1106,12 +1106,33 @@ function submitApplication() {
         });
 }
 
-function makeInvalid(inputField) {
-    inputField.removeClass('is-valid');
-    inputField.addClass('is-invalid');
+//validate time and its range
+function validateField(field, isValid) {
+    if (isValid) {
+        field.addClass('is-valid');
+        field.removeClass('is-invalid');
+
+    }
+    else {
+        field.removeClass('is-valid');
+        field.addClass('is-invalid');
+
+    }
 }
 
-function makeValid(inputField) {
-    inputField.addClass('is-valid');
-    inputField.removeClass('is-invalid');
+function validateHhMm(inputField) {
+    var patt = new RegExp("^(?:[0-1]?[0-9]|2[0-3])(?::[0-5][0-9])?$");
+    var res = patt.test(inputField.val());
+    validateField(inputField, res);
+    return res;
+}
+
+//timeFromUntil($("#field_time_schedule_from").val(),$("#field_time_schedule_until").val())
+function timeFromUntil(id1, id2) {
+    if (id1 > id2) {
+        alert(id1 + " is later than " + id2);
+    } else {
+        alert(id2 + " is later than " + id1);
+
+    }
 }
