@@ -142,13 +142,11 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
         });
 
         var gps = [data["drawings"][0]["coordinates"][0]["lat"], data["drawings"][0]["coordinates"][0]["lon"]];
-        console.log(gps);
 
         $('#field_gps_coord').val(gps[0] + ", "
             + gps[1]);
 
         var position = ol.proj.transform(gps, 'EPSG:4326', 'EPSG:21781');
-        console.log(position);
 
         setView([position[0], position[1]]);
 
@@ -473,25 +471,30 @@ function updateDrawings(drawingId, drawingDiv) {
         if (gps) {
             coordinates.push(gps);
         }
-
     });
 
     var sameStartEnd;
     if (coordinates[0] && coordinates[coordinates.length - 1])
         sameStartEnd = coordinates[0][0] == coordinates[coordinates.length - 1][0] && coordinates[0][1] == coordinates[coordinates.length - 1][1];
 
-    if (drawingDiv.hasClass('polygon') && coordinates.length > 3 && sameStartEnd) {
-        console.log("polygon " + coordinates);
-        if (source.getFeatureById(drawingId) != null) {
-            source.getFeatureById(drawingId).getGeometry().setCoordinates([coordinates]);
+
+    if (drawingDiv.hasClass('polygon') && coordinates.length > 3) {
+        if (sameStartEnd) {
+            console.log("polygon " + coordinates);
+            if (source.getFeatureById(drawingId) != null) {
+                source.getFeatureById(drawingId).getGeometry().setCoordinates([coordinates]);
+            }
+            else {
+                var feature = new ol.Feature({
+                    geometry: new ol.geom.Polygon([coordinates])
+                });
+                feature.setId(drawingId);
+                source.addFeature(feature);
+                // TODO: update selection because of modifying interaction
+            }
         }
         else {
-            var feature = new ol.Feature({
-                geometry: new ol.geom.Polygon([coordinates])
-            });
-            feature.setId(drawingId);
-            source.addFeature(feature);
-            // TODO: update selection because of modifying interaction
+            validateField(drawingDiv.find('.gps').last(), false);
         }
     }
 
@@ -510,8 +513,9 @@ function updateDrawings(drawingId, drawingDiv) {
             // TODO: update selection because of modifying interaction
         }
         //TODO: check radius valid
-    } else if (drawingDiv.hasClass('circle') && coordinates.length > 0) {
+    } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && validateRadius(drawingDiv.find('.radius'))) {
         console.log("circle " + coordinates);
+
         var radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
         if (source.getFeatureById(drawingId) != null) {
             source.getFeatureById(drawingId).getGeometry().setCenterAndRadius(coordinates[0], radius);
@@ -528,6 +532,11 @@ function updateDrawings(drawingId, drawingDiv) {
 
     }
 
+}
+
+function validateRadius(field) {
+    var isValid = field.val() > 0 && field.val() < 500;
+    validateField(field, isValid);
 }
 
 function addPathDrawingDiv() {
@@ -762,7 +771,7 @@ function initDrawTool() {
                     // TODO: update fields
 
                     var drawingId = $(this)[0].getId();
-                    var drawingDiv = $('#'+drawingId);
+                    var drawingDiv = $('#' + drawingId);
                     var geometry = $(this)[0].getGeometry().getCoordinates();
                     var gps = [];
 
@@ -785,7 +794,6 @@ function initDrawTool() {
                     }
 
                     if (drawingDiv.find('.is-invalid').length == 0) {
-                        console.log(drawingDiv.find('.gps'));
                         while (gps.length < drawingDiv.find('.gps').length)
                             removeCoordinateField(drawingDiv.drawingDiv.find('.is-invalid').parent());
 
@@ -794,7 +802,7 @@ function initDrawTool() {
                         addCoordinateField(drawingDiv);
 
                     $(drawingDiv).find('.gps').each(function (index) {
-                        $(this).val((gps[index][1]).toFixed(3) + ', ' + (gps[index][0]).toFixed(3));
+                        $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
                     });
 
                     // var features = vector.getSource().getFeatures();
@@ -927,7 +935,7 @@ function fillDrawingPolygonDiv(feature, drawingId) {
     });
 
     drawingDiv.find('.gps').each(function (index) {
-        $(this).val((coordinates[index][1]).toFixed(3) + ', ' + (coordinates[index][0]).toFixed(3));
+        $(this).val(parseFloat((coordinates[index][1]).toFixed(3)) + ', ' + parseFloat((coordinates[index][0]).toFixed(3)));
     });
 }
 
@@ -944,7 +952,7 @@ function fillDrawingPathDiv(feature, drawingId) {
     });
 
     drawingDiv.find('.gps').each(function (index) {
-        $(this).val((coordinates[index][1]).toFixed(3) + ', ' + (coordinates[index][0]).toFixed(3));
+        $(this).val(parseFloat((coordinates[index][1]).toFixed(3)) + ', ' + parseFloat((coordinates[index][0]).toFixed(3)));
     });
 
 }
@@ -957,7 +965,7 @@ function fillDrawingCircleDiv(feature, drawingId) {
 
     coordinate = ol.proj.transform(coordinate, 'EPSG:21781', 'EPSG:4326');
 
-    drawingDiv.find('.gps').val((coordinate[1]).toFixed(3) + ', ' + (coordinate[0]).toFixed(3))
+    drawingDiv.find('.gps').val(parseFloat((coordinate[1]).toFixed(3)) + ', ' + parseFloat((coordinate[0]).toFixed(3)))
     drawingDiv.find('.radius').val(radius);
 }
 
@@ -1134,5 +1142,3 @@ function timeFromUntil(id1, id2) {
     } else {
         alert(id2 + " is later than " + id1);
 
-    }
-}
