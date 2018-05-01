@@ -281,7 +281,19 @@ function processField(field) {
 
 }
 
+
 function initializeChangeHandlers() {
+
+    $(document).on('focusout', 'input', function () {
+
+        var isValid = $(this)[0].checkValidity();
+        validateField($(this), isValid);
+        validateTimes($(this));
+    });
+    $(document).on('change', 'select', function () {
+        var isValid = $(this)[0].checkValidity();
+        validateField($(this), isValid);
+    });
 
     $(document).on('submit', '#needs-validation', function () {
 
@@ -1128,17 +1140,28 @@ function validateField(field, isValid) {
     }
 }
 
-function validateHhMm(inputField) {
-    var patt = new RegExp("^(?:[0-1]?[0-9]|2[0-3])(?::[0-5][0-9])?$");
-    var res = patt.test(inputField.val());
-    validateField(inputField, res);
-    return res;
+function validateTimes(field) {
+    var type = field.attr("name").split('[')[0];
+    var end, start;
+
+    if (type == "start") {
+        start = field;
+        end = start.parent().parent().find($('input[name^="end"]'));
+    }
+    else if (type == "end") {
+        end = field;
+        start = end.parent().parent().find($('input[name^="start"]'));
+    }
+    if (start[0].checkValidity() && end[0].checkValidity()) {
+        var startDt = new Date(2010, 12, 21, 9, start.val().split(':')[0], start.val().split(':')[1]);
+        var endDt = new Date(2010, 12, 21, 9, end.val().split(':')[0], end.val().split(':')[1]);
+        if (startDt.getTime() >= endDt.getTime()) {
+            end.parent().find('.invalid-feedback').html("The until time must be after the from time.");
+            validateField(end, false);
+        }
+        else {
+            validateField(start, true);
+        }
+    }
+
 }
-
-//timeFromUntil($("#field_time_schedule_from").val(),$("#field_time_schedule_until").val())
-function timeFromUntil(id1, id2) {
-    if (id1 > id2) {
-        alert(id1 + " is later than " + id2);
-    } else {
-        alert(id2 + " is later than " + id1);
-
