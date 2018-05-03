@@ -285,10 +285,11 @@ function processField(field) {
 function initializeChangeHandlers() {
 
     $(document).on('focusout', 'input', function () {
-
-        var isValid = $(this)[0].checkValidity();
-        validateField($(this), isValid);
-        validateTimes($(this));
+        if (!($(this).hasClass('gps') || $(this).hasClass('radius'))) {
+            var isValid = $(this)[0].checkValidity();
+            validateField($(this), isValid);
+            validateTimes($(this));
+        }
     });
     $(document).on('change', 'select', function () {
         var isValid = $(this)[0].checkValidity();
@@ -432,8 +433,10 @@ function initializeChangeHandlers() {
 
     $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
         $(this).parent().find('.gps').val("");
-        updateDrawings($(this).parent().parent().attr('id'), $(this).parent().parent());
+        var drawingId = $(this).parent().parent().attr('id');
+        var drawingDiv = $(this).parent().parent();
         removeCoordinateField($(this).parent());
+        updateDrawings(drawingId, drawingDiv);
     });
 
     $(document).on('keyup', '.gps', function () {
@@ -441,7 +444,10 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('keyup', '.radius', function () {
-        updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
+        if (validateRadius($(this))) {
+            if ($(this).parent().parent().parent().find('.gps').val() != "")
+                updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
+        }
     });
 
     $(document).on('click', '#btn_draw_rectangle', function () {
@@ -502,7 +508,6 @@ function updateDrawings(drawingId, drawingDiv) {
                 });
                 feature.setId(drawingId);
                 source.addFeature(feature);
-                // TODO: update selection because of modifying interaction
             }
         }
         else {
@@ -522,10 +527,8 @@ function updateDrawings(drawingId, drawingDiv) {
             });
             feature.setId(drawingId);
             source.addFeature(feature);
-            // TODO: update selection because of modifying interaction
         }
-        //TODO: check radius valid
-    } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && validateRadius(drawingDiv.find('.radius'))) {
+    } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && drawingDiv.find('.radius')[0].checkValidity()) {
         console.log("circle " + coordinates);
 
         var radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
@@ -539,16 +542,18 @@ function updateDrawings(drawingId, drawingDiv) {
             });
             feature.setId(drawingId);
             source.addFeature(feature);
-            // TODO: update selection because of modifying interaction
         }
 
     }
+
+    Modify.setActive(false);
 
 }
 
 function validateRadius(field) {
     var isValid = field.val() > 0 && field.val() < 500;
     validateField(field, isValid);
+    return isValid;
 }
 
 function addPathDrawingDiv() {
@@ -606,8 +611,12 @@ function addCoordinateField(drawingDiv) {
         clone = template
             .clone()
             .removeClass('display-none')
-            .removeAttr('id')
-            .insertAfter(drawingDiv.children().last());
+            .removeAttr('id');
+    if (drawingDiv.hasClass('polygon'))
+        clone.insertBefore(drawingDiv.find('.add_coordinate_path_polygon').parent());
+    else
+        clone.insertAfter(drawingDiv.children().last());
+
 }
 
 function removeCoordinateField(gpsRow) {
@@ -1014,6 +1023,17 @@ function initializeMap() {
         interactions: ol.interaction.defaults({mouseWheelZoom: false})
 
     });
+
+    var v = new ol.layer.Vector({
+        source: new ol.source.Vector({
+            url: 'js/GeoFeature.kml',
+            format: new ol.format.KML({
+                projection: 'EPSG:4326'
+            })
+        })
+    });
+
+    map.addLayer(v);
 
     map.getView().setCenter(loc);
     map.getView().setResolution(500);
