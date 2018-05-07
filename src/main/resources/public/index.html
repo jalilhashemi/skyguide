@@ -378,12 +378,9 @@
                     </div>
                 </div>
             </div>
-
-
             <div>
                 <div class="form-row display-none drawing" id="coordinate_path_polygon_template">
                     <div class="form-group col-md-5">
-
                     </div>
                     <div class="form-group col-md-6">
                         <input type="text" class="form-control input-field-sky gps"
@@ -398,29 +395,22 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="form-row">
-
-
                 <div class="form-group col-md-6 dropdown display-none" id="add_area_dropdown">
+                    <label for="dropdownMenuButton">Add area</label>
                     <button class="btn btn-primary btn-sky dropdown-toggle" type="button" id="dropdownMenuButton"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Add area
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <div class="dropdown-menu">
                         <a class="dropdown-item" id="add_polygon_btn">Polygon</a>
                         <a class="dropdown-item" id="add_path_btn">Path</a>
                         <a class="dropdown-item" id="add_circle_btn">Circle</a>
                     </div>
                 </div>
-
-
                 <div class="form-group col-md-6">
-
-                    <label class="control-label display-none" id="altitude_label">Altitude type</label>
-                    <!--<div class="form-row">-->
-                    <div class="custom-controls-stacked d-block display-none">
+                    <label class="  control-label display-none" id="altitude_label">Altitude type</label><br>
+                    <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
                             <input class="custom-control-input" type="radio" name="heightType" id="radio_height_fl"
                                    value="FL">
@@ -428,7 +418,7 @@
                             <span class="custom-control-description">FL</span>
                         </label>
                     </div>
-                    <div class="custom-controls-stacked d-block display-none">
+                    <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
                             <input class="custom-control-input" type="radio" name="heightType"
                                    id="radio_height_ft_amsl"
@@ -437,7 +427,7 @@
                             <span class="custom-control-description">ft AMSL</span>
                         </label>
                     </div>
-                    <div class="custom-controls-stacked d-block display-none">
+                    <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
                             <input class="custom-control-input" type="radio" name="heightType"
                                    id="radio_height_ft_gnd"
@@ -446,7 +436,7 @@
                             <span class="custom-control-description">ft GND</span>
                         </label>
                     </div>
-                    <div class="custom-controls-stacked d-block display-none" style="margin-top:37px">
+                    <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
                             <input class="custom-control-input" type="radio" name="heightType"
                                    id="radio_height_m_gnd"
@@ -455,11 +445,8 @@
                             <span class="custom-control-description">m GND</span>
                         </label>
                     </div>
-                    <!--</div>-->
                 </div>
             </div>
-
-
             <div id="map-container" class="display-none">
                 <div id="map" class="map panel panel-default  "></div>
                 <div class="form-check ">
@@ -503,6 +490,12 @@
                         <button type="button" class="btn btn-primary btn-sky" id="btn_draw_modify">
                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
                             Modify
+                        </button>
+                    </div>
+                    <div class="form-group col-md-2" id="draw_delete">
+                        <button type="button" class="btn btn-primary btn-sky" id="btn_draw_delete">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"> </span>
+                            Delete
                         </button>
                     </div>
                     <!--div class="form-group col-md-2" id="draw_remove">
