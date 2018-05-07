@@ -296,7 +296,7 @@ function initializeChangeHandlers() {
         validateField($(this), isValid);
     });
 
-    $(document).on('submit', '#needs-validation', function () {
+   /* $(document).on('submit', '#needs-validation', function () {
 
         var form = document.getElementById('needs-validation');
         if (form.checkValidity() === false) {
@@ -312,7 +312,15 @@ function initializeChangeHandlers() {
         }
         form.classList.add('was-validated');
 
-    });
+    });*/
+
+   $(document).on('click', '#btn_submit',function () {
+       event.preventDefault();
+       $("#icon_loading").show();
+
+       if(validateForm())
+           $("#icon_loading").show();
+   });
 
     $(document).on('change', '#type_of_activity', function () {
         hideAllFields();
@@ -479,6 +487,15 @@ function initializeChangeHandlers() {
         Draw.setActive(false);
         Modify.setActive(true);
     });
+}
+function validateForm(){
+    $('input').each(function (index, item) {
+        if (!(item.hasClass('gps') || item.hasClass('radius'))) {
+            var isValid = item.checkValidity();
+            validateField(item, isValid);
+            validateTimes(item);
+        }
+    })
 }
 
 function updateDrawings(drawingId, drawingDiv) {
@@ -1026,7 +1043,7 @@ function initializeMap() {
 
     var v = new ol.layer.Vector({
         source: new ol.source.Vector({
-            url: 'js/GeoFeature.kml',
+            url: 'js/Aerodrome.kml',
             format: new ol.format.KML({
                 projection: 'EPSG:4326'
             })
