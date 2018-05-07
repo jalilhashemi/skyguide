@@ -268,7 +268,7 @@ function processField(field) {
     if (field.active) {
         if (field.id.substring(0, 6) === 'radio_') {
             $('#' + field.id).parent().removeClass('display-none');
-            $('#' + field.id).parent().parent().removeClass('display-none');
+            $('#' + field.id).parent().parent().parent().removeClass('display-none');
             $('#' + field.id).prop('required', true);
             // $('#' + field.id).parent().attr('title', field.tooltip);
             initializeTooltips();
