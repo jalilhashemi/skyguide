@@ -1041,16 +1041,16 @@ function initializeMap() {
 
     });
 
-    var v = new ol.layer.Vector({
+  /*  var v = new ol.layer.Vector({
         source: new ol.source.Vector({
             url: 'js/Aerodrome.kml',
             format: new ol.format.KML({
                 projection: 'EPSG:4326'
             })
         })
-    });
+    });*/
 
-    map.addLayer(v);
+   // map.addLayer(v);
 
     map.getView().setCenter(loc);
     map.getView().setResolution(500);

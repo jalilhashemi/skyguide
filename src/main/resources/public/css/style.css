@@ -120,4 +120,27 @@ h1 {
 .modal-confirm.modal-dialog {
     margin-top: 80px;
 }
+#draw-tool-btn {
+    position: absolute;
+    margin-top: 500px;
+    margin-left: 10px;
+    z-index: 10;
+}
+
+#draw-tool {
+    position: absolute;
+    margin-top: 400px;
+    margin-left: 10px;
+    z-index: 10;
+    width: 400px;
+}
+
+
+.ol-zoom .ol-zoom-in {
+    background-color: #0159a0 !important;
+}
+
+.ol-zoom .ol-zoom-out {
+    background-color: #0159a0 !important;
+}
 

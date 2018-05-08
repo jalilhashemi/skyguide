@@ -65,6 +65,7 @@
 <form class="container" id="needs-validation" novalidate>
     <fieldset>
         <h1>Request for coordination of special aerial activities</h1>
+        <p>* fields are required</p>
         <h2>1. Applicant information</h2>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -95,13 +96,12 @@
         <div class="form-group">
             <label for="input_applicant_phone">Applicant Phone*</label>
             <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
-                   placeholder="0001234567"
-                   pattern="^[0-9]{10}$"
+                   placeholder="+41321234567"
+                   pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{1,2})$"
                    name="phone"
                    required>
-            <small class="form-text text-muted">Only swiss phone numbers in the format shown</small>
             <div class="invalid-feedback">
-                Please provide a phone number.
+                Please provide an international phone number.
             </div>
         </div>
         <div class="form-group">
@@ -448,7 +448,46 @@
                 </div>
             </div>
             <div id="map-container" class="display-none">
-                <div id="map" class="map panel panel-default  "></div>
+                <div id="map" class="map panel panel-default  ">
+                    <div class="collapse" id="draw-tool">
+                        <div class="card card-body">
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                <button type="button" class="btn btn-outline-primary"><i class="fa fa-circle-thin"></i>
+                                    <br>Circle
+                                </button>
+                                </div>
+                                <div class="col-md-4">
+                                <button type="button" class="btn btn-outline-primary"><i class="fa fa-circle-thin"></i>
+                                    <br>Rectangle
+                                </button>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-primary"><i class="fa fa-circle-thin"></i>
+                                        <br>Polygon
+                                    </button>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" class="btn btn-outline-primary"><i class="fa fa-circle-thin"></i>
+                                        <br>Path
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div id="draw-tool-btn">
+                        <button type="button" class="btn btn-primary btn-sky" data-toggle="collapse"
+                                data-target="#draw-tool" aria-expanded="false" aria-controls="draw-tool">
+                            Draw
+                        </button>
+                    </div>
+
+
+                </div>
+
                 <div class="form-check ">
                     <label class="form-check-label">
                         <input class="form-check-input" id="check-layer-icao" type="checkbox" value="">
