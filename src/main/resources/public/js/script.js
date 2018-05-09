@@ -296,31 +296,31 @@ function initializeChangeHandlers() {
         validateField($(this), isValid);
     });
 
-   /* $(document).on('submit', '#needs-validation', function () {
+    /* $(document).on('submit', '#needs-validation', function () {
 
-        var form = document.getElementById('needs-validation');
-        if (form.checkValidity() === false) {
-            event.preventDefault();
-            event.stopPropagation();
-        }
-        else {
-            // here to send data
-            event.preventDefault();
-            submitApplication();
+         var form = document.getElementById('needs-validation');
+         if (form.checkValidity() === false) {
+             event.preventDefault();
+             event.stopPropagation();
+         }
+         else {
+             // here to send data
+             event.preventDefault();
+             submitApplication();
+             $("#icon_loading").show();
+             $("#btn_submit").attr('disabled', 'disabled');
+         }
+         form.classList.add('was-validated');
+
+     });*/
+
+    $(document).on('click', '#btn_submit', function () {
+        event.preventDefault();
+        $("#icon_loading").show();
+
+        if (validateForm())
             $("#icon_loading").show();
-            $("#btn_submit").attr('disabled', 'disabled');
-        }
-        form.classList.add('was-validated');
-
-    });*/
-
-   $(document).on('click', '#btn_submit',function () {
-       event.preventDefault();
-       $("#icon_loading").show();
-
-       if(validateForm())
-           $("#icon_loading").show();
-   });
+    });
 
     $(document).on('change', '#type_of_activity', function () {
         hideAllFields();
@@ -488,7 +488,8 @@ function initializeChangeHandlers() {
         Modify.setActive(true);
     });
 }
-function validateForm(){
+
+function validateForm() {
     $('input').each(function (index, item) {
         if (!(item.hasClass('gps') || item.hasClass('radius'))) {
             var isValid = item.checkValidity();
@@ -524,6 +525,7 @@ function updateDrawings(drawingId, drawingDiv) {
                     geometry: new ol.geom.Polygon([coordinates])
                 });
                 feature.setId(drawingId);
+                styleDrawing(feature, drawingId.split("drawing")[1]);
                 source.addFeature(feature);
             }
         }
@@ -543,6 +545,8 @@ function updateDrawings(drawingId, drawingDiv) {
                 geometry: new ol.geom.LineString(coordinates)
             });
             feature.setId(drawingId);
+            styleDrawing(feature, drawingId.split("drawing")[1]);
+
             source.addFeature(feature);
         }
     } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && drawingDiv.find('.radius')[0].checkValidity()) {
@@ -558,6 +562,7 @@ function updateDrawings(drawingId, drawingDiv) {
                 geometry: new ol.geom.Circle(coordinates[0], radius)
             });
             feature.setId(drawingId);
+            styleDrawing(feature, drawingId.split("drawing")[1]);
             source.addFeature(feature);
         }
 
@@ -628,11 +633,8 @@ function addCoordinateField(drawingDiv) {
         clone = template
             .clone()
             .removeClass('display-none')
-            .removeAttr('id');
-    if (drawingDiv.hasClass('polygon'))
-        clone.insertBefore(drawingDiv.find('.add_coordinate_path_polygon').parent());
-    else
-        clone.insertAfter(drawingDiv.children().last());
+            .removeAttr('id')
+            .insertAfter(drawingDiv.children().last());
 
 }
 
@@ -781,6 +783,31 @@ function validateCoordinate(field) {
 
 
     return null;
+}
+
+function styleDrawing(feature, id) {
+    feature.setStyle(new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#FF0000',
+            width: 2
+        }),
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: '#FF0000'
+            })
+        }),
+        text: new ol.style.Text({
+            font: '20px Calibri,sans-serif',
+            fill: new ol.style.Fill({color: '#000000'}),
+            stroke: new ol.style.Stroke({color: '#FFFFFF'}),
+            text: id
+        })
+    }));
+
 }
 
 function initDrawTool() {
@@ -933,19 +960,25 @@ function initDrawTool() {
             });*/
             this.Path.on('drawend', function (evt) {
                 var drawingId = addPathDrawingDiv();
+                styleDrawing(evt.feature, drawingId);
                 fillDrawingPathDiv(evt.feature, drawingId);
 
             });
             this.Polygon.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
+                styleDrawing(evt.feature, drawingId);
                 fillDrawingPolygonDiv(evt.feature, drawingId);
             });
             this.Circle.on('drawend', function (evt) {
                 var drawingId = addCircleDrawingDiv();
+                styleDrawing(evt.feature, drawingId);
+
                 fillDrawingCircleDiv(evt.feature, drawingId);
             });
             this.Rectangle.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
+                styleDrawing(evt.feature, drawingId);
+
                 fillDrawingPolygonDiv(evt.feature, drawingId);
             });
         }
@@ -1041,16 +1074,16 @@ function initializeMap() {
 
     });
 
-  /*  var v = new ol.layer.Vector({
-        source: new ol.source.Vector({
-            url: 'js/Aerodrome.kml',
-            format: new ol.format.KML({
-                projection: 'EPSG:4326'
-            })
-        })
-    });*/
+    /*  var v = new ol.layer.Vector({
+          source: new ol.source.Vector({
+              url: 'js/Aerodrome.kml',
+              format: new ol.format.KML({
+                  projection: 'EPSG:4326'
+              })
+          })
+      });*/
 
-   // map.addLayer(v);
+    // map.addLayer(v);
 
     map.getView().setCenter(loc);
     map.getView().setResolution(500);
