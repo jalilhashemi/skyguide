@@ -125,16 +125,19 @@ h1 {
     margin-top: 500px;
     margin-left: 10px;
     z-index: 10;
+
 }
 
 #draw-tool {
     position: absolute;
-    margin-top: 400px;
+    margin-top: 300px;
     margin-left: 10px;
     z-index: 10;
-    width: 400px;
 }
 
+#list-tab {
+    width: 200px;
+}
 
 .ol-zoom .ol-zoom-in {
     background-color: #0159a0 !important;
