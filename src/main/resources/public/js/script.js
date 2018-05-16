@@ -509,28 +509,20 @@ function updateDrawings(drawingId, drawingDiv) {
         }
     });
 
-    var sameStartEnd;
-    if (coordinates[0] && coordinates[coordinates.length - 1])
-        sameStartEnd = coordinates[0][0] == coordinates[coordinates.length - 1][0] && coordinates[0][1] == coordinates[coordinates.length - 1][1];
+    if (drawingDiv.hasClass('polygon') && coordinates.length > 2) {
+        coordinates.push(coordinates[0]);
 
-
-    if (drawingDiv.hasClass('polygon') && coordinates.length > 3) {
-        if (sameStartEnd) {
-            console.log("polygon " + coordinates);
-            if (source.getFeatureById(drawingId) != null) {
-                source.getFeatureById(drawingId).getGeometry().setCoordinates([coordinates]);
-            }
-            else {
-                var feature = new ol.Feature({
-                    geometry: new ol.geom.Polygon([coordinates])
-                });
-                feature.setId(drawingId);
-                styleDrawing(feature, drawingId.split("drawing")[1]);
-                source.addFeature(feature);
-            }
+        console.log("polygon " + coordinates);
+        if (source.getFeatureById(drawingId) != null) {
+            source.getFeatureById(drawingId).getGeometry().setCoordinates([coordinates]);
         }
         else {
-            validateField(drawingDiv.find('.gps').last(), false);
+            var feature = new ol.Feature({
+                geometry: new ol.geom.Polygon([coordinates])
+            });
+            feature.setId(drawingId);
+            styleDrawing(feature, drawingId.split("drawing")[1]);
+            source.addFeature(feature);
         }
     }
 
@@ -838,6 +830,7 @@ function initDrawTool() {
                     var drawingId = $(this)[0].getId();
                     var drawingDiv = $('#' + drawingId);
                     var geometry = $(this)[0].getGeometry().getCoordinates();
+                  //  geometry[0].splice(geometry[0].length - 1, 1);
                     var gps = [];
 
 
@@ -845,6 +838,10 @@ function initDrawTool() {
                         geometry[0].forEach(function (item, index) {
                             gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
                         });
+
+                        // remove last duplicate of first coordinate
+                        gps.splice(gps.length -1 , 1);
+
                     }
 
                     else if (drawingDiv.hasClass('path')) {
@@ -998,6 +995,8 @@ function fillDrawingPolygonDiv(feature, drawingId) {
     var coordinates = feature.getGeometry().getCoordinates()[0];
     var drawingDiv = $('#drawing' + drawingId);
 
+    // TODO: points
+    coordinates.splice(coordinates.length -1 , 1);
     while (drawingDiv.find('.gps').length < coordinates.length)
         addCoordinateField(drawingDiv);
 
