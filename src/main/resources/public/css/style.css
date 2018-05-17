@@ -125,18 +125,35 @@ h1 {
     margin-top: 500px;
     margin-left: 10px;
     z-index: 10;
+    width: 100px;
 
 }
 
 #draw-tool {
     position: absolute;
-    margin-top: 300px;
-    margin-left: 10px;
+    margin-top: 235px;
+    margin-left: 5px;
     z-index: 10;
 }
 
-#list-tab {
-    width: 200px;
+.card-body {
+    padding: 0;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+    border: none;
+    border-radius: .25rem;
+}
+
+.draw-button {
+    width: 100px;
+    margin: 5px;
+    background: #0159a033;
+    color: black;
 }
 
 .ol-zoom .ol-zoom-in {
