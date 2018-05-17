@@ -152,15 +152,22 @@ h1 {
 .draw-button {
     width: 100px;
     margin: 5px;
-    background: #0159a033;
-    color: black;
+    background: #0159a080;
+    color: white;
 }
 
 .ol-zoom .ol-zoom-in {
     background-color: #0159a0 !important;
+    width: 2em;
+    height: 2em;
+    margin-bottom: 2px;
 }
 
 .ol-zoom .ol-zoom-out {
     background-color: #0159a0 !important;
+    margin-top: 5px;
+    width: 2em;
+    height: 2em;
 }
+
 
