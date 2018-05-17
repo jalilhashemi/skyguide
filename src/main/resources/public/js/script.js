@@ -284,17 +284,33 @@ function processField(field) {
 
 function initializeChangeHandlers() {
 
+    $(document).on('keyup', 'input', function () {
+        if ($(this).attr('filled')) {
+            var isValid = $(this)[0].checkValidity();
+            validateField($(this), isValid);
+            if ($(this).hasClass('time')) {
+                validateTimes($(this));
+            }
+
+        }
+    });
     $(document).on('focusout', 'input', function () {
         if (!($(this).hasClass('gps') || $(this).hasClass('radius'))) {
             var isValid = $(this)[0].checkValidity();
             validateField($(this), isValid);
-            validateTimes($(this));
+            $(this).attr("filled", true);
+            if ($(this).hasClass('time')) {
+                validateTimes($(this));
+            }
+           if( $(this).is($('#field_date_from_until')))
+               validateField($(this), true);
         }
     });
     $(document).on('change', 'select', function () {
         var isValid = $(this)[0].checkValidity();
         validateField($(this), isValid);
     });
+
 
     /* $(document).on('submit', '#needs-validation', function () {
 
@@ -515,6 +531,7 @@ function updateDrawings(drawingId, drawingDiv) {
         console.log("polygon " + coordinates);
         if (source.getFeatureById(drawingId) != null) {
             source.getFeatureById(drawingId).getGeometry().setCoordinates([coordinates]);
+            map.getView().fitExtent(source.getFeatureById(drawingId).getGeometry().getExtent(), map.getSize());
         }
         else {
             var feature = new ol.Feature({
@@ -523,7 +540,10 @@ function updateDrawings(drawingId, drawingDiv) {
             feature.setId(drawingId);
             styleDrawing(feature, drawingId.split("drawing")[1]);
             source.addFeature(feature);
+            map.getView().fitExtent(feature.getGeometry().getExtent(), map.getSize());// {padding: [170, 50, 30, 150], constrainResolution: false});
+
         }
+
     }
 
     else if (drawingDiv.hasClass('path') && coordinates.length > 1) {
@@ -531,6 +551,8 @@ function updateDrawings(drawingId, drawingDiv) {
 
         if (source.getFeatureById(drawingId) != null) {
             source.getFeatureById(drawingId).getGeometry().setCoordinates(coordinates);
+            map.getView().fitExtent(source.getFeatureById(drawingId).getGeometry().getExtent(), map.getSize());
+
         }
         else {
             var feature = new ol.Feature({
@@ -540,13 +562,17 @@ function updateDrawings(drawingId, drawingDiv) {
             styleDrawing(feature, drawingId.split("drawing")[1]);
 
             source.addFeature(feature);
+            map.getView().fitExtent(feature.getGeometry().getExtent(), map.getSize());// {padding: [170, 50, 30, 150], constrainResolution: false});
+
         }
+
     } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && drawingDiv.find('.radius')[0].checkValidity()) {
         console.log("circle " + coordinates);
 
         var radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
         if (source.getFeatureById(drawingId) != null) {
             source.getFeatureById(drawingId).getGeometry().setCenterAndRadius(coordinates[0], radius);
+            map.getView().fitExtent(source.getFeatureById(drawingId).getGeometry().getExtent(), map.getSize());
         }
         else {
 
@@ -556,7 +582,10 @@ function updateDrawings(drawingId, drawingDiv) {
             feature.setId(drawingId);
             styleDrawing(feature, drawingId.split("drawing")[1]);
             source.addFeature(feature);
+            map.getView().fitExtent(feature.getGeometry().getExtent(), map.getSize());// {padding: [170, 50, 30, 150], constrainResolution: false});
+
         }
+
 
     }
 
@@ -799,7 +828,6 @@ function styleDrawing(feature, id) {
             text: id
         })
     }));
-
 }
 
 function initDrawTool() {
@@ -830,7 +858,7 @@ function initDrawTool() {
                     var drawingId = $(this)[0].getId();
                     var drawingDiv = $('#' + drawingId);
                     var geometry = $(this)[0].getGeometry().getCoordinates();
-                  //  geometry[0].splice(geometry[0].length - 1, 1);
+                    //  geometry[0].splice(geometry[0].length - 1, 1);
                     var gps = [];
 
 
@@ -840,7 +868,7 @@ function initDrawTool() {
                         });
 
                         // remove last duplicate of first coordinate
-                        gps.splice(gps.length -1 , 1);
+                        gps.splice(gps.length - 1, 1);
 
                     }
 
@@ -969,7 +997,6 @@ function initDrawTool() {
             this.Circle.on('drawend', function (evt) {
                 var drawingId = addCircleDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
-
                 fillDrawingCircleDiv(evt.feature, drawingId);
             });
             this.Rectangle.on('drawend', function (evt) {
@@ -996,7 +1023,7 @@ function fillDrawingPolygonDiv(feature, drawingId) {
     var drawingDiv = $('#drawing' + drawingId);
 
     // TODO: points
-    coordinates.splice(coordinates.length -1 , 1);
+    coordinates.splice(coordinates.length - 1, 1);
     while (drawingDiv.find('.gps').length < coordinates.length)
         addCoordinateField(drawingDiv);
 
@@ -1006,6 +1033,7 @@ function fillDrawingPolygonDiv(feature, drawingId) {
 
     drawingDiv.find('.gps').each(function (index) {
         $(this).val(parseFloat((coordinates[index][1]).toFixed(3)) + ', ' + parseFloat((coordinates[index][0]).toFixed(3)));
+        validateCoordinate($(this));
     });
 }
 
@@ -1023,6 +1051,7 @@ function fillDrawingPathDiv(feature, drawingId) {
 
     drawingDiv.find('.gps').each(function (index) {
         $(this).val(parseFloat((coordinates[index][1]).toFixed(3)) + ', ' + parseFloat((coordinates[index][0]).toFixed(3)));
+        validateCoordinate($(this));
     });
 
 }
@@ -1037,6 +1066,8 @@ function fillDrawingCircleDiv(feature, drawingId) {
 
     drawingDiv.find('.gps').val(parseFloat((coordinate[1]).toFixed(3)) + ', ' + parseFloat((coordinate[0]).toFixed(3)))
     drawingDiv.find('.radius').val(radius);
+    validateRadius(drawingDiv.find('.radius'));
+    validateCoordinate(drawingDiv.find('.gps'));
 }
 
 function setLayerVisible(layerIndex, isVisible) {
