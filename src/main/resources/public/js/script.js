@@ -281,8 +281,52 @@ function processField(field) {
 
 }
 
+function validateForm() {
+
+    // TODO: date range validation, filled attr, drawings validation
+    var validForm = true;
+    $('.data').each(function (index, item) {
+        var isValid;
+        if ($(this).hasClass('gps')) {
+        }
+        else if($(this).hasClass('radius')) {
+
+        }
+        else if($(this).hasClass('heightType')) {
+            isValid = $('input[name=heightType]:checked').val() != undefined;
+            console.log("heightType: " + isValid)
+            $(this).find('input').each(function() {
+                validateField($(this),isValid);
+            });
+        }
+        else {
+             isValid = item.checkValidity();
+            validateField($(this), isValid);
+            if ($(this).hasClass('time')) {
+                validateTimes($(this));
+            }
+
+            console.log($(this).attr('id') + ": " + isValid);
+
+        }
+        if(!isValid)
+            validForm = false;
+    })
+    return validForm;
+}
+
 
 function initializeChangeHandlers() {
+
+
+    $(document).on('click', '#btn_submit', function () {
+        event.preventDefault();
+
+        if(validateForm()) {
+            submitApplication();
+        }
+
+    });
 
     $(document).on('keyup', 'input', function () {
         if ($(this).attr('filled')) {
@@ -302,8 +346,8 @@ function initializeChangeHandlers() {
             if ($(this).hasClass('time')) {
                 validateTimes($(this));
             }
-           if( $(this).is($('#field_date_from_until')))
-               validateField($(this), true);
+            if ($(this).is($('#field_date_from_until')))
+                validateField($(this), true);
         }
     });
     $(document).on('change', 'select', function () {
@@ -311,31 +355,11 @@ function initializeChangeHandlers() {
         validateField($(this), isValid);
     });
 
-
-    /* $(document).on('submit', '#needs-validation', function () {
-
-         var form = document.getElementById('needs-validation');
-         if (form.checkValidity() === false) {
-             event.preventDefault();
-             event.stopPropagation();
-         }
-         else {
-             // here to send data
-             event.preventDefault();
-             submitApplication();
-             $("#icon_loading").show();
-             $("#btn_submit").attr('disabled', 'disabled');
-         }
-         form.classList.add('was-validated');
-
-     });*/
-
-    $(document).on('click', '#btn_submit', function () {
-        event.preventDefault();
-        $("#icon_loading").show();
-
-        if (validateForm())
-            $("#icon_loading").show();
+    $(document).on('change', 'input[name=heightType]:checked',function () {
+        isValid = $('input[name=heightType]:checked').val() != undefined;
+        $(this).parent().parent().parent().find('input').each(function() {
+            validateField($(this),isValid);
+        });
     });
 
     $(document).on('change', '#type_of_activity', function () {
@@ -505,15 +529,6 @@ function initializeChangeHandlers() {
     });
 }
 
-function validateForm() {
-    $('input').each(function (index, item) {
-        if (!(item.hasClass('gps') || item.hasClass('radius'))) {
-            var isValid = item.checkValidity();
-            validateField(item, isValid);
-            validateTimes(item);
-        }
-    })
-}
 
 function updateDrawings(drawingId, drawingDiv) {
     var coordinates = [];
@@ -1127,6 +1142,7 @@ function setView(loc) {
 }
 
 function submitApplication() {
+    $("#icon_loading").show();
 
     var data = {};
 
@@ -1217,7 +1233,7 @@ function submitApplication() {
     })
         .done(function (json) {
             console.log(json);
-            hideAllFields();
+            $("#icon_loading").hide();
             $('#submit_success').modal('show');
 
         })

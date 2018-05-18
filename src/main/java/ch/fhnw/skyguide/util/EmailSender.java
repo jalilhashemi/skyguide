@@ -31,8 +31,8 @@ public class EmailSender {
             for (Drawing d : application.getDrawings()) {
                 drawings += d.getDrawingType().getName() + ": ";
                 if (d.getRadius() != null)
-                    drawings += "Height: " + d.getAltitude() + "\n";
-                drawings += "Radius: " + d.getRadius() + "\n";
+                    drawings += "Radius: " + d.getRadius() + "\n";
+                drawings += "Height: " + d.getAltitude() + "\n";
                 for (Coordinate c : d.getCoordinates()) {
                     drawings += "\t" + c.getLat() + ", " + c.getLon() + ";";
                 }
