@@ -26,6 +26,53 @@ var vector = new ol.layer.Vector({
         })
     })
 });
+var ctr = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        url: 'ctr.kml',
+        format : new ol.format.KML({
+            projection: 'EPSG:4326'
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 0, 0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#FF0000',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#FF0000'
+                })
+            })
+        })
+    })
+});
+
+var tma = new ol.layer.Vector({
+    source: new ol.source.Vector({
+        url: 'tma.kml',
+        format : new ol.format.KML({
+            projection: 'EPSG:4326'
+        }),
+        style: new ol.style.Style({
+            fill: new ol.style.Fill({
+                color: 'rgba(255, 0, 0, 0.3)'
+            }),
+            stroke: new ol.style.Stroke({
+                color: '#FF0000',
+                width: 2
+            }),
+            image: new ol.style.Circle({
+                radius: 7,
+                fill: new ol.style.Fill({
+                    color: '#FF0000'
+                })
+            })
+        })
+    })
+});
 var validForm = true;
 
 $(document).ready(function () {
@@ -317,6 +364,35 @@ function validateForm() {
     });
 
     validateDrawings();
+
+    var ctrZone = ctr.getSource().getFeatures();
+    var tmaZone = tma.getSource().getFeatures();
+    var features = source.getFeatures();
+
+    for (var i=0; i < features.length; i++){
+        var feature = features[i];
+        for (var j=0; j < ctrZone.length; j++){
+            var zone = ctrZone[j];
+            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())){
+                console.log("Drawing " + feature.getId() + " intersects with CTR" + j);
+            }
+        }
+    }
+
+
+  /*  var features1 = ctr.getSource().features;
+    var features2 = source.features;
+
+    for (var i=0; i < features1.length-1; i++){
+        var feature1 = features1[i];
+        for (var j=0; j < features2.length-1; j++){
+            var feature2 = features2[j];
+            if (feature1.geometry.intersects(feature2.geometry)){
+                console.log("vector features 1 " + i + " intersects vector features 2 " + j);
+            }
+        }
+    }
+*/
 
 
     return validForm;
@@ -1164,21 +1240,12 @@ function initializeMap() {
 
     });
 
-    /*  var v = new ol.layer.Vector({
-          source: new ol.source.Vector({
-              url: 'js/Aerodrome.kml',
-              format: new ol.format.KML({
-                  projection: 'EPSG:4326'
-              })
-          })
-      });*/
-
-    // map.addLayer(v);
-
     map.getView().setCenter(loc);
     map.getView().setResolution(500);
 
     setLayerVisible(1, false);
+    setLayerVisible(2, true);
+
 }
 
 function setView(loc) {
