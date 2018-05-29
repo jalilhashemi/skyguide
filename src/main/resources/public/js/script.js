@@ -26,6 +26,7 @@ var vector = new ol.layer.Vector({
         })
     })
 });
+var validForm = true;
 
 $(document).ready(function () {
     $("#icon_loading").hide();
@@ -281,38 +282,72 @@ function processField(field) {
 
 }
 
+function formValidate(isValid) {
+    if (!isValid && validForm) {
+        validForm = false;
+    }
+
+}
+
 function validateForm() {
 
-    // TODO: date range validation, filled attr, drawings validation
-    var validForm = true;
+    // TODO:  changed type makes fields invalid
+
+
     $('.data').each(function (index, item) {
         var isValid;
-        if ($(this).hasClass('gps')) {
-        }
-        else if($(this).hasClass('radius')) {
-
-        }
-        else if($(this).hasClass('heightType')) {
+        if ($(this).hasClass('heightType')) {
             isValid = $('input[name=heightType]:checked').val() != undefined;
-            console.log("heightType: " + isValid)
-            $(this).find('input').each(function() {
-                validateField($(this),isValid);
+            formValidate(isValid);
+            $(this).find('input').each(function () {
+                validateField($(this), isValid);
             });
         }
         else {
-             isValid = item.checkValidity();
+            isValid = item.checkValidity();
             validateField($(this), isValid);
+            formValidate(isValid);
             if ($(this).hasClass('time')) {
-                validateTimes($(this));
+                formValidate(validateTimes($(this)));
+
             }
 
             console.log($(this).attr('id') + ": " + isValid);
-
         }
-        if(!isValid)
-            validForm = false;
-    })
+    });
+
+    validateDrawings();
+
+
     return validForm;
+}
+
+function validateDrawings() {
+    var isValid;
+    if ($('#drawing1').length) {
+
+        for (var i = 1; $('#drawing' + i).length != 0; i++) {
+            $('#drawing' + i).find('.gps').each(function (index, item) {
+                formValidate(validateCoordinate($(this)) != null)
+
+            });
+            isValid =  $('#drawing' + i).find('.altitude')[0].checkValidity();
+            validateField($('.altitude'), isValid);
+            formValidate(isValid);
+
+
+            if($('#drawing' + i).find('.radius').length) {
+                isValid =  $('#drawing' + i).find('.radius')[0].checkValidity();
+                validateField($('.radius'), isValid);
+                formValidate(isValid);
+
+            }
+        }
+        formValidate(true);
+    }
+    else {
+        formValidate(false);
+    }
 }
 
 
@@ -322,8 +357,18 @@ function initializeChangeHandlers() {
     $(document).on('click', '#btn_submit', function () {
         event.preventDefault();
 
-        if(validateForm()) {
+        validForm = true;
+        if (validateForm()) {
+            console.log("submit form");
+
             submitApplication();
+
+            // surveymokey call
+            (function (t, e, s, o) {
+                var n, c, l;
+                t.SMCX = t.SMCX || [], e.getElementById(o) || (n = e.getElementsByTagName(s), c = n[n.length - 1], l = e.createElement(s), l.type = "text/javascript", l.async = !0, l.id = o, l.src = ["https:" === location.protocol ? "https://" : "http://", "widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdyWCzZc0WCTHJj5wcZa9Sy55DklTrOQ9l8n_2F2szZz4B9.js"].join(""), c.parentNode.insertBefore(l, c))
+            })
+            (window, document, "script", "smcx-sdk");
         }
 
     });
@@ -355,10 +400,10 @@ function initializeChangeHandlers() {
         validateField($(this), isValid);
     });
 
-    $(document).on('change', 'input[name=heightType]:checked',function () {
+    $(document).on('change', 'input[name=heightType]:checked', function () {
         isValid = $('input[name=heightType]:checked').val() != undefined;
-        $(this).parent().parent().parent().find('input').each(function() {
-            validateField($(this),isValid);
+        $(this).parent().parent().parent().find('input').each(function () {
+            validateField($(this), isValid);
         });
     });
 
@@ -1274,9 +1319,11 @@ function validateTimes(field) {
         if (startDt.getTime() >= endDt.getTime()) {
             end.parent().find('.invalid-feedback').html("The until time must be after the from time.");
             validateField(end, false);
+            return false;
         }
         else {
             validateField(start, true);
+            return true;
         }
     }
 
