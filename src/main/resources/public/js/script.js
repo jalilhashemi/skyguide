@@ -338,7 +338,8 @@ function formValidate(isValid) {
 
 function validateForm() {
 
-    // TODO:  changed type makes fields invalid
+    // TODO:  changed activity / aircraft type makes fields invalid, validate time when more than one
+
 
 
     $('.data').each(function (index, item) {
@@ -582,6 +583,26 @@ function initializeChangeHandlers() {
             setLayerVisible(1, false);
         }
     });
+
+    $(document).on('change', '#check-layer-ctr', function () {
+        if ($('#check-layer-ctr').is(':checked')) {
+            setLayerVisible(2, true);
+        }
+        else {
+            setLayerVisible(2, false);
+        }
+    });
+
+
+    $(document).on('change', '#check-layer-tma', function () {
+        if ($('#check-layer-tma').is(':checked')) {
+            setLayerVisible(3, true);
+        }
+        else {
+            setLayerVisible(3, false);
+        }
+    });
+
 
     $(document).on('click', '#add_polygon_btn', function () {
         addPolygonDrawingDiv();
@@ -989,8 +1010,6 @@ function initDrawTool() {
 
             selectedFeatures.on('add', function (e) {
                 e.element.on('change', function (e) {
-                    // TODO: update fields
-
                     var drawingId = $(this)[0].getId();
                     var drawingDiv = $('#' + drawingId);
                     var geometry = $(this)[0].getGeometry().getCoordinates();
@@ -1231,6 +1250,8 @@ function initializeMap() {
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
             ga.layer.create('ch.bazl.luftfahrtkarten-icao'),
+            ctr,
+            tma,
             vector
         ],
         crossOrigin: 'null',
@@ -1244,7 +1265,9 @@ function initializeMap() {
     map.getView().setResolution(500);
 
     setLayerVisible(1, false);
-    setLayerVisible(2, true);
+    setLayerVisible(2, false);
+    setLayerVisible(3, false);
+
 
 }
 
