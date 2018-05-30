@@ -126,7 +126,10 @@ h1 {
     margin-left: 10px;
     z-index: 10;
     width: 100px;
+}
 
+#btn_draw {
+    height: 54.5px;
 }
 
 #draw-tool {
