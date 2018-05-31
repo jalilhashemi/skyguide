@@ -85,6 +85,8 @@
     <fieldset>
         <h1>Request for coordination of special aerial activities</h1>
         <p>* fields are required</p>
+        <div class="invalid-feedback" id="form-feedback">You have some validation errors.
+        </div>
         <h2>1. Applicant information</h2>
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -456,7 +458,7 @@
                     </div>
                 </div>
             </div>
-            <div id="map-container" class="display-none" >
+            <div id="map-container" class="display-none">
                 <div id="map" class="map panel panel-default">
                     <div class="collapse" id="draw-tool">
                         <div class="card card-body">
@@ -558,38 +560,39 @@
                 <div class="invalid-feedback">
                 </div>
             </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_1"
-                   name="freeAnswer1">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_2"
-                   name="freeAnswer2">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_3"
-                   name="freeAnswer3">
-            <div class="invalid-feedback">
-            </div>
-        </div>
-        <div class="form-group  display-none">
-            <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_4"
-                   name="freeAnswer4">
-            <div class="invalid-feedback">
-            </div>
-        </div>
 
-        <div class="form-group">
-            <label for="textfield_remark">Remark</label>
-            <textarea type="text" class="form-control textarea-field-sky my-textarea data activity-data"
-                      id="textfield_remark"
-                      name="remark"></textarea>
-            <div class="invalid-feedback">
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_1"
+                       name="freeAnswer1">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_2"
+                       name="freeAnswer2">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_3"
+                       name="freeAnswer3">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+            <div class="form-group  display-none">
+                <input type="text" class="form-control input-field-sky data activity-data" id="free_answer_4"
+                       name="freeAnswer4">
+                <div class="invalid-feedback">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="textfield_remark">Remark</label>
+                <textarea type="text" class="form-control textarea-field-sky my-textarea data activity-data"
+                          id="textfield_remark"
+                          name="remark"></textarea>
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
         <button type="submit" class="btn btn-primary btn-sky btn-lg" id="btn_submit">Submit <i id="icon_loading"

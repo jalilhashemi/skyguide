@@ -428,7 +428,8 @@ function checkIntersections() {
 
     // no need of SUA
     if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
-        $('#not-needed_success').modal('show');
+        if (validForm)
+            $('#not-needed_success').modal('show');
     }
 
     // else an SUA is needed
@@ -510,6 +511,10 @@ function initializeChangeHandlers() {
             })
             (window, document, "script", "smcx-sdk");
         }
+        else {
+            $('html,body').scrollTop(0);
+            $('#form-feedback').show()
+        }
 
     });
 
@@ -548,7 +553,9 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_activity', function () {
+        emptyForm();
         hideAllFields();
+
 
         // and hide the aircraft type selection and empty value
         $('#type_of_aircraft').parent().hide()
@@ -811,6 +818,18 @@ function updateDrawings(drawingId, drawingDiv) {
 
     Modify.setActive(false);
 
+}
+
+function emptyForm() {
+    $('#container_fields').find('input').each(function () {
+        $(this).val("");
+        $(this).removeClass('is-invalid');
+        $(this).removeClass('is-valid');
+        $(this).checked = false;
+    });
+
+    // remove drawings
+   source.clear();
 }
 
 function validateRadius(field) {
