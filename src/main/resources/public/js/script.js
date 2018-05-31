@@ -428,8 +428,9 @@ function checkIntersections() {
 
     // no need of SUA
     if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
-        if (validForm)
+        if (validForm) {
             $('#not-needed_success').modal('show');
+        }
     }
 
     // else an SUA is needed
@@ -500,8 +501,6 @@ function initializeChangeHandlers() {
 
         validForm = true;
         if (validateForm()) {
-            console.log("submit form");
-
             submitApplication();
 
             // surveymokey call
@@ -1432,7 +1431,6 @@ function submitApplication() {
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
 
-// var success = '{"email":"jalil.hashemi@students.fhnw.ch", "drawings":[' + drawings + '], "times" : [{"start":"12:00", "end":"13:00"}], "name":"adsf","company":"Mfddfarco", "activityType" : "Airshow", "aircraftType" : "RPAS", "heightType": "m GND", "location" : "Windisch"}';
     console.log(data);
 
 // submit to server
