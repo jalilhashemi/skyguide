@@ -17,6 +17,9 @@ public class EmailSender {
     @Value("${skyguide.mail}")
     private String adminMail;
 
+    @Value("${test.mail}")
+    private String testMail;
+
     @Autowired
     private JavaMailSender sender;
 
@@ -25,7 +28,8 @@ public class EmailSender {
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setTo(adminMail);
+            String[] mails = { adminMail, testMail};
+            helper.setTo(mails);
             helper.setSubject("There is a new Application (Beta)");
             String drawings = "";
             for (Drawing d : application.getDrawings()) {
@@ -79,10 +83,11 @@ public class EmailSender {
             message.setContent(htmlMsg, "text/html");
             sender.send(message);
 
-            helper.setTo(application.getEmail());
+            // send User Mail with Link
+           /* helper.setTo(application.getEmail());
             helper.setSubject("Your Application to skyguide");
             helper.setText("http://localhost:8080?key=" + application.getAdminKey() + "&edit\n");
-            sender.send(message);
+            sender.send(message);*/
 
             return true;
         } catch (
