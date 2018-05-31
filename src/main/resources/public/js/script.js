@@ -12,7 +12,7 @@ var vector = new ol.layer.Vector({
     source: source,
     style: new ol.style.Style({
         fill: new ol.style.Fill({
-            color: 'rgba(255, 0, 0, 0.3)'
+            color: 'rgba(0, 255, 0, 0.3)'
         }),
         stroke: new ol.style.Stroke({
             color: '#FF0000',
@@ -27,25 +27,25 @@ var vector = new ol.layer.Vector({
     })
 });
 var ctr = new ol.layer.Vector({
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(0, 255, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#00FF00',
+            width: 2
+        }),
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: '#00FF00'
+            })
+        })
+    }),
     source: new ol.source.Vector({
         url: 'ctr.kml',
-        format : new ol.format.KML({
+        format: new ol.format.KML({
             projection: 'EPSG:4326'
-        }),
-        style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 0, 0.3)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#FF0000',
-                width: 2
-            }),
-            image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                    color: '#FF0000'
-                })
-            })
         })
     })
 });
@@ -53,21 +53,21 @@ var ctr = new ol.layer.Vector({
 var tma = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'tma.kml',
-        format : new ol.format.KML({
+        format: new ol.format.KML({
             projection: 'EPSG:4326'
         }),
         style: new ol.style.Style({
             fill: new ol.style.Fill({
-                color: 'rgba(255, 0, 0, 0.3)'
+                color: 'rgba(0, 255, 0, 0.5)'
             }),
             stroke: new ol.style.Stroke({
-                color: '#FF0000',
-                width: 2
+                color: '#00FF00',
+                width: 10
             }),
             image: new ol.style.Circle({
                 radius: 7,
                 fill: new ol.style.Fill({
-                    color: '#FF0000'
+                    color: '#00FF00'
                 })
             })
         })
@@ -341,7 +341,6 @@ function validateForm() {
     // TODO:  changed activity / aircraft type makes fields invalid, validate time when more than one
 
 
-
     $('.data').each(function (index, item) {
         var isValid;
         if ($(this).hasClass('heightType')) {
@@ -366,37 +365,65 @@ function validateForm() {
 
     validateDrawings();
 
+
+
+    /*  var features1 = ctr.getSource().features;
+      var features2 = source.features;
+
+      for (var i=0; i < features1.length-1; i++){
+          var feature1 = features1[i];
+          for (var j=0; j < features2.length-1; j++){
+              var feature2 = features2[j];
+              if (feature1.geometry.intersects(feature2.geometry)){
+                  console.log("vector features 1 " + i + " intersects vector features 2 " + j);
+              }
+          }
+      }
+  */
+
+
+    return validForm;
+}
+
+function checkIntersections() {
     var ctrZone = ctr.getSource().getFeatures();
     var tmaZone = tma.getSource().getFeatures();
     var features = source.getFeatures();
 
-    for (var i=0; i < features.length; i++){
+    var tmaIntersections = [];
+    var ctrIntersections = [];
+
+    for (var i = 0; i < features.length; i++) {
         var feature = features[i];
-        for (var j=0; j < ctrZone.length; j++){
+        var doIntersect = false;
+        for (var j = 0; j < ctrZone.length; j++) {
             var zone = ctrZone[j];
-            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())){
-                console.log("Drawing " + feature.getId() + " intersects with CTR" + j);
+            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())) {
+                doIntersect = true;
             }
         }
+        if(doIntersect)
+            ctrIntersections.push(feature.getId());
     }
-
-
-  /*  var features1 = ctr.getSource().features;
-    var features2 = source.features;
-
-    for (var i=0; i < features1.length-1; i++){
-        var feature1 = features1[i];
-        for (var j=0; j < features2.length-1; j++){
-            var feature2 = features2[j];
-            if (feature1.geometry.intersects(feature2.geometry)){
-                console.log("vector features 1 " + i + " intersects vector features 2 " + j);
+    for (var i = 0; i < features.length; i++) {
+        var feature = features[i];
+        var doIntersect = false;
+        for (var j = 0; j < tmaZone.length; j++) {
+            var zone = tmaZone[j];
+            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())) {
+                doIntersect = true;
             }
         }
+        if(doIntersect)
+            tmaIntersections.push(feature.getId());
     }
-*/
+
+    console.log(ctrIntersections);
+    console.log(tmaIntersections);
+
+    validateMap((ctrIntersections.length > 0|| tmaIntersections.length > 0) ? false : true , "intersections");
 
 
-    return validForm;
 }
 
 function validateDrawings() {
@@ -408,22 +435,38 @@ function validateDrawings() {
                 formValidate(validateCoordinate($(this)) != null)
 
             });
-            isValid =  $('#drawing' + i).find('.altitude')[0].checkValidity();
+            isValid = $('#drawing' + i).find('.altitude')[0].checkValidity();
             validateField($('.altitude'), isValid);
             formValidate(isValid);
 
 
-            if($('#drawing' + i).find('.radius').length) {
-                isValid =  $('#drawing' + i).find('.radius')[0].checkValidity();
+            if ($('#drawing' + i).find('.radius').length) {
+                isValid = $('#drawing' + i).find('.radius')[0].checkValidity();
                 validateField($('.radius'), isValid);
                 formValidate(isValid);
 
             }
         }
         formValidate(true);
+        validateMap(true);
+
+        checkIntersections();
     }
     else {
         formValidate(false);
+        validateMap(false,'Please draw at least one drawing.');
+    }
+}
+
+function validateMap(isValid, message) {
+    if (isValid) {
+        $('canvas').css("border", 'none');
+        $('#map-feedback').hide();
+    }
+    else {
+        $('canvas').css("border", '1px solid #dc3545');
+        $('#map-feedback').show();
+        $('#map-feedback').html(message);
     }
 }
 
