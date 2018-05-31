@@ -602,6 +602,7 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('change', '#type_of_aircraft', function () {
+        emptyForm();
         hideAllFields();
 
         $.each(actualAircraftTypeList, function (i, aircraftType) {
