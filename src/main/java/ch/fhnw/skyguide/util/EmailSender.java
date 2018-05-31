@@ -24,7 +24,6 @@ public class EmailSender {
     private JavaMailSender sender;
 
     public boolean send(Application application) {
-        //String applicantEmail, String adminKey, String viewKey) {
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message);
@@ -76,9 +75,10 @@ public class EmailSender {
                     printAttr("Is it possible to interrupt the mission?", application.getFreeAnswer2()) +
                     printAttr("Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", application.getFreeAnswer3()) +
                     printAttr("Is the mission dependent on certain conditions (no clouds, no snow, no leaves)?", application.getFreeAnswer4()) +
-                    "</table>" +
+                    "</table>";
 
-                    "<p>" + "Link to the application: http://localhost:8080?key=" + application.getViewKey() + "</p>";
+                    // Admin Link
+                   // "<p>" + "Link to the application: http://localhost:8080?key=" + application.getViewKey() + "</p>";
 
             message.setContent(htmlMsg, "text/html");
             sender.send(message);
