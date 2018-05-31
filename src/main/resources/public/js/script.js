@@ -12,7 +12,7 @@ var vector = new ol.layer.Vector({
     source: source,
     style: new ol.style.Style({
         fill: new ol.style.Fill({
-            color: 'rgba(0, 255, 0, 0.3)'
+            color: 'rgba(255, 0, 0, 0.3)'
         }),
         stroke: new ol.style.Stroke({
             color: '#FF0000',
@@ -366,7 +366,6 @@ function validateForm() {
     validateDrawings();
 
 
-
     /*  var features1 = ctr.getSource().features;
       var features2 = source.features;
 
@@ -386,6 +385,15 @@ function validateForm() {
 }
 
 function checkIntersections() {
+
+    // need to be shown and hidden
+    setLayerVisible(2, false);
+    setLayerVisible(3, false);
+
+    setLayerVisible(2, true);
+    setLayerVisible(3, true);
+
+
     var ctrZone = ctr.getSource().getFeatures();
     var tmaZone = tma.getSource().getFeatures();
     var features = source.getFeatures();
@@ -402,7 +410,7 @@ function checkIntersections() {
                 doIntersect = true;
             }
         }
-        if(doIntersect)
+        if (doIntersect)
             ctrIntersections.push(feature.getId());
     }
     for (var i = 0; i < features.length; i++) {
@@ -414,15 +422,27 @@ function checkIntersections() {
                 doIntersect = true;
             }
         }
-        if(doIntersect)
+        if (doIntersect)
             tmaIntersections.push(feature.getId());
     }
 
-    console.log(ctrIntersections);
-    console.log(tmaIntersections);
+    // no need of SUA
+    if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
+        $('#not-needed_success').modal('show');
+    }
 
-    validateMap((ctrIntersections.length > 0|| tmaIntersections.length > 0) ? false : true , "intersections");
+    // else an SUA is needed
+    /* else {
+         var msg = "CTR intersections: ";
+         ctrIntersections.forEach(function (a) {
+             msg += a + " ";
+         });
+         msg += "<br>TMA intersections: ";
+         tmaIntersections.forEach(function (a) {
+             msg += a + " ";
+         });
 
+     }*/
 
 }
 
@@ -454,7 +474,7 @@ function validateDrawings() {
     }
     else {
         formValidate(false);
-        validateMap(false,'Please draw at least one drawing.');
+        validateMap(false, 'Please draw at least one drawing.');
     }
 }
 
@@ -1007,27 +1027,27 @@ function validateCoordinate(field) {
 }
 
 function styleDrawing(feature, id) {
-    feature.setStyle(new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: 'rgba(255, 0, 0, 0.3)'
-        }),
-        stroke: new ol.style.Stroke({
-            color: '#FF0000',
-            width: 2
-        }),
-        image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({
-                color: '#FF0000'
-            })
-        }),
-        text: new ol.style.Text({
-            font: '20px Calibri,sans-serif',
-            fill: new ol.style.Fill({color: '#000000'}),
-            stroke: new ol.style.Stroke({color: '#FFFFFF'}),
-            text: id
-        })
-    }));
+    /*   feature.setStyle(new ol.style.Style({
+           fill: new ol.style.Fill({
+               color: 'rgba(255, 0, 0, 0.3)'
+           }),
+           stroke: new ol.style.Stroke({
+               color: '#FF0000',
+               width: 2
+           }),
+           image: new ol.style.Circle({
+               radius: 7,
+               fill: new ol.style.Fill({
+                   color: '#FF0000'
+               })
+           }),
+           text: new ol.style.Text({
+               font: '20px Calibri,sans-serif',
+               fill: new ol.style.Fill({color: '#000000'}),
+               stroke: new ol.style.Stroke({color: '#FFFFFF'}),
+               text: id
+           })
+       }));*/
 }
 
 function initDrawTool() {
@@ -1052,11 +1072,12 @@ function initDrawTool() {
             });
 
             selectedFeatures.on('add', function (e) {
+
                 e.element.on('change', function (e) {
+
                     var drawingId = $(this)[0].getId();
                     var drawingDiv = $('#' + drawingId);
                     var geometry = $(this)[0].getGeometry().getCoordinates();
-                    //  geometry[0].splice(geometry[0].length - 1, 1);
                     var gps = [];
 
 
@@ -1067,7 +1088,6 @@ function initDrawTool() {
 
                         // remove last duplicate of first coordinate
                         gps.splice(gps.length - 1, 1);
-
                     }
 
                     else if (drawingDiv.hasClass('path')) {
@@ -1081,24 +1101,15 @@ function initDrawTool() {
                         });
                     }
 
-                    if (drawingDiv.find('.is-invalid').length == 0) {
-                        while (gps.length < drawingDiv.find('.gps').length)
-                            removeCoordinateField(drawingDiv.drawingDiv.find('.is-invalid').parent());
-
-                    }
                     while (gps.length > drawingDiv.find('.gps').length)
                         addCoordinateField(drawingDiv);
 
                     $(drawingDiv).find('.gps').each(function (index) {
-                        $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
+                        if (gps[index] != undefined)
+                            $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
+                        else if (validateCoordinate($(this)))
+                            removeCoordinateField($(this).parent().parent());
                     });
-
-                    // var features = vector.getSource().getFeatures();
-                    // var geometry = features[0].getGeometry().getCoordinates();
-
-                    //  drawings = [];
-                    //drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
-                    //$('#field_gps_coord').val(gps);
                 });
             });
         },
@@ -1106,7 +1117,8 @@ function initDrawTool() {
             this.select.setActive(active);
             this.modify.setActive(active);
         }
-    };
+    }
+    ;
 
     Modify.init();
 
@@ -1257,7 +1269,7 @@ function fillDrawingPathDiv(feature, drawingId) {
 function fillDrawingCircleDiv(feature, drawingId) {
     feature.setId("drawing" + drawingId);
     var coordinate = feature.getGeometry().getCenter();
-    var radius = feature.getGeometry().getRadius();
+    var radius = parseInt(feature.getGeometry().getRadius());
     var drawingDiv = $('#drawing' + drawingId);
 
     coordinate = ol.proj.transform(coordinate, 'EPSG:21781', 'EPSG:4326');
@@ -1308,9 +1320,6 @@ function initializeMap() {
     map.getView().setResolution(500);
 
     setLayerVisible(1, false);
-    setLayerVisible(2, false);
-    setLayerVisible(3, false);
-
 
 }
 
@@ -1380,7 +1389,6 @@ function submitApplication() {
         $('#drawing' + i + ' .gps').each(function (index) {
 
             drawing['coordinates'][index] = {
-                // TODO: split coordinates
                 'lat': $(this).val(),
                 'lon': $(this).val()
             };

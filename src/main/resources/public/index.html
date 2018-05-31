@@ -37,6 +37,25 @@
         </div>
     </div>
 </div>
+<div id="not-needed_success" class="modal fade">
+    <div class="modal-dialog modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE876;</i>
+                </div>
+            </div>
+            <div class="modal-body text-center">
+                <h4>No Application needed!</h4>
+                <p>Because your Special Flight is not in CTR and TMA you don't need an Application.</p>
+                <a href="index.html">
+                    <button class="btn btn-primary btn-sky"><span>Another Entry</span></button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="info_gps_coord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -357,7 +376,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_radius_circle">Radius in Meters (m)*</label>
-                            <input id="field_radius_circle" min="0" max="10000" type="text"
+                            <input type="number" id="field_radius_circle" min="0" max="10000"
                                    class="form-control input-field-sky radius">
                             <div class="invalid-feedback">
                                 Must be a positive number smaller than 500 m
@@ -508,11 +527,11 @@
                         Aeronautical Chart ICAO
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" id="check-layer-ctr" type="checkbox" value="">
+                        <input class="form-check-input" id="check-layer-ctr" type="checkbox" value="" checked>
                         CTR
                     </label>
                     <label class="form-check-label">
-                        <input class="form-check-input" id="check-layer-tma" type="checkbox" value="">
+                        <input class="form-check-input" id="check-layer-tma" type="checkbox" value="" checked>
                         TMA
                     </label>
                 </div>
