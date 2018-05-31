@@ -823,14 +823,21 @@ function updateDrawings(drawingId, drawingDiv) {
 
 function emptyForm() {
     $('#container_fields').find('input').each(function () {
-        $(this).val("");
         $(this).removeClass('is-invalid');
         $(this).removeClass('is-valid');
-        $(this).checked = false;
+        if ($(this).attr('name') == 'heightType') {
+            console.log("height");
+            $(this).checked = false;
+        } else {
+            $(this).val("");
+
+        }
+
+
     });
 
     // remove drawings
-   source.clear();
+    source.clear();
 }
 
 function validateRadius(field) {
