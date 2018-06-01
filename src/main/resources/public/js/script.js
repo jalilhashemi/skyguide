@@ -6,7 +6,8 @@ var timeIndex = 0;
 var drawingIndex = 0;
 var Modify;
 var Draw;
-var drawings = [];
+var errorLog = "";
+//var drawings = [];
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
     source: source,
@@ -16,7 +17,7 @@ var vector = new ol.layer.Vector({
         }),
         stroke: new ol.style.Stroke({
             color: '#FF0000',
-            width: 2
+            width: 4
         }),
         image: new ol.style.Circle({
             radius: 7,
@@ -27,25 +28,20 @@ var vector = new ol.layer.Vector({
     })
 });
 var ctr = new ol.layer.Vector({
-    style: new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: 'rgba(0, 255, 0, 0.3)'
-        }),
-        stroke: new ol.style.Stroke({
-            color: '#00FF00',
-            width: 2
-        }),
-        image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({
-                color: '#00FF00'
-            })
-        })
-    }),
     source: new ol.source.Vector({
         url: 'ctr.kml',
         format: new ol.format.KML({
+            extractStyles: false,
             projection: 'EPSG:4326'
+        })
+    }),
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 100, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: 'rgba(255, 100, 0, 0)',
+            width: 2
         })
     })
 });
@@ -54,28 +50,25 @@ var tma = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'tma.kml',
         format: new ol.format.KML({
+            extractStyles: false,
             projection: 'EPSG:4326'
+        })
+
+    }),
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 0, 0.3)'
         }),
-        style: new ol.style.Style({
-            fill: new ol.style.Fill({
-                color: 'rgba(0, 255, 0, 0.5)'
-            }),
-            stroke: new ol.style.Stroke({
-                color: '#00FF00',
-                width: 10
-            }),
-            image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                    color: '#00FF00'
-                })
-            })
+        stroke: new ol.style.Stroke({
+            color: 'rgba(255, 255, 0, 0)',
+            width: 2
         })
     })
 });
 var validForm = true;
 
 $(document).ready(function () {
+
     $("#icon_loading").hide();
     // get the url params
     var url = new URL(window.location.href);
@@ -99,6 +92,7 @@ $(document).ready(function () {
     $(window).keydown(function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
+            event.stopPropagation();
             return false;
         }
     });
@@ -132,8 +126,9 @@ function fillAllFields(key) {
         .done(function (json) {
             fillFields(json);
         })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        .fail(function (jqXHR) {
+            $('#submit_error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 
 }
@@ -148,8 +143,9 @@ function fillFields(data) {
         .done(function (json) {
             initializeDisabledInputs(json, data.activityType, data.aircraftType, data);
         })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        .fail(function (jqXHR) {
+            $('#submit_error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 }
 
@@ -239,8 +235,9 @@ function initializeDropdowns() {
             appendSelection(json);
             informationJSON = json;
         })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        .fail(function (jqXHR) {
+            $('#submit_error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 }
 
@@ -286,7 +283,7 @@ function hideAllFields() {
     $('#add_area_dropdown').addClass('display-none');
     $('#altitude_label').addClass('display-none');
     $('.drawing').addClass('display-none');
-    $('#addScnt').addClass('display-none');
+    $('#btn-add-time').addClass('display-none');
     $('.time_field').addClass('display-none');
 
     $('.custom-control-input').parent().addClass('display-none');
@@ -296,6 +293,9 @@ function hideAllFields() {
 
     // empty all fields
     $('input.data.activity-data').val('');
+    $('input.data.activity-data').prop('required', false);
+
+
 }
 
 /**
@@ -320,7 +320,7 @@ function processField(field) {
             $('#' + field.id).prop('required', true);
             // $('#' + field.id).parent().attr('title', field.tooltip);
             initializeTooltips();
-            $('#addScnt').removeClass('display-none');
+            $('#btn-add-time').removeClass('display-none');
         }
         else {
             showField(field);
@@ -430,27 +430,16 @@ function checkIntersections() {
     if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
         if (validForm) {
             $('#not-needed_success').modal('show');
+            return true;
         }
     }
-
-    // else an SUA is needed
-    /* else {
-         var msg = "CTR intersections: ";
-         ctrIntersections.forEach(function (a) {
-             msg += a + " ";
-         });
-         msg += "<br>TMA intersections: ";
-         tmaIntersections.forEach(function (a) {
-             msg += a + " ";
-         });
-
-     }*/
 
 }
 
 function validateDrawings() {
     var isValid;
-    if ($('#drawing1').length) {
+
+    if (source.getFeatures().length) {
 
         for (var i = 1; $('#drawing' + i).length != 0; i++) {
             $('#drawing' + i).find('.gps').each(function (index, item) {
@@ -471,8 +460,6 @@ function validateDrawings() {
         }
         formValidate(true);
         validateMap(true);
-
-        checkIntersections();
     }
     else {
         formValidate(false);
@@ -492,29 +479,60 @@ function validateMap(isValid, message) {
     }
 }
 
+function showSurvey() {
+    setTimeout(function () {
+        (function (t, e, s, o) {
+            var n, c, l;
+            t.SMCX = t.SMCX || [], e.getElementById(o) || (n = e.getElementsByTagName(s), c = n[n.length - 1], l = e.createElement(s), l.type = "text/javascript", l.async = !0, l.id = o, l.src = ["https:" === location.protocol ? "https://" : "http://", "widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdyWCzZc0WCTHJj5wcZa9Sy55DklTrOQ9l8n_2F2szZz4B9.js"].join(""), c.parentNode.insertBefore(l, c))
+        })
+        (window, document, "script", "smcx-sdk");
+    }, 2000);
+}
 
 function initializeChangeHandlers() {
 
 
-    $(document).on('click', '#btn_submit', function () {
+    $(document).on('click', '#btn_submit', function (event) {
         event.preventDefault();
+        event.stopPropagation();
 
         validForm = true;
         if (validateForm()) {
             submitApplication();
-
-            // surveymokey call
-            (function (t, e, s, o) {
-                var n, c, l;
-                t.SMCX = t.SMCX || [], e.getElementById(o) || (n = e.getElementsByTagName(s), c = n[n.length - 1], l = e.createElement(s), l.type = "text/javascript", l.async = !0, l.id = o, l.src = ["https:" === location.protocol ? "https://" : "http://", "widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdyWCzZc0WCTHJj5wcZa9Sy55DklTrOQ9l8n_2F2szZz4B9.js"].join(""), c.parentNode.insertBefore(l, c))
-            })
-            (window, document, "script", "smcx-sdk");
         }
         else {
             $('html,body').scrollTop(0);
             $('#form-feedback').show()
         }
 
+    });
+
+    $(document).on('click', '#btn-try-again', function () {
+        $('#submit_error').modal('hide');
+        submitApplication();
+    });
+
+    $(document).on('click', '.btn-another-entry', function () {
+        $('#not-needed_success').modal('hide');
+        $('#submit_success').modal('hide');
+        $('#type_of_activity').val("");
+        $('#textfield_remark').val("");
+        $('#type_of_aircraft').parent().hide()
+        $('#type_of_aircraft').prop('required', false);
+        $('#type_of_aircraft').val('');
+        $('#type_of_activity').removeClass('is-invalid');
+        $('#type_of_activity').removeClass('is-valid');
+        $('#textfield_remark').removeClass('is-invalid');
+        $('#textfield_remark').removeClass('is-valid');
+        hideAllFields()
+    });
+
+    $(document).on('click', '#btn-report', function () {
+        $(location).attr('href', 'mailto:marco.ghilardelli@students.fhnw.ch?subject='
+            + encodeURIComponent("Report Problem: Skyguide Web Application")
+            + "&body="
+            + encodeURIComponent(errorLog)
+        );
     });
 
     $(document).on('keyup', 'input', function () {
@@ -590,7 +608,7 @@ function initializeChangeHandlers() {
                     $('#altitude_label').removeClass('display-none');
                     map.updateSize();
                     // add time button
-                    $('#addScnt').removeClass('display-none');
+                    $('#btn-add-time').removeClass('display-none');
 
                     $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
                         processField(field);
@@ -610,7 +628,7 @@ function initializeChangeHandlers() {
                 $('#add_area_dropdown').removeClass('display-none');
                 $('#altitude_label').removeClass('display-none');
                 map.updateSize();
-                $('#addScnt').removeClass('display-none');
+                $('#btn-add-time').removeClass('display-none');
                 $.each(aircraftType.fieldList, function (i, field) {
                     processField(field);
                 });
@@ -619,7 +637,7 @@ function initializeChangeHandlers() {
 
     });
 
-    $(document).on('click', '#addScnt', function () {
+    $(document).on('click', '#btn-add-time', function () {
         timeIndex++;
         var template = $('#time_template'),
             clone = template
@@ -635,7 +653,10 @@ function initializeChangeHandlers() {
             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
             .prop('required', true).end()
             .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
-            .prop('required', true).end();
+            .prop('required', true).end()
+            .find('input').each(function () {
+            $(this).addClass("data");
+        });
     });
 
     $(document).on('click', '.remove_time_button', function () {
@@ -643,6 +664,15 @@ function initializeChangeHandlers() {
 
         // Remove element containing the option
         row.remove();
+    });
+
+    $(document).on('click', '.remove-drawing', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var drawingDiv = $(this).parent();
+        var drawingId = drawingDiv.attr("id");
+        source.removeFeature(source.getFeatureById(drawingId));
+        drawingDiv.remove();
     });
 
     $(document).on('change', '#check-layer-icao', function () {
@@ -825,7 +855,6 @@ function emptyForm() {
         $(this).removeClass('is-invalid');
         $(this).removeClass('is-valid');
         if ($(this).attr('name') == 'heightType') {
-            console.log("height");
             $(this).checked = false;
         } else {
             $(this).val("");
@@ -854,7 +883,7 @@ function addPathDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Path ' + drawingIndex + '</h3>')
+            .prepend('<h3>Path ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
             //  .addClass('time_field')
             .insertBefore($('#map-container'))
             .find('input').prop('required', true);
@@ -871,7 +900,7 @@ function addPolygonDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Polygon ' + drawingIndex + '</h3>')
+            .prepend('<h3>Polygon ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
             //  .addClass('time_field')
             .insertBefore($('#map-container'))
             .find('input').prop('required', true);
@@ -888,7 +917,7 @@ function addCircleDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Circle ' + drawingIndex + '</h3>')
+            .prepend('<h3>Circle ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
             //  .addClass('time_field')
             .insertBefore($('#map-container'))
             .find('input').prop('required', true);
@@ -1031,8 +1060,11 @@ function validateCoordinate(field) {
                     position = roundCoordinates(pos);
                 }
             })
-            .fail(function (xhr, status, errorThrown) {
-                console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+            .fail(function (jqXHR) {
+
+                $('#submit_error').modal('show');
+                errorLog = JSON.stringify(jqXHR.responseJSON);
+
             });
 
     }
@@ -1331,8 +1363,8 @@ function initializeMap() {
         layers: [
             ga.layer.create('ch.swisstopo.pixelkarte-farbe'),
             ga.layer.create('ch.bazl.luftfahrtkarten-icao'),
-            ctr,
             tma,
+            ctr,
             vector
         ],
         crossOrigin: 'null',
@@ -1363,6 +1395,7 @@ function submitApplication() {
         function (index) {
             var input = $(this);
             data[input.attr('name')] = input.val();
+
         }
     );
 
@@ -1445,11 +1478,16 @@ function submitApplication() {
         .done(function (json) {
             console.log(json);
             $("#icon_loading").hide();
-            $('#submit_success').modal('show');
+            if (!checkIntersections())
+                $('#submit_success').modal('show');
+            showSurvey();
 
         })
-        .fail(function (xhr, status, errorThrown) {
-            console.error(("Fail!\nerror: " + errorThrown + "\nstatus: " + status));
+        .fail(function (jqXHR) {
+            $("#icon_loading").hide();
+            $('#submit_error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
+            showSurvey();
         });
 }
 

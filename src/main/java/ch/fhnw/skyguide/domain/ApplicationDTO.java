@@ -12,8 +12,6 @@ public class ApplicationDTO {
     private String departure;
     private String destination;
     private String dateFromUntil;
-    private String timeFrom;
-    private String timeUntil;
     private String duration;
     private String location;
     private String heightType;
@@ -101,22 +99,6 @@ public class ApplicationDTO {
 
     public void setDateFromUntil(String dateFromUntil) {
         this.dateFromUntil = dateFromUntil;
-    }
-
-    public String getTimeFrom() {
-        return timeFrom;
-    }
-
-    public void setTimeFrom(String timeFrom) {
-        this.timeFrom = timeFrom;
-    }
-
-    public String getTimeUntil() {
-        return timeUntil;
-    }
-
-    public void setTimeUntil(String timeUntil) {
-        this.timeUntil = timeUntil;
     }
 
     public String getDuration() {

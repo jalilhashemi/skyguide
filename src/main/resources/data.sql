@@ -5,7 +5,7 @@
 INSERT INTO activity_type (name) VALUES
 ('Airshow'),
 ('Calibration Flight'),
-('Captive'),
+('Captive Balloon'),
 ('Contest'),
 ('Firework'),
 ('Flight With Hang Glider'),

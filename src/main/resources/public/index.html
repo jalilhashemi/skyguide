@@ -30,9 +30,41 @@
             <div class="modal-body text-center">
                 <h4>Great!</h4>
                 <p>Thank you for applying a Special Flight.</p>
-                <a href="index.html">
-                    <button class="btn btn-primary btn-sky"><span>Another Entry</span></button>
-                </a>
+                    <button class="btn btn-primary btn-sky btn-another-entry"><span>Another Entry</span></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="submit_error" class="modal fade" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog  modal-confirm">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #f15e5e;">
+                <div class="icon-box">
+                    <i class="material-icons">&#xE5CD;</i>
+                </div>
+            </div>
+            <div class="modal-body text-center">
+                <h4>Error!</h4>
+                <p>Internal Server Error</p>
+                <div class="form-row">
+                    <div class="col-md-5">
+                        <button class="btn btn-primary btn-sky" id="btn-try-again"><span>Try again</span></button>
+                    </div>
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <a href="">
+                        <button class="btn btn-primary btn-red-sky" ><span>Cancel</span></button>
+                            </a>
+                    </div>
+                </div>
+                <br>
+                <div class="form-row">
+                    <div class="col-md-12">
+                        <a id="btn-report" href="#" id="btn-report">Report Problem</a>
+                    </div>
+                </div>
+                <small>If the error occurs again, please contact System Administrator.</small>
+
             </div>
         </div>
     </div>
@@ -49,10 +81,9 @@
                 <h4>Great!</h4>
                 <p>Your Specialflight is approved.</p>
                 <p>Your Special Flight is not in CTR and TMA.</p>
+
+                    <button class="btn btn-primary btn-sky btn-another-entry"><span>Another Entry</span></button>
                 <small>Hint: Don't forget your police permission</small>
-                <a href="index.html">
-                    <button class="btn btn-primary btn-sky"><span>Another Entry</span></button>
-                </a>
             </div>
         </div>
     </div>
@@ -212,7 +243,7 @@
 
                     </div>
                 </div>
-                <div class="form-group col-md-1 display-none btn_add" id="addScnt">
+                <div class="form-group col-md-1 display-none btn_add" id="btn-add-time">
                     <button tabindex="-1" type="button" class="btn btn-primary btn-sky" id="btn_add">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>
@@ -233,7 +264,7 @@
                         </div>
                     </div>
                     <div class="form-group col-md-1 remove_time_button">
-                        <button tabindex="-1" type="button" class="btn btn-primary btn-sky">
+                        <button tabindex="-1" type="button" class="btn btn-primary btn-red-sky">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                         </button>
                     </div>
@@ -298,6 +329,7 @@
 
             <div>
                 <div class="display-none drawing polygon" id="polygon_template">
+
                     <div class="form-row">
 
                         <div class="form-group col-md-5">
@@ -419,7 +451,7 @@
                         <a class="dropdown-item" id="add_circle_btn">Circle</a>
                     </div>
                 </div>
-                <div class="form-group col-md-6 data heightType">
+                <div class="form-group col-md-6 heightType">
                     <label class="  control-label display-none" id="altitude_label">Altitude type</label><br>
                     <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
