@@ -1,3 +1,31 @@
+/**
+ * The measure tooltip element.
+ * @type {Element}
+ */
+var measureTooltipElement;
+
+
+/**
+ * Overlay to show the measurement.
+ * @type {ol.Overlay}
+ */
+var measureTooltip;
+
+/**
+ * Creates a new measure tooltip
+ */
+function createMeasureTooltip() {
+    measureTooltipElement = document.createElement('div');
+    measureTooltipElement.className = 'tooltip tooltip-measure';
+    measureTooltip = new ol.Overlay({
+        element: measureTooltipElement,
+        offset: [0, -15],
+        positioning: 'bottom-center'
+    });
+    map.addOverlay(measureTooltip);
+}
+
+
 var informationJSON;
 var actualAircraftTypeList;
 var map;
@@ -7,26 +35,11 @@ var drawingIndex = 0;
 var Modify;
 var Draw;
 var errorLog = "";
-//var drawings = [];
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
-    source: source,
-    style: new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: 'rgba(255, 0, 0, 0.3)'
-        }),
-        stroke: new ol.style.Stroke({
-            color: '#FF0000',
-            width: 4
-        }),
-        image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({
-                color: '#FF0000'
-            })
-        })
-    })
+    source: source
 });
+
 var ctr = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'ctr.kml',
@@ -784,6 +797,7 @@ function initializeChangeHandlers() {
         Draw.setActive(true, type);
         Modify.setActive(false);
         setDrawButtonActive($(this), type);
+        //createMeasureTooltip();
     });
 
     $(document).on('click', '#btn_draw_path', function () {
@@ -807,9 +821,9 @@ function setDrawButtonActive(button, type) {
         $(this).css("background", "rgba(1, 89, 160, 0.5)");
     });
     button.css("background", "rgba(41, 128, 196, 0.95)");
-    if(type != "Modify") {
-    $('#map-instructions-title').text("Drawing " + type + "!");
-    $('#map-instructions-text').text("You can now start drawing by clicking into the map at the desired point.");
+    if (type != "Modify") {
+        $('#map-instructions-title').text("Drawing " + type + "!");
+        $('#map-instructions-text').text("You can now start drawing by clicking into the map at the desired point.");
     }
     else {
         $('#map-instructions-title').text("Modify!");
@@ -1142,28 +1156,51 @@ function validateCoordinate(field) {
 }
 
 function styleDrawing(feature, id) {
-    /*   feature.setStyle(new ol.style.Style({
-           fill: new ol.style.Fill({
-               color: 'rgba(255, 0, 0, 0.3)'
-           }),
-           stroke: new ol.style.Stroke({
-               color: '#FF0000',
-               width: 2
-           }),
-           image: new ol.style.Circle({
-               radius: 7,
-               fill: new ol.style.Fill({
-                   color: '#FF0000'
-               })
-           }),
-           text: new ol.style.Text({
-               font: '20px Calibri,sans-serif',
-               fill: new ol.style.Fill({color: '#000000'}),
-               stroke: new ol.style.Stroke({color: '#FFFFFF'}),
-               text: id
-           })
-       }));*/
+    feature.setStyle(new ol.style.Style({
+
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#FF0000',
+            width: 4
+        }),
+        image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({
+                color: '#FF0000'
+            })
+        }),
+        text: new ol.style.Text({
+            font: '20px Calibri,sans-serif',
+            fill: new ol.style.Fill({color: '#000000'}),
+            stroke: new ol.style.Stroke({color: '#FFFFFF'}),
+            text: id
+        })
+
+        /*
+          fill: new ol.style.Fill({
+              color: 'rgba(255, 0, 0, 0.3)'
+          }),
+          stroke: new ol.style.Stroke({
+              color: '#FF0000',
+              width: 2
+          }),
+          image: new ol.style.Circle({
+              radius: 7,
+              fill: new ol.style.Fill({
+                  color: '#FF0000'
+              })
+          }),
+          text: new ol.style.Text({
+              font: '20px Calibri,sans-serif',
+              fill: new ol.style.Fill({color: '#000000'}),
+              stroke: new ol.style.Stroke({color: '#FFFFFF'}),
+              text: id
+          })*/
+    }));
 }
+
 
 function initDrawTool() {
 
@@ -1304,13 +1341,33 @@ function initDrawTool() {
             }
         },
         setEvents: function () {
+            var listener;
             this.Path.on('drawstart', function (evt) {
                 $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point.")
+                createMeasureTooltip();
+                // set sketch
+                sketch = evt.feature;
+
+                /** @type {ol.Coordinate|undefined} */
+                var tooltipCoord = evt.coordinate;
+
+                listener = sketch.getGeometry().on('change', function (evt) {
+                    var geom = evt.target;
+                    var coords = sketch.getGeometry().getCoordinates();
+                    var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
+                    var length = parseInt(line.getLength()) / 1000;
+
+                    tooltipCoord = geom.getLastCoordinate();
+                    measureTooltipElement.innerHTML = length + " km";
+                    measureTooltip.setPosition(tooltipCoord);
+                });
+
             });
             this.Path.on('drawend', function (evt) {
                 var drawingId = addPathDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPathDiv(evt.feature, drawingId);
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
                 $('#altitude').removeClass("is-invalid");
                 $('#altitude').removeClass("is-valid");
                 $('#altitude').val("");
@@ -1320,25 +1377,67 @@ function initDrawTool() {
             });
             this.Polygon.on('drawstart', function (evt) {
                 $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point or click on the start point.")
+                createMeasureTooltip();
+                // set sketch
+                sketch = evt.feature;
+
+                /** @type {ol.Coordinate|undefined} */
+                var tooltipCoord = evt.coordinate;
+
+                listener = sketch.getGeometry().on('change', function (evt) {
+                    var geom = evt.target;
+                    var coords = sketch.getGeometry().getCoordinates()[0];
+                    var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
+                    var length = parseInt(line.getLength()) / 1000;
+
+                    tooltipCoord = geom.getLastCoordinate();
+                    measureTooltipElement.innerHTML = length + " km";
+                    measureTooltip.setPosition(tooltipCoord);
+                });
+
             });
             this.Polygon.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPolygonDiv(evt.feature, drawingId);
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
                 $('#altitude').removeClass("is-invalid");
                 $('#altitude').removeClass("is-valid");
                 $('#altitude').val("");
                 $('#altitudeModal').modal('show');
                 $('#map-instructions-title').text("Created Polygon!");
                 $('#map-instructions-text').text("You finally added a new Polygon to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+
             });
             this.Circle.on('drawstart', function (evt) {
-                $('#map-instructions-text').text("You can now set the Circle's radius .\nTo set it you can doubleclick at that position.")
+
+                $('#map-instructions-text').text("You can now set the Circle's radius .\nTo set it you can click at that position.");
+                createMeasureTooltip();
+                // set sketch
+                sketch = evt.feature;
+
+                /** @type {ol.Coordinate|undefined} */
+                var tooltipCoord = evt.coordinate;
+
+                listener = sketch.getGeometry().on('change', function (evt) {
+                    var geom = evt.target;
+                    var radius = parseInt(sketch.getGeometry().getRadius());
+                    if (radius > 500)
+                        measureTooltipElement.classList.add("radius-invalid");
+                    else
+                        measureTooltipElement.classList.remove("radius-invalid");
+
+                    tooltipCoord = geom.getLastCoordinate();
+                    measureTooltipElement.innerHTML = radius + " m";
+                    measureTooltip.setPosition(tooltipCoord);
+                });
+
             });
             this.Circle.on('drawend', function (evt) {
                 var drawingId = addCircleDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingCircleDiv(evt.feature, drawingId);
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
                 $('#altitude').removeClass("is-invalid");
                 $('#altitude').removeClass("is-valid");
                 $('#altitude').val("");
@@ -1347,13 +1446,28 @@ function initDrawTool() {
                 $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
             });
             this.Rectangle.on('drawstart', function (evt) {
-                $('#map-instructions-text').text("You can set your Rectangle by clicking at the desired end point.")
+                $('#map-instructions-text').text("You can set your Rectangle by clicking at the desired end point.");
+                createMeasureTooltip();
+                // set sketch
+                sketch = evt.feature;
+
+                /** @type {ol.Coordinate|undefined} */
+                var tooltipCoord = evt.coordinate;
+
+                listener = sketch.getGeometry().on('change', function (evt) {
+                    var geom = evt.target;
+                   var area = parseInt(geom.getArea()) /1000000;
+                    tooltipCoord = geom.getLastCoordinate();
+                    measureTooltipElement.innerHTML = area + " km&sup2;";
+                    measureTooltip.setPosition(tooltipCoord);
+                });
             });
             this.Rectangle.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
-
                 fillDrawingPolygonDiv(evt.feature, drawingId);
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+
                 $('#altitude').removeClass("is-invalid");
                 $('#altitude').removeClass("is-valid");
                 $('#altitude').val("");
