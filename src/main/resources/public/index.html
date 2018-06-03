@@ -69,6 +69,33 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="altitudeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">What is the Altitude of this Flight/Drawing?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>It is meassured in what you selected in Altitude Type.</p>
+                    <div class="form-group">
+
+                        <input type="number" min="0" max="99999"
+                               class="form-control input-field-sky"
+                               id="altitude" required>
+                        <div class="invalid-feedback">The altitude is required and has to be lower than 10'000.
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">I'll do it later!</button>
+                <button type="button" id="btn-send-altitude" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="not-needed_success" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-confirm">
         <div class="modal-content">
@@ -105,7 +132,7 @@
                 <a href="https://www.swisstopo.admin.ch/en/knowledge-facts/surveying-geodesy/reference-frames/local/lv03.html"
                    + target="_blank">CH1903 / LV03</a>: "600000 200000", "600000, 200000"<br>
                 <a href="https://epsg.io/4326" target="_blank">WGS 84 (lat/lon)</a>: "46.5 6.0" ,"46.5,6.0"
-                ,"47°09′43.999″ N 7°40′33.646″E"<br>
+                ,"47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;"<br>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -118,7 +145,7 @@
     <fieldset>
         <h1>Request for coordination of special aerial activities</h1>
         <p>* fields are required</p>
-        <div class="invalid-feedback" id="form-feedback">You have some validation errors.
+        <div class="invalid-feedback" id="form-feedback">You have incorrect data (see red inputs).
         </div>
         <h2>1. Applicant information</h2>
         <div class="form-row">
@@ -283,14 +310,14 @@
                 </div>
             </div>
             <div>
-                <div class="display-none drawing path" id="path_template">
+                <div class="display-none path" id="path_template">
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_altitude_path">Altitude*</label>
                             <input type="number" min="0" max="99999"
                                    class="form-control input-field-sky altitude"
                                    id="field_altitude_path">
-                            <div class="invalid-feedback">Please provide a positive number smaller than 10'0000
+                            <div class="invalid-feedback">The altitude is required and has to be lower than 10'000.
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -301,7 +328,7 @@
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
                             <input type="text" class="form-control input-field-sky gps" id="gps_path"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                                 Please provide a valid Coordinate in the pattern of (latitude, longitude)
                             </div>
@@ -313,13 +340,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control input-field-sky gps"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                             </div>
                         </div>
                         <div class="form-group col-md-1 add_coordinate_path_polygon ">
                             <button tabindex="-1" type="button" class="btn btn-primary btn-sky "
-                                    id="add_gps_path" placeholder="47°09′43.999″ N 7°40′33.646″E" data-gps-index="3">
+                                    id="add_gps_path" placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;" data-gps-index="3">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                             </button>
                         </div>
@@ -328,7 +355,7 @@
             </div>
 
             <div>
-                <div class="display-none drawing polygon" id="polygon_template">
+                <div class="display-none polygon" id="polygon_template">
 
                     <div class="form-row">
 
@@ -337,7 +364,7 @@
                             <input type="number" min="0" max="99999"
                                    class="form-control input-field-sky altitude"
                                    id="field_altitude_polygon">
-                            <div class="invalid-feedback">Must be a positive number
+                            <div class="invalid-feedback">The altitude is required and has to be lower than 10'000.
                             </div>
                         </div>
                         <div class="form-group col-md-6">
@@ -348,7 +375,7 @@
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
                             <input type="text" class="form-control input-field-sky gps" id="gps_polygon"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                             </div>
                         </div>
@@ -359,7 +386,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control input-field-sky gps"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                             </div>
                         </div>
@@ -370,7 +397,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <input type="text" class="form-control input-field-sky gps"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                             </div>
                         </div>
@@ -384,7 +411,7 @@
             </div>
 
             <div>
-                <div class="display-none drawing circle" id="circle_template">
+                <div class="display-none circle" id="circle_template">
                     <div class="form-row">
                         <div class="form-group col-md-5">
                             <label for="field_altitude_circle">Altitude*</label>
@@ -392,7 +419,7 @@
                                    class="form-control input-field-sky altitude"
                                    id="field_altitude_circle"
                             >
-                            <div class="invalid-feedback">Must be a positive number
+                            <div class="invalid-feedback">The altitude is required and has to be lower than 10'000.
                             </div>
                         </div>
                         <div class="form-group col-md-7">
@@ -403,7 +430,7 @@
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
                             <input type="text" class="form-control input-field-sky gps" id="gps_circle"
-                                   placeholder="47°09′43.999″ N 7°40′33.646″E">
+                                   placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                             <div class="invalid-feedback">
                             </div>
                         </div>
@@ -422,21 +449,29 @@
                 </div>
             </div>
             <div>
-                <div class="form-row display-none drawing" id="coordinate_path_polygon_template">
+                <div class="form-row display-none" id="coordinate_path_polygon_template">
                     <div class="form-group col-md-5">
                     </div>
                     <div class="form-group col-md-6">
                         <input type="text" class="form-control input-field-sky gps"
-                               placeholder="47°09′43.999″ N 7°40′33.646″E">
+                               placeholder="47&deg;09&apos;43.999&quot; 7&deg;40&apos;33.646&quot;">
                         <div class="invalid-feedback">
                         </div>
                     </div>
                     <div class="form-group col-md-1 remove_coordinate_path_polygon_button">
-                        <button tabindex="-1" type="button" class="btn btn-primary btn-sky">
+                        <button tabindex="-1" type="button" class="btn btn-primary btn-red-sky">
                             <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
                         </button>
                     </div>
                 </div>
+            </div>
+            <div id="draw-instructions" class="alert alert-info display-none" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="alert-heading">Geo Data!</h4>
+                <p>You can either add areas by adding it manually with the "Add area" button or you can draw directly in the map by clicking into the map drawing tool <i class="fa fa-pencil" aria-hidden="true"></i>. Pleas also don't forget to choose an Altitude Type.</p>
+
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6 dropdown display-none" id="add_area_dropdown">
@@ -455,7 +490,7 @@
                     <label class="  control-label display-none" id="altitude_label">Altitude type</label><br>
                     <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
-                            <input class="custom-control-input" type="radio" name="heightType" id="radio_height_fl"
+                            <input class="custom-control-input data" type="radio" name="heightType" id="radio_height_fl"
                                    value="FL">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">FL</span>
@@ -463,7 +498,7 @@
                     </div>
                     <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
-                            <input class="custom-control-input" type="radio" name="heightType"
+                            <input class="custom-control-input data" type="radio" name="heightType"
                                    id="radio_height_ft_amsl"
                                    value="ft AMSL">
                             <span class="custom-control-indicator"></span>
@@ -472,7 +507,7 @@
                     </div>
                     <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
-                            <input class="custom-control-input" type="radio" name="heightType"
+                            <input class="custom-control-input data" type="radio" name="heightType"
                                    id="radio_height_ft_gnd"
                                    value="ft GND">
                             <span class="custom-control-indicator"></span>
@@ -482,7 +517,7 @@
                     <div class=" d-inline-block display-none">
                         <label class="custom-control custom-radio display-none">
 
-                            <input class="custom-control-input" type="radio" name="heightType"
+                            <input class="custom-control-input data" type="radio" name="heightType"
                                    id="radio_height_m_gnd"
                                    value="m GND">
 
@@ -493,6 +528,15 @@
                 </div>
             </div>
             <div id="map-container" class="display-none">
+                <div id="map-instructions" class="alert alert-info" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="map-instructions-title" class="alert-heading">Drawing Hints!</h4>
+                    <p id="map-instructions-text"></p>
+
+                </div>
+
                 <div id="map" class="map panel panel-default">
                     <div class="collapse" id="draw-tool">
                         <div class="card card-body">
@@ -584,7 +628,7 @@
                 <input type="number" min="0" max="99999" class="form-control input-field-sky data activity-data"
                        id="field_amount"
                        name="amount">
-                <div class="invalid-feedback">Must be a positive number
+                <div class="invalid-feedback">The amount is required and has to be lower than 99999.
                 </div>
             </div>
             <div class="form-group  display-none">

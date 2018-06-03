@@ -175,10 +175,13 @@ h1 {
 .draw-button {
     width: 100px;
     margin: 5px;
-    background: #0159a080;
+    background: rgba(1, 89, 160, 0.5);
     color: white;
 }
 
+.draw-button:hover {
+    background: rgba(41, 128, 196, 0.82);
+}
 .ol-zoom .ol-zoom-in {
     background-color: #0159a0 !important;
     width: 2em;

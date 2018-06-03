@@ -281,6 +281,7 @@ function hideAllFields() {
     $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
     $('#map-container').addClass('display-none');
     $('#add_area_dropdown').addClass('display-none');
+    $('#draw-instructions').addClass('display-none');
     $('#altitude_label').addClass('display-none');
     $('.drawing').addClass('display-none');
     $('#btn-add-time').addClass('display-none');
@@ -338,9 +339,6 @@ function formValidate(isValid) {
 
 function validateForm() {
 
-    // TODO:  changed activity / aircraft type makes fields invalid, validate time when more than one
-
-
     $('.data').each(function (index, item) {
         var isValid;
         if ($(this).hasClass('heightType')) {
@@ -360,6 +358,7 @@ function validateForm() {
             }
 
             console.log($(this).attr('id') + ": " + isValid);
+            console.log($(this));
         }
     });
 
@@ -441,23 +440,23 @@ function validateDrawings() {
 
     if (source.getFeatures().length) {
 
-        for (var i = 1; $('#drawing' + i).length != 0; i++) {
-            $('#drawing' + i).find('.gps').each(function (index, item) {
+        $('.drawing').each(function () {
+            $(this).find('.gps').each(function (index, item) {
                 formValidate(validateCoordinate($(this)) != null)
 
             });
-            isValid = $('#drawing' + i).find('.altitude')[0].checkValidity();
+            isValid = $(this).find('.altitude')[0].checkValidity();
             validateField($('.altitude'), isValid);
             formValidate(isValid);
 
 
-            if ($('#drawing' + i).find('.radius').length) {
-                isValid = $('#drawing' + i).find('.radius')[0].checkValidity();
+            if ($(this).find('.radius').length) {
+                isValid = $(this).find('.radius')[0].checkValidity();
                 validateField($('.radius'), isValid);
                 formValidate(isValid);
 
             }
-        }
+        });
         formValidate(true);
         validateMap(true);
     }
@@ -502,14 +501,13 @@ function initializeChangeHandlers() {
         }
         else {
             $('html,body').scrollTop(0);
-            $('#form-feedback').show()
+            $('#form-feedback').show();
         }
 
     });
 
     $(document).on('click', '#btn-try-again', function () {
         $('#submit_error').modal('hide');
-        submitApplication();
     });
 
     $(document).on('click', '.btn-another-entry', function () {
@@ -525,6 +523,17 @@ function initializeChangeHandlers() {
         $('#textfield_remark').removeClass('is-invalid');
         $('#textfield_remark').removeClass('is-valid');
         hideAllFields()
+    });
+
+    $(document).on('click', '#btn-send-altitude', function () {
+        if ($('#altitude')[0].checkValidity()) {
+            console.log($('#altitude').val());
+            $('#drawing' + drawingIndex).find('.altitude').val($('#altitude').val());
+            $('#altitudeModal').modal('hide');
+        }
+        else {
+            validateField($('#altitude'), false);
+        }
     });
 
     $(document).on('click', '#btn-report', function () {
@@ -605,6 +614,8 @@ function initializeChangeHandlers() {
                     // things showed anytime
                     $('#map-container').removeClass('display-none');
                     $('#add_area_dropdown').removeClass('display-none');
+                    $('#draw-instructions').removeClass('display-none');
+
                     $('#altitude_label').removeClass('display-none');
                     map.updateSize();
                     // add time button
@@ -626,6 +637,7 @@ function initializeChangeHandlers() {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
                 $('#map-container').removeClass('display-none');
                 $('#add_area_dropdown').removeClass('display-none');
+                $('#draw-instructions').removeClass('display-none');
                 $('#altitude_label').removeClass('display-none');
                 map.updateSize();
                 $('#btn-add-time').removeClass('display-none');
@@ -671,7 +683,8 @@ function initializeChangeHandlers() {
         event.stopPropagation();
         var drawingDiv = $(this).parent();
         var drawingId = drawingDiv.attr("id");
-        source.removeFeature(source.getFeatureById(drawingId));
+        if (source.getFeatureById(drawingId))
+            source.removeFeature(source.getFeatureById(drawingId));
         drawingDiv.remove();
     });
 
@@ -740,35 +753,68 @@ function initializeChangeHandlers() {
         }
     });
 
+    $(document).on('click', '#draw-tool-btn', function () {
+        $('#map-instructions').show();
+        $('#map-instructions-text').text("Please choose your desired drawing type respectively modify.")
+    });
+
     $(document).on('click', '#btn_draw_rectangle', function () {
-        Draw.setActive(true, 'Rectangle');
+        var type = 'Rectangle';
+        Draw.setActive(true, type);
         Modify.setActive(false);
+        setDrawButtonActive($(this), type);
     });
 
     $(document).on('click', '#btn_draw_point', function () {
-        Draw.setActive(true, 'Point');
+        var type = 'Point';
+        Draw.setActive(true, type);
         Modify.setActive(false);
+        setDrawButtonActive($(this), type);
     });
 
     $(document).on('click', '#btn_draw_polygon', function () {
-        Draw.setActive(true, 'Polygon');
+        var type = 'Polygon';
+        Draw.setActive(true, type);
         Modify.setActive(false);
+        setDrawButtonActive($(this), type);
     });
 
     $(document).on('click', '#btn_draw_circle', function () {
-        Draw.setActive(true, 'Circle');
+        var type = 'Circle';
+        Draw.setActive(true, type);
         Modify.setActive(false);
+        setDrawButtonActive($(this), type);
     });
 
     $(document).on('click', '#btn_draw_path', function () {
-        Draw.setActive(true, 'Path');
+        var type = 'Path';
+        Draw.setActive(true, type);
         Modify.setActive(false);
+        setDrawButtonActive($(this), type);
     });
 
     $(document).on('click', '#btn_draw_modify', function () {
+        var type = 'Modify';
         Draw.setActive(false);
         Modify.setActive(true);
+        setDrawButtonActive($(this), type);
     });
+}
+
+
+function setDrawButtonActive(button, type) {
+    $('#draw-tool').find('button').each(function () {
+        $(this).css("background", "rgba(1, 89, 160, 0.5)");
+    });
+    button.css("background", "rgba(41, 128, 196, 0.95)");
+    if(type != "Modify") {
+    $('#map-instructions-title').text("Drawing " + type + "!");
+    $('#map-instructions-text').text("You can now start drawing by clicking into the map at the desired point.");
+    }
+    else {
+        $('#map-instructions-title').text("Modify!");
+        $('#map-instructions-text').text("Select a drawing you want to modify by clicking on it.");
+    }
 }
 
 
@@ -846,6 +892,7 @@ function updateDrawings(drawingId, drawingDiv) {
 
     }
 
+    validateDrawings();
     Modify.setActive(false);
 
 }
@@ -880,13 +927,17 @@ function addPathDrawingDiv() {
         clone = template
             .clone()
             .removeClass('display-none')
+            .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
-            .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Path ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
-            //  .addClass('time_field')
-            .insertBefore($('#map-container'))
-            .find('input').prop('required', true);
+            // .attr('data-drawing-index', drawingIndex)
+            .prepend('<h3>Path ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+
+    clone.find('.altitude').addClass('data');
+    clone.find('input').prop('required', true);
+
+    clone.insertBefore($('#map-container'));
+
 
     return drawingIndex;
 }
@@ -897,13 +948,16 @@ function addPolygonDrawingDiv() {
         clone = template
             .clone()
             .removeClass('display-none')
+            .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
-            .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Polygon ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
-            //  .addClass('time_field')
-            .insertBefore($('#map-container'))
-            .find('input').prop('required', true);
+            // .attr('data-drawing-index', drawingIndex)
+            .prepend('<h3>Polygon ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+    clone.find('.altitude').addClass('data');
+    clone.find('input').prop('required', true);
+
+    clone.insertBefore($('#map-container'));
+
     return drawingIndex;
 }
 
@@ -914,13 +968,16 @@ function addCircleDrawingDiv() {
         clone = template
             .clone()
             .removeClass('display-none')
+            .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
-            .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Circle ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>')
-            //  .addClass('time_field')
-            .insertBefore($('#map-container'))
-            .find('input').prop('required', true);
+            //  .attr('data-drawing-index', drawingIndex)
+            .prepend('<h3>Circle ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+    clone.find('.altitude').addClass('data');
+    clone.find('input').prop('required', true);
+
+    clone.insertBefore($('#map-container'));
+
     return drawingIndex;
 }
 
@@ -1129,7 +1186,11 @@ function initDrawTool() {
                 selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
             });
 
+            selectedFeatures.on('remove', function (e) {
+                $('#map-instructions-text').text("Select a drawing you want to modify by clicking on it.");
+            });
             selectedFeatures.on('add', function (e) {
+                $('#map-instructions-text').text("Now you can drag a point. You can add a Point by dragging on a line. Remove a point by only click on it.");
 
                 e.element.on('change', function (e) {
 
@@ -1243,35 +1304,62 @@ function initDrawTool() {
             }
         },
         setEvents: function () {
-            /*this.Point.on('drawend', function (evt) {
-                var feature = evt.feature;
-                var geometry = feature.getGeometry().getCoordinates();
-                var gps = ol.proj.transform(geometry, 'EPSG:21781', 'EPSG:4326');
-                drawings.push({"drawingType": "Point", "coordinates": [{"lat": gps[0], "lon": gps[1]}]});
-                console.log(drawings);
-                $('#field_gps_coord').val(gps);
-            });*/
+            this.Path.on('drawstart', function (evt) {
+                $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point.")
+            });
             this.Path.on('drawend', function (evt) {
                 var drawingId = addPathDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPathDiv(evt.feature, drawingId);
-
+                $('#altitude').removeClass("is-invalid");
+                $('#altitude').removeClass("is-valid");
+                $('#altitude').val("");
+                $('#altitudeModal').modal('show');
+                $('#map-instructions-title').text("Created Path!");
+                $('#map-instructions-text').text("You finally added a new Path to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+            });
+            this.Polygon.on('drawstart', function (evt) {
+                $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point or click on the start point.")
             });
             this.Polygon.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPolygonDiv(evt.feature, drawingId);
+                $('#altitude').removeClass("is-invalid");
+                $('#altitude').removeClass("is-valid");
+                $('#altitude').val("");
+                $('#altitudeModal').modal('show');
+                $('#map-instructions-title').text("Created Polygon!");
+                $('#map-instructions-text').text("You finally added a new Polygon to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+            });
+            this.Circle.on('drawstart', function (evt) {
+                $('#map-instructions-text').text("You can now set the Circle's radius .\nTo set it you can doubleclick at that position.")
             });
             this.Circle.on('drawend', function (evt) {
                 var drawingId = addCircleDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingCircleDiv(evt.feature, drawingId);
+                $('#altitude').removeClass("is-invalid");
+                $('#altitude').removeClass("is-valid");
+                $('#altitude').val("");
+                $('#altitudeModal').modal('show');
+                $('#map-instructions-title').text("Created Circle!");
+                $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+            });
+            this.Rectangle.on('drawstart', function (evt) {
+                $('#map-instructions-text').text("You can set your Rectangle by clicking at the desired end point.")
             });
             this.Rectangle.on('drawend', function (evt) {
                 var drawingId = addPolygonDrawingDiv();
                 styleDrawing(evt.feature, drawingId);
 
                 fillDrawingPolygonDiv(evt.feature, drawingId);
+                $('#altitude').removeClass("is-invalid");
+                $('#altitude').removeClass("is-valid");
+                $('#altitude').val("");
+                $('#altitudeModal').modal('show');
+                $('#map-instructions-title').text("Created Rectangle!");
+                $('#map-instructions-text').text("You finally added a new Rectangle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
             });
         }
     };
@@ -1290,7 +1378,6 @@ function fillDrawingPolygonDiv(feature, drawingId) {
     var coordinates = feature.getGeometry().getCoordinates()[0];
     var drawingDiv = $('#drawing' + drawingId);
 
-    // TODO: points
     coordinates.splice(coordinates.length - 1, 1);
     while (drawingDiv.find('.gps').length < coordinates.length)
         addCoordinateField(drawingDiv);
@@ -1336,6 +1423,7 @@ function fillDrawingCircleDiv(feature, drawingId) {
     drawingDiv.find('.radius').val(radius);
     validateRadius(drawingDiv.find('.radius'));
     validateCoordinate(drawingDiv.find('.gps'));
+
 }
 
 function setLayerVisible(layerIndex, isVisible) {
@@ -1348,6 +1436,7 @@ function setLayerVisible(layerIndex, isVisible) {
 
 function initializeMap() {
 
+    $('#map-instructions').hide();
     // default center position
     var lat = 46.78;
     var lon = 9.3;
@@ -1388,14 +1477,16 @@ function setView(loc) {
 
 function submitApplication() {
     $("#icon_loading").show();
+    $('#form-feedback').hide();
 
     var data = {};
 
     $('.data').each(
         function (index) {
-            var input = $(this);
-            data[input.attr('name')] = input.val();
-
+            if (!$(this).hasClass('time') && !$(this).hasClass('altitude')) {
+                var input = $(this);
+                data[input.attr('name')] = input.val();
+            }
         }
     );
 
@@ -1426,35 +1517,38 @@ function submitApplication() {
     var drawings = [];
 
     var i = 1;
-    while ($('#drawing' + i).val() != undefined) {
+    $('.drawing').each(function () {
+
         var drawing = {};
 
-        drawing['altitude'] = $('#drawing' + i + ' .altitude').val();
+        drawing['altitude'] = $(this).find('.altitude').val();
 
-        if ($('#drawing' + i).hasClass('path')) {
+        if ($(this).hasClass('path')) {
             drawing['drawingType'] = 'Path';
 
 
-        } else if ($('#drawing' + i).hasClass('circle')) {
+        } else if ($(this).hasClass('circle')) {
             drawing['drawingType'] = 'Circle';
-            drawing['radius'] = $('#drawing' + i + ' .radius').val();
+            drawing['radius'] = $(this).find('.radius').val();
         }
-        else if ($('#drawing' + i).hasClass('polygon')) {
+        else if ($(this).hasClass('polygon')) {
             drawing['drawingType'] = 'Polygon';
 
         }
         drawing['coordinates'] = [];
 
-        $('#drawing' + i + ' .gps').each(function (index) {
+        $(this).find('.gps').each(function (index) {
 
+            var coord = $(this).val().split(', ');
             drawing['coordinates'][index] = {
-                'lat': $(this).val(),
-                'lon': $(this).val()
+                'lat': coord[0],
+                'lon': coord[1]
             };
         });
         drawings.push(drawing);
         i++;
-    }
+
+    });
 
     data['drawings'] = drawings;
 
@@ -1486,7 +1580,7 @@ function submitApplication() {
         .fail(function (jqXHR) {
             $("#icon_loading").hide();
             $('#submit_error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
+            errorLog = JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data);
             showSurvey();
         });
 }
