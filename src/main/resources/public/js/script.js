@@ -37,7 +37,24 @@ var Draw;
 var errorLog = "";
 var source = new ol.source.Vector();
 var vector = new ol.layer.Vector({
-    source: source
+    source: source/*,
+    style: new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 0, 0, 0.3)'
+        }),
+        stroke: new ol.style.Stroke({
+            color: '#FF0000',
+            width: 4
+        }),
+        text: new ol.style.Text({
+            font: '20px Calibri,sans-serif',
+            fill: new ol.style.Fill({color: '#000000'}),
+            stroke: new ol.style.Stroke({
+                color: '#FFFFFF',
+                width: 4
+            })
+        })
+    })*/
 });
 
 var ctr = new ol.layer.Vector({
@@ -296,7 +313,6 @@ function hideAllFields() {
     $('#add_area_dropdown').addClass('display-none');
     $('#draw-instructions').addClass('display-none');
     $('#altitude_label').addClass('display-none');
-    $('.drawing').addClass('display-none');
     $('#btn-add-time').addClass('display-none');
     $('.time_field').addClass('display-none');
 
@@ -521,6 +537,7 @@ function initializeChangeHandlers() {
 
     $(document).on('click', '#btn-try-again', function () {
         $('#submit_error').modal('hide');
+        submitApplication();
     });
 
     $(document).on('click', '.btn-another-entry', function () {
@@ -535,7 +552,10 @@ function initializeChangeHandlers() {
         $('#type_of_activity').removeClass('is-valid');
         $('#textfield_remark').removeClass('is-invalid');
         $('#textfield_remark').removeClass('is-valid');
-        hideAllFields()
+        $('#type_of_aircraft').removeClass('is-invalid');
+        $('#type_of_aircraft').removeClass('is-valid');
+        hideAllFields();
+        emptyForm();
     });
 
     $(document).on('click', '#btn-send-altitude', function () {
@@ -919,14 +939,27 @@ function emptyForm() {
             $(this).checked = false;
         } else {
             $(this).val("");
-
         }
 
-
     });
+    // remove times
+    $('.time_field').remove();
 
     // remove drawings
     source.clear();
+    $('.drawing').each(function () {
+        $(this).remove();
+    })
+    drawingIndex = 0;
+
+    // set Map projection
+    var lat = 46.81;
+    var lon = 8.31;
+
+    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+
+    map.getView().setCenter(loc);
+    map.getView().setResolution(400);
 }
 
 function validateRadius(field) {
@@ -1156,6 +1189,19 @@ function validateCoordinate(field) {
 }
 
 function styleDrawing(feature, id) {
+    /* feature.setStyle({
+         text: new ol.style.Text({
+             font: '20px Calibri,sans-serif',
+             fill: new ol.style.Fill({color: '#000000'}),
+             stroke: new ol.style.Stroke({
+                 color: '#FFFFFF',
+                 width: 4
+             }),
+             text: id
+         })
+     });
+ };*/
+
     feature.setStyle(new ol.style.Style({
 
         fill: new ol.style.Fill({
@@ -1165,39 +1211,13 @@ function styleDrawing(feature, id) {
             color: '#FF0000',
             width: 4
         }),
-        image: new ol.style.Circle({
-            radius: 7,
-            fill: new ol.style.Fill({
-                color: '#FF0000'
-            })
-        }),
         text: new ol.style.Text({
             font: '20px Calibri,sans-serif',
             fill: new ol.style.Fill({color: '#000000'}),
-            stroke: new ol.style.Stroke({color: '#FFFFFF'}),
+            stroke: new ol.style.Stroke({color: '#FFFFFF',
+            width: 4}),
             text: id
         })
-
-        /*
-          fill: new ol.style.Fill({
-              color: 'rgba(255, 0, 0, 0.3)'
-          }),
-          stroke: new ol.style.Stroke({
-              color: '#FF0000',
-              width: 2
-          }),
-          image: new ol.style.Circle({
-              radius: 7,
-              fill: new ol.style.Fill({
-                  color: '#FF0000'
-              })
-          }),
-          text: new ol.style.Text({
-              font: '20px Calibri,sans-serif',
-              fill: new ol.style.Fill({color: '#000000'}),
-              stroke: new ol.style.Stroke({color: '#FFFFFF'}),
-              text: id
-          })*/
     }));
 }
 
@@ -1443,7 +1463,7 @@ function initDrawTool() {
                 $('#altitude').val("");
                 $('#altitudeModal').modal('show');
                 $('#map-instructions-title').text("Created Circle!");
-                $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+                $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it in the fields above.");
             });
             this.Rectangle.on('drawstart', function (evt) {
                 $('#map-instructions-text').text("You can set your Rectangle by clicking at the desired end point.");
@@ -1456,7 +1476,7 @@ function initDrawTool() {
 
                 listener = sketch.getGeometry().on('change', function (evt) {
                     var geom = evt.target;
-                   var area = parseInt(geom.getArea()) /1000000;
+                    var area = parseInt(geom.getArea() / 1000) / 1000;
                     tooltipCoord = geom.getLastCoordinate();
                     measureTooltipElement.innerHTML = area + " km&sup2;";
                     measureTooltip.setPosition(tooltipCoord);
@@ -1552,8 +1572,8 @@ function initializeMap() {
 
     $('#map-instructions').hide();
     // default center position
-    var lat = 46.78;
-    var lon = 9.3;
+    var lat = 46.81;
+    var lon = 8.31;
 
     var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
 
@@ -1578,7 +1598,7 @@ function initializeMap() {
     });
 
     map.getView().setCenter(loc);
-    map.getView().setResolution(500);
+    map.getView().setResolution(400);
 
     setLayerVisible(1, false);
 
