@@ -234,3 +234,17 @@ h1 {
     margin-left: -7px;
     left: 50%;
 }
+
+.survey-link {
+    color: white;
+}
+
+.survey-link:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.survey-link:active {
+    text-decoration: none;
+    color: white;
+}
