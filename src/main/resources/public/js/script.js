@@ -1189,18 +1189,6 @@ function validateCoordinate(field) {
 }
 
 function styleDrawing(feature, id) {
-    /* feature.setStyle({
-         text: new ol.style.Text({
-             font: '20px Calibri,sans-serif',
-             fill: new ol.style.Fill({color: '#000000'}),
-             stroke: new ol.style.Stroke({
-                 color: '#FFFFFF',
-                 width: 4
-             }),
-             text: id
-         })
-     });
- };*/
 
     feature.setStyle(new ol.style.Style({
 
@@ -1214,25 +1202,53 @@ function styleDrawing(feature, id) {
         text: new ol.style.Text({
             font: '20px Calibri,sans-serif',
             fill: new ol.style.Fill({color: '#000000'}),
-            stroke: new ol.style.Stroke({color: '#FFFFFF',
-            width: 4}),
+            stroke: new ol.style.Stroke({
+                color: '#FFFFFF',
+                width: 4
+            }),
             text: id
         })
     }));
 }
 
+function styleModify(feature) {
+    var id = feature.getId().split('drawing')[1];
+    feature.setStyle(new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: '#3E99F7',
+            width: 3
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 255, 255, 0.3)'
+        }),
+        text: new ol.style.Text({
+            font: '20px Calibri,sans-serif',
+            fill: new ol.style.Fill({color: '#000000'}),
+            stroke: new ol.style.Stroke({
+                color: '#FFFFFF',
+                width: 4
+            }),
+            text: id
+        })
+    }));
+}
 
 function initDrawTool() {
 
     Modify = {
         init: function () {
-            this.select = new ol.interaction.Select();
+            this.select = new ol.interaction.Select({
+                layers: function (layer) {
+                    return layer == vector;
+                }
+            });
             map.addInteraction(this.select);
 
             this.modify = new ol.interaction.Modify({
                 features: this.select.getFeatures()
             });
             map.addInteraction(this.modify);
+
 
             this.setEvents();
         },
@@ -1244,59 +1260,85 @@ function initDrawTool() {
             });
 
             selectedFeatures.on('remove', function (e) {
+                styleDrawing(e.element, e.element.getId().split('drawing')[1]);
                 $('#map-instructions-text').text("Select a drawing you want to modify by clicking on it.");
             });
+
+            /*   this.select.on('select', function (evt) {
+                   var selected = evt.selected;
+                   var deselected = evt.deselected;
+
+                   if (selected.length) {
+                       selected.forEach(function (feature) {
+                           console.info(feature);
+                           feature.setStyle(style_modify);
+                       });
+                   }
+                   else {
+                       deselected.forEach(function (feature) {
+                           console.info(feature);
+                           styleDrawing(feature, feature.getId().split('drawing')[1]);
+                       });
+                   }
+
+               })*/
             selectedFeatures.on('add', function (e) {
+                styleModify(e.element);
+
                 $('#map-instructions-text').text("Now you can drag a point. You can add a Point by dragging on a line. Remove a point by only click on it.");
 
                 e.element.on('change', function (e) {
 
                     var drawingId = $(this)[0].getId();
                     var drawingDiv = $('#' + drawingId);
-                    var geometry = $(this)[0].getGeometry().getCoordinates();
-                    var gps = [];
+
+                    if (!drawingDiv.hasClass('circle')) {
+                        var geometry = $(this)[0].getGeometry().getCoordinates();
+                        var gps = [];
 
 
-                    if (drawingDiv.hasClass('polygon')) {
-                        geometry[0].forEach(function (item, index) {
-                            gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+                        if (drawingDiv.hasClass('polygon')) {
+                            geometry[0].forEach(function (item, index) {
+                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+                            });
+
+                            // remove last duplicate of first coordinate
+                            gps.splice(gps.length - 1, 1);
+                        }
+
+                        else if (drawingDiv.hasClass('path')) {
+                            geometry.forEach(function (item, index) {
+                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+                            });
+
+                        } else if (drawingDiv.hasClass('circle') && coordinates.length > 0) {
+                            geometry.forEach(function (item, index) {
+                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+                            });
+                        }
+
+                        while (gps.length > drawingDiv.find('.gps').length)
+                            addCoordinateField(drawingDiv);
+
+                        $(drawingDiv).find('.gps').each(function (index) {
+                            if (gps[index] != undefined)
+                                $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
+                            else if (validateCoordinate($(this)))
+                                removeCoordinateField($(this).parent().parent());
                         });
-
-                        // remove last duplicate of first coordinate
-                        gps.splice(gps.length - 1, 1);
                     }
-
-                    else if (drawingDiv.hasClass('path')) {
-                        geometry.forEach(function (item, index) {
-                            gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
-                        });
-
-                    } else if (drawingDiv.hasClass('circle') && coordinates.length > 0) {
-                        geometry.forEach(function (item, index) {
-                            gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
-                        });
-                    }
-
-                    while (gps.length > drawingDiv.find('.gps').length)
-                        addCoordinateField(drawingDiv);
-
-                    $(drawingDiv).find('.gps').each(function (index) {
-                        if (gps[index] != undefined)
-                            $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
-                        else if (validateCoordinate($(this)))
-                            removeCoordinateField($(this).parent().parent());
-                    });
                 });
+
             });
         },
         setActive: function (active) {
             this.select.setActive(active);
             this.modify.setActive(active);
         }
-    }
-    ;
+    };
 
     Modify.init();
+
 
     Draw = {
         init: function () {
@@ -1498,6 +1540,7 @@ function initDrawTool() {
         }
     };
     Draw.init();
+
 
     Modify.setActive(false);
 
@@ -1708,14 +1751,12 @@ function submitApplication() {
             $("#icon_loading").hide();
             if (!checkIntersections())
                 $('#submit_success').modal('show');
-            showSurvey();
 
         })
         .fail(function (jqXHR) {
             $("#icon_loading").hide();
             $('#submit_error').modal('show');
             errorLog = JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data);
-            showSurvey();
         });
 }
 
