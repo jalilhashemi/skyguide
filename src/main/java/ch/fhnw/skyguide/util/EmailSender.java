@@ -107,6 +107,9 @@ public class EmailSender {
         }
         if (val == null) {
             return "";
+        }
+        if(val == "none") {
+            return "";
         } else {
             //return attrName + val + "\n";
             return "<tr>\n" +
