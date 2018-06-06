@@ -70,7 +70,7 @@ public class EmailSender {
                     printAttr("Remark", application.getRemark()) +
                     //  printAttr("Height", application.getHeightAltitude() + " " + application.getHeightType().getName()) +
                     printAttr("Coordinates & Drawings", drawings) +
-                    printAttr("Time schedule", times) +
+                    printAttr("Time schedule (LT)", times) +
                     printAttr("Are the altitudes flexible or not?", application.getFreeAnswer1()) +
                     printAttr("Is it possible to interrupt the mission?", application.getFreeAnswer2()) +
                     printAttr("Is the mission dependent on a certain time frame, e.g. due to the position of the sun?", application.getFreeAnswer3()) +
