@@ -40,7 +40,7 @@
         </div>
     </div>
 </div>
-<div id="submit_error" class="modal fade" data-backdrop="static" data-keyboard="false">
+<div id="modal-error" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog  modal-confirm">
         <div class="modal-content">
             <div class="modal-header" style="background: #f15e5e;">
@@ -65,7 +65,7 @@
                 <br>
                 <div class="form-row">
                     <div class="col-md-12">
-                        <a id="btn-report" href="#" id="btn-report">Report Problem</a>
+                        <a id="btn-report" href="#">Report Problem</a>
                     </div>
                 </div>
                 <small>If the error occurs again, please contact System Administrator.</small>
@@ -73,7 +73,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="altitudeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modal-altitude" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -89,7 +89,7 @@
 
                     <input type="number" min="0" max="99999"
                            class="form-control input-field-sky"
-                           id="altitude" required>
+                           id="input-altitude" required>
                     <div class="invalid-feedback">The altitude is required and has to be lower than 10'000.
                     </div>
                 </div>
@@ -101,7 +101,7 @@
         </div>
     </div>
 </div>
-<div id="not-needed_success" class="modal fade" data-backdrop="static" data-keyboard="false">
+<div id="modal-success-nosua" class="modal fade" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-confirm">
         <div class="modal-content">
             <div class="modal-header">
@@ -126,12 +126,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="info_gps_coord" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modal-gps-info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">GPS Coordinates Info</h5>
+                <h5 class="modal-title">GPS Coordinates Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -150,8 +150,7 @@
         </div>
     </div>
 </div>
-<!-- id="needs-validation"-->
-<form class="container" id="needs-validation" novalidate>
+<form class="container" novalidate>
     <fieldset>
         <h1>Request for coordination of special aerial activities</h1>
         <p>* fields are required</p>
@@ -333,7 +332,7 @@
                         <div class="form-group col-md-5">
                             <label for="gps_path">Coordinates (latitude, longitude)*</label>
                             <button tabindex="-1" type="button" aria-hidden="true" data-toggle="modal"
-                                    data-target="#info_gps_coord"
+                                    data-target="#modal-gps-info"
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
@@ -382,7 +381,7 @@
                         <div class="form-group col-md-5">
                             <label for="gps_polygon">Coordinates (latitude, longitude)*</label>
                             <button tabindex="-1" type="button" aria-hidden="true" data-toggle="modal"
-                                    data-target="#info_gps_coord"
+                                    data-target="#modal-gps-info"
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
@@ -437,7 +436,7 @@
                         <div class="form-group col-md-6">
                             <label for="gps_circle">Coordinates (latitude, longitude)*</label>
                             <button tabindex="-1" type="button" aria-hidden="true" data-toggle="modal"
-                                    data-target="#info_gps_coord"
+                                    data-target="#modal-gps-info"
                                     style="border: none; background: white;">
                                 <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
                             </button>
@@ -677,21 +676,21 @@
                 <div class="invalid-feedback">
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label for="textfield_remark">Remark</label>
-            <textarea type="text" class="form-control textarea-field-sky my-textarea data activity-data"
-                      id="textfield_remark"
-                      name="remark"></textarea>
-            <div class="invalid-feedback">
+            <div class="form-group">
+                <label for="textfield_remark">Remark</label>
+                <textarea type="text" class="form-control textarea-field-sky my-textarea data activity-data"
+                          id="textfield_remark"
+                          name="remark"></textarea>
+                <div class="invalid-feedback">
+                </div>
             </div>
         </div>
-
         <button type="submit" class="btn btn-primary btn-sky btn-lg" id="btn_submit">Submit <i id="icon_loading"
                                                                                                class="fa fa-circle-o-notch fa-spin"></i>
         </button>
     </fieldset>
 </form>
+
 </body>
 </html>

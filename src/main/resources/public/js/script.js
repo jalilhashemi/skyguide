@@ -2,62 +2,53 @@
  * The measure tooltip element.
  * @type {Element}
  */
-var measureTooltipElement;
+let measureTooltipElement;
 
 
 /**
  * Overlay to show the measurement.
  * @type {ol.Overlay}
  */
-var measureTooltip;
+let measureTooltip;
+
+
+let informationJSON;
+
+let actualAircraftTypeList;
 
 /**
- * Creates a new measure tooltip
+ * Openlayer Geo Admin map.
+ * @type {ga.Map}
  */
-function createMeasureTooltip() {
-    measureTooltipElement = document.createElement('div');
-    measureTooltipElement.className = 'tooltip tooltip-measure';
-    measureTooltip = new ol.Overlay({
-        element: measureTooltipElement,
-        offset: [0, -15],
-        positioning: 'bottom-center'
-    });
-    map.addOverlay(measureTooltip);
-}
+let map;
 
 
-var informationJSON;
-var actualAircraftTypeList;
-var map;
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
 var drawingIndex = 0;
 var Modify;
 var Draw;
 var errorLog = "";
-var source = new ol.source.Vector();
-var vector = new ol.layer.Vector({
-    source: source/*,
-    style: new ol.style.Style({
-        fill: new ol.style.Fill({
-            color: 'rgba(255, 0, 0, 0.3)'
-        }),
-        stroke: new ol.style.Stroke({
-            color: '#FF0000',
-            width: 4
-        }),
-        text: new ol.style.Text({
-            font: '20px Calibri,sans-serif',
-            fill: new ol.style.Fill({color: '#000000'}),
-            stroke: new ol.style.Stroke({
-                color: '#FFFFFF',
-                width: 4
-            })
-        })
-    })*/
+
+/**
+ * Vector Source where the drawings are saved.
+ * @type {ol.source.Vector}
+ */
+let source = new ol.source.Vector();
+
+/**
+ * Vector based Layer.
+ * @type {ol.layer.Vector}
+ */
+let vector = new ol.layer.Vector({
+    source: source
 });
 
-var ctr = new ol.layer.Vector({
+/**
+ * CTR vector layer from KML.
+ * @type {ol.layer.Vector}
+ */
+const ctr = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'ctr.kml',
         format: new ol.format.KML({
@@ -76,7 +67,11 @@ var ctr = new ol.layer.Vector({
     })
 });
 
-var tma = new ol.layer.Vector({
+/**
+ * TMA vector layer from KML.
+ * @type {ol.layer.Vector}
+ */
+const tma = new ol.layer.Vector({
     source: new ol.source.Vector({
         url: 'tma.kml',
         format: new ol.format.KML({
@@ -95,11 +90,32 @@ var tma = new ol.layer.Vector({
         })
     })
 });
-var validForm = true;
+
+/**
+ * Global form validation state.
+ * @type {boolean}
+ */
+let validForm = true;
+
+/**
+ * Creates a new measure tooltip
+ */
+function createMeasureTooltip() {
+    measureTooltipElement = document.createElement('div');
+    measureTooltipElement.className = 'tooltip tooltip-measure';
+    measureTooltip = new ol.Overlay({
+        element: measureTooltipElement,
+        offset: [0, -15],
+        positioning: 'bottom-center'
+    });
+    map.addOverlay(measureTooltip);
+}
 
 $(document).ready(function () {
 
     $("#icon_loading").hide();
+
+    // TODO: refactor that
     // get the url params
     var url = new URL(window.location.href);
     var edit = url.searchParams.get("edit");
@@ -157,7 +173,7 @@ function fillAllFields(key) {
             fillFields(json);
         })
         .fail(function (jqXHR) {
-            $('#submit_error').modal('show');
+            $('#modal-error').modal('show');
             errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 
@@ -174,11 +190,12 @@ function fillFields(data) {
             initializeDisabledInputs(json, data.activityType, data.aircraftType, data);
         })
         .fail(function (jqXHR) {
-            $('#submit_error').modal('show');
+            $('#modal-error').modal('show');
             errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 }
 
+//
 function initializeDisabledInputs(information, activityType, aircraftType, data) {
     $('#type_of_activity').append($('<option>', {
         text: activityType,
@@ -254,6 +271,31 @@ function initializeDisabledInputs(information, activityType, aircraftType, data)
     }
 }
 
+function getFormInformation() {
+    asyncRequest('GET', restUrl + '/information',
+        function (data) {
+            appendSelection(data);
+            informationJSON = data;
+        },
+        function (jqXHR) {
+            $('#modal-error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
+        });
+}
+
+function asyncRequest(type, url, doneFunction, failFunction, data) {
+    $.ajax({
+        crossOrigin: true,
+        url: url,
+        type: type,
+        dataType: 'json',
+        data: data
+    })
+        .done(doneFunction)
+        .fail(failFunction);
+}
+
+
 function initializeDropdowns() {
     $.ajax({
         crossOrigin: true,
@@ -266,7 +308,7 @@ function initializeDropdowns() {
             informationJSON = json;
         })
         .fail(function (jqXHR) {
-            $('#submit_error').modal('show');
+            $('#modal-error').modal('show');
             errorLog = JSON.stringify(jqXHR.responseJSON);
         });
 }
@@ -280,7 +322,8 @@ function appendSelection(data) {
 }
 
 function initializeForm() {
-    initializeDropdowns();
+    getFormInformation();
+   // initializeDropdowns();
     initializeDateRangePicker();
     initializeTooltips();
     initializeMap();
@@ -457,7 +500,7 @@ function checkIntersections() {
     // no need of SUA
     if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
         if (validForm) {
-            $('#not-needed_success').modal('show');
+            $('#modal-success-nosua').modal('show');
             return true;
         }
     }
@@ -536,12 +579,12 @@ function initializeChangeHandlers() {
     });
 
     $(document).on('click', '#btn-try-again', function () {
-        $('#submit_error').modal('hide');
+        $('#modal-error').modal('hide');
         submitApplication();
     });
 
     $(document).on('click', '.btn-another-entry', function () {
-        $('#not-needed_success').modal('hide');
+        $('#modal-success-nosua').modal('hide');
         $('#submit_success').modal('hide');
         $('#type_of_activity').val("");
         $('#textfield_remark').val("");
@@ -558,14 +601,17 @@ function initializeChangeHandlers() {
         emptyForm();
     });
 
+
+
+
     $(document).on('click', '#btn-send-altitude', function () {
         if ($('#altitude')[0].checkValidity()) {
             console.log($('#altitude').val());
-            $('#drawing' + drawingIndex).find('.altitude').val($('#altitude').val());
-            $('#altitudeModal').modal('hide');
+            $('#drawing' + drawingIndex).find('.altitude').val($('#input-altitude').val());
+            $('#modal-altitude').modal('hide');
         }
         else {
-            validateField($('#altitude'), false);
+            validateField($('#input-altitude'), false);
         }
     });
 
@@ -721,33 +767,7 @@ function initializeChangeHandlers() {
         drawingDiv.remove();
     });
 
-    $(document).on('change', '#check-layer-icao', function () {
-        if ($('#check-layer-icao').is(':checked')) {
-            setLayerVisible(1, true);
-        }
-        else {
-            setLayerVisible(1, false);
-        }
-    });
 
-    $(document).on('change', '#check-layer-ctr', function () {
-        if ($('#check-layer-ctr').is(':checked')) {
-            setLayerVisible(2, true);
-        }
-        else {
-            setLayerVisible(2, false);
-        }
-    });
-
-
-    $(document).on('change', '#check-layer-tma', function () {
-        if ($('#check-layer-tma').is(':checked')) {
-            setLayerVisible(3, true);
-        }
-        else {
-            setLayerVisible(3, false);
-        }
-    });
 
 
     $(document).on('click', '#add_polygon_btn', function () {
@@ -1166,7 +1186,7 @@ function validateCoordinate(field) {
             })
             .fail(function (jqXHR) {
 
-                $('#submit_error').modal('show');
+                $('#modal-error').modal('show');
                 errorLog = JSON.stringify(jqXHR.responseJSON);
 
             });
@@ -1430,10 +1450,10 @@ function initDrawTool() {
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPathDiv(evt.feature, drawingId);
                 measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#altitude').removeClass("is-invalid");
-                $('#altitude').removeClass("is-valid");
-                $('#altitude').val("");
-                $('#altitudeModal').modal('show');
+                $('#input-altitude').removeClass("is-invalid");
+                $('#input-altitude').removeClass("is-valid");
+                $('#input-altitude').val("");
+                $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Path!");
                 $('#map-instructions-text').text("You finally added a new Path to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
             });
@@ -1463,10 +1483,10 @@ function initDrawTool() {
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingPolygonDiv(evt.feature, drawingId);
                 measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#altitude').removeClass("is-invalid");
-                $('#altitude').removeClass("is-valid");
-                $('#altitude').val("");
-                $('#altitudeModal').modal('show');
+                $('#input-altitude').removeClass("is-invalid");
+                $('#input-altitude').removeClass("is-valid");
+                $('#input-altitude').val("");
+                $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Polygon!");
                 $('#map-instructions-text').text("You finally added a new Polygon to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
 
@@ -1500,10 +1520,10 @@ function initDrawTool() {
                 styleDrawing(evt.feature, drawingId);
                 fillDrawingCircleDiv(evt.feature, drawingId);
                 measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#altitude').removeClass("is-invalid");
-                $('#altitude').removeClass("is-valid");
-                $('#altitude').val("");
-                $('#altitudeModal').modal('show');
+                $('#input-altitude').removeClass("is-invalid");
+                $('#input-altitude').removeClass("is-valid");
+                $('#input-altitude').val("");
+                $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Circle!");
                 $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it in the fields above.");
             });
@@ -1530,10 +1550,10 @@ function initDrawTool() {
                 fillDrawingPolygonDiv(evt.feature, drawingId);
                 measureTooltipElement.parentNode.removeChild(measureTooltipElement);
 
-                $('#altitude').removeClass("is-invalid");
-                $('#altitude').removeClass("is-valid");
-                $('#altitude').val("");
-                $('#altitudeModal').modal('show');
+                $('#input-altitude').removeClass("is-invalid");
+                $('#input-altitude').removeClass("is-valid");
+                $('#input-altitude').val("");
+                $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Rectangle!");
                 $('#map-instructions-text').text("You finally added a new Rectangle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
             });
@@ -1755,7 +1775,7 @@ function submitApplication() {
         })
         .fail(function (jqXHR) {
             $("#icon_loading").hide();
-            $('#submit_error').modal('show');
+            $('#modal-error').modal('show');
             errorLog = JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data);
         });
 }
