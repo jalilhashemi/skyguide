@@ -472,12 +472,23 @@ function checkIntersections() {
     var tmaIntersections = [];
     var ctrIntersections = [];
 
+    // TODO: get height of coord: https://api3.geo.admin.ch/rest/services/height?easting=2600000&northing=1200000
+    // TODO: get the height of TMA CTR: zone.getProperties()['lowerLimitType'] bzw. lowerLimitValue, minimumLimitValue
+
+    var featuresAltitudeType = $('input[name=heightType]:checked').val();
+
+    if(featuresAltitudeType === 'ft AMSL' || featuresAltitudeType === 'ft GND')
+        // todo
+
     for (var i = 0; i < features.length; i++) {
         var feature = features[i];
+        var featureElevation = $('#'+feature.getId()).find('.altitude').val();
+
         var doIntersect = false;
         for (var j = 0; j < ctrZone.length; j++) {
             var zone = ctrZone[j];
             if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())) {
+               // todo height if()
                 doIntersect = true;
             }
         }
@@ -505,6 +516,14 @@ function checkIntersections() {
         }
     }
 
+}
+
+function featToMeter(feat) {
+    return feat * 0.3048;
+}
+
+function meterToFeat(meter) {
+    return meter * 3.28084;
 }
 
 function validateDrawings() {
@@ -1453,7 +1472,9 @@ function initDrawTool() {
                 $('#input-altitude').removeClass("is-invalid");
                 $('#input-altitude').removeClass("is-valid");
                 $('#input-altitude').val("");
+                $('#input-altitude').trigger('focus');
                 $('#modal-altitude').modal('show');
+                $('#height-type').text($('input[name=heightType]:checked').val());
                 $('#map-instructions-title').text("Created Path!");
                 $('#map-instructions-text').text("You finally added a new Path to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
             });
@@ -1486,6 +1507,7 @@ function initDrawTool() {
                 $('#input-altitude').removeClass("is-invalid");
                 $('#input-altitude').removeClass("is-valid");
                 $('#input-altitude').val("");
+                $('#height-type').text($('input[name=heightType]:checked').val());
                 $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Polygon!");
                 $('#map-instructions-text').text("You finally added a new Polygon to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
@@ -1523,6 +1545,8 @@ function initDrawTool() {
                 $('#input-altitude').removeClass("is-invalid");
                 $('#input-altitude').removeClass("is-valid");
                 $('#input-altitude').val("");
+                $('#height-type').text($('input[name=heightType]:checked').val());
+
                 $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Circle!");
                 $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it in the fields above.");
@@ -1553,6 +1577,8 @@ function initDrawTool() {
                 $('#input-altitude').removeClass("is-invalid");
                 $('#input-altitude').removeClass("is-valid");
                 $('#input-altitude').val("");
+                $('#height-type').text($('input[name=heightType]:checked').val());
+
                 $('#modal-altitude').modal('show');
                 $('#map-instructions-title').text("Created Rectangle!");
                 $('#map-instructions-text').text("You finally added a new Rectangle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
