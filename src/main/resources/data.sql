@@ -24,7 +24,8 @@ INSERT INTO activity_type (name) VALUES
 ('Test Flight'),
 ('Toy Balloon'),
 ('Transport Flight'),
-('Weather Balloon');
+('Weather Balloon'),
+('Model Rocket');
 
 INSERT INTO height_type (name) VALUES
 ('none'),
