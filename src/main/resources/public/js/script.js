@@ -22,6 +22,9 @@ let actualAircraftTypeList;
  */
 let map;
 
+var intersectionLayer = new ol.layer.Vector({
+    source: new ol.source.Vector()
+});
 
 var restUrl = 'http://localhost:8080';
 var timeIndex = 0;
@@ -323,7 +326,7 @@ function appendSelection(data) {
 
 function initializeForm() {
     getFormInformation();
-   // initializeDropdowns();
+    // initializeDropdowns();
     initializeDateRangePicker();
     initializeTooltips();
     initializeMap();
@@ -469,61 +472,180 @@ function checkIntersections() {
     var tmaZone = tma.getSource().getFeatures();
     var features = source.getFeatures();
 
-    var tmaIntersections = [];
-    var ctrIntersections = [];
+    /*   var coordinates = [];
+       tmaZone.forEach(function (feature) {
+           feature.getGeometry().getCoordinates()[0].forEach(function (item) {
+               coordinates.push( item.splice(2, 1));
+           });
+           feature.getGeometry().setCoordinates([coordinates]);
+       });
+   */
 
-    // TODO: get height of coord: https://api3.geo.admin.ch/rest/services/height?easting=2600000&northing=1200000
-    // TODO: get the height of TMA CTR: zone.getProperties()['lowerLimitType'] bzw. lowerLimitValue, minimumLimitValue
-
-    var featuresAltitudeType = $('input[name=heightType]:checked').val();
-
-    if(featuresAltitudeType === 'ft AMSL' || featuresAltitudeType === 'ft GND')
-        // todo
 
     for (var i = 0; i < features.length; i++) {
-        var feature = features[i];
-        var featureElevation = $('#'+feature.getId()).find('.altitude').val();
-
-        var doIntersect = false;
-        for (var j = 0; j < ctrZone.length; j++) {
-            var zone = ctrZone[j];
-            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())) {
-               // todo height if()
-                doIntersect = true;
-            }
-        }
-        if (doIntersect)
-            ctrIntersections.push(feature.getId());
-    }
-    for (var i = 0; i < features.length; i++) {
-        var feature = features[i];
         var doIntersect = false;
         for (var j = 0; j < tmaZone.length; j++) {
-            var zone = tmaZone[j];
-            if (ol.extent.intersects(feature.getGeometry().getExtent(), zone.getGeometry().getExtent())) {
+            if (intersectsArea(tmaZone[j], features[i]))
                 doIntersect = true;
-            }
+        }
+        for (var j = 0; j < ctrZone.length; j++) {
+            if (intersectsArea(ctrZone[j], features[i]))
+                doIntersect = true;
         }
         if (doIntersect)
-            tmaIntersections.push(feature.getId());
-    }
-
-    // no need of SUA
-    if (ctrIntersections.length == 0 && tmaIntersections.length == 0) {
-        if (validForm) {
-            $('#modal-success-nosua').modal('show');
             return true;
-        }
     }
 
 }
 
-function featToMeter(feat) {
-    return feat * 0.3048;
+function intersectsArea(zone, feature) {
+    var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
+//    var polyAltitude = parseKmlElevation(zone);
+
+    var figure;
+
+    if (feature.getGeometry().getType() === "Polygon") {
+        figure = turf.polygon(feature.getGeometry().getCoordinates());
+    } else if (feature.getGeometry().getType() === "Circle") {
+        // convert to wgs84
+        var center = ol.proj.transform(feature.getGeometry().getCenter(), 'EPSG:21781', 'EPSG:4326');
+        figure = turf.circle([center[1], center[0]], feature.getGeometry().getRadius() / 1000);
+        // convert back
+        figure.geometry.coordinates[0].forEach(function (item, index) {
+            figure.geometry.coordinates[0][index] = ol.proj.transform([item[1], item[0]], 'EPSG:4326', 'EPSG:21781');
+        });
+    } else if (feature.getGeometry().getType() === "LineString") {
+        figure = turf.lineString(feature.getGeometry().getCoordinates());
+    }
+
+
+    // check if intersect
+    var intersection = turf.lineIntersect(poly1, figure);
+    if (intersection)
+        if (intersectsAltitude(feature, zone))
+            return true;
+
+
+    return false;
+}
+
+
+function intersectsAltitude(feature, zone) {
+
+    var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
+    //  if circle error
+    var featurePoly = turf.polygon(feature.getGeometry().getCoordinates());
+
+    var extent = turf.bbox(featurePoly);
+
+    var min = ol.proj.transform([extent[0], extent[1]], 'EPSG:21781', 'EPSG:4326');
+    var max = ol.proj.transform([extent[2], extent[3]], 'EPSG:21781', 'EPSG:4326');
+
+    extent[0] = min[1];
+    extent[1] = min[0];
+    extent[2] = max[1];
+    extent[3] = max[0];
+
+    poly1.geometry.coordinates[0].forEach(function (item, index) {
+        var gps = ol.proj.transform([item[0], item[1]], 'EPSG:21781', 'EPSG:4326');
+        poly1.geometry.coordinates[0][index] = [gps[1], gps[0]];
+    });
+
+    var options = {mask: poly1, units: 'kilometers'};
+    // ca 10 m raster
+    var points = turf.pointGrid(extent, 0.01, options);
+
+    var doIntersect = false;
+    points.features.forEach(function (item) {
+        // convert to LV03
+        coords = ol.proj.transform([item.geometry.coordinates[1], item.geometry.coordinates[0]], 'EPSG:4326', 'EPSG:21781');
+
+        var featureAltitude;
+        var lowerLimit;
+        var upperLimit;
+
+        var lowerType = zone.getProperties().lowerLimitType;
+        var lowerValue = zone.getProperties().lowerLimitValue;
+
+        var upperType = zone.getProperties().upperLimitType;
+        var upperValue = zone.getProperties().upperLimitValue;
+
+        featureAltitude = toMeterAmsl(feature, coords);
+        lowerLimit = getLimit(lowerType, lowerValue, coords);
+        upperLimit = getLimit(upperType, upperValue, coords);
+
+        if (featureAltitude > lowerLimit && featureAltitude < upperLimit)
+            doIntersect = true;
+
+    });
+
+    return doIntersect;
+}
+
+function getLimit(limitType, value, coordinates) {
+    if (limitType === 'AGL') {
+        var agl = aglToAmsl(coordinates);
+        value = parseInt(agl) + parseInt(feetToMeter(value));
+    } else if (limitType === 'AMSL') {
+        value = parseInt(feetToMeter(value));
+    } else if (limitType === 'FL') {
+        value = parseInt(flToMeter(value))
+    } else {
+        return null;
+    }
+    return value;
+}
+
+function toMeterAmsl(feature, coordinates) {
+    var type = $('input[name=heightType]:checked').val();
+    var value = $('#' + feature.getId()).find('.altitude').val();
+
+    if (type == 'ft AMSL') {
+        value = feetToMeter(value);
+    } else if (type == 'ft GND') {
+        var agl = aglToAmsl(coordinates);
+        value = parseInt(agl) + feetToMeter(value);
+    } else if (type == 'm GND') {
+        var agl = aglToAmsl(coordinates);
+        value = parseInt(agl) + parseInt(value);
+    } else if (type == 'FL') {
+        value = flToMeter(value);
+    } else {
+        return null;
+    }
+    return value;
+
+}
+
+function aglToAmsl(coordinates) {
+    var res;
+    $.ajax({
+        crossOrigin: true,
+        url: 'https://api3.geo.admin.ch/rest/services/height?easting=' + coordinates[0] + '&northing=' + coordinates[1],
+        type: 'GET',
+        dataType: 'json',
+        async: false
+    })
+        .done(function (pos) {
+            res = pos.height;
+        })
+        .fail(function (jqXHR) {
+            $('#modal-error').modal('show');
+            errorLog = JSON.stringify(jqXHR.responseJSON);
+        });
+    return res;
+}
+
+function feetToMeter(feet) {
+    return feet * 0.3048;
 }
 
 function meterToFeat(meter) {
     return meter * 3.28084;
+}
+
+function flToMeter(fl) {
+    return fl * 100;
 }
 
 function validateDrawings() {
@@ -587,19 +709,49 @@ function initializeChangeHandlers() {
         event.stopPropagation();
 
         validForm = true;
-        if (validateForm()) {
-            submitApplication();
-        }
-        else {
-            $('html,body').scrollTop(0);
-            $('#form-feedback').show();
-        }
+        //  if (validateForm()) {
+        submitApplication();
+        /*  }
+          else {
+              $('html,body').scrollTop(0);
+              $('#form-feedback').show();
+          }*/
 
     });
 
     $(document).on('click', '#btn-try-again', function () {
         $('#modal-error').modal('hide');
         submitApplication();
+    });
+
+    $(document).on('change', '#check-layer-icao', function () {
+        if ($('#check-layer-icao').is(':checked')) {
+            setLayerVisible(1, true);
+        }
+        else {
+            setLayerVisible(1, false);
+        }
+    });
+
+
+    //
+    $(document).on('change', '#check-layer-ctr', function () {
+        if ($('#check-layer-ctr').is(':checked')) {
+            setLayerVisible(3, true);
+        }
+        else {
+            setLayerVisible(3, false);
+        }
+    });
+
+
+    $(document).on('change', '#check-layer-tma', function () {
+        if ($('#check-layer-tma').is(':checked')) {
+            setLayerVisible(2, true);
+        }
+        else {
+            setLayerVisible(2, false);
+        }
     });
 
     $(document).on('click', '.btn-another-entry', function () {
@@ -621,11 +773,8 @@ function initializeChangeHandlers() {
     });
 
 
-
-
     $(document).on('click', '#btn-send-altitude', function () {
-        if ($('#altitude')[0].checkValidity()) {
-            console.log($('#altitude').val());
+        if ($('#input-altitude')[0].checkValidity()) {
             $('#drawing' + drawingIndex).find('.altitude').val($('#input-altitude').val());
             $('#modal-altitude').modal('hide');
         }
@@ -785,8 +934,6 @@ function initializeChangeHandlers() {
             source.removeFeature(source.getFeatureById(drawingId));
         drawingDiv.remove();
     });
-
-
 
 
     $(document).on('click', '#add_polygon_btn', function () {
@@ -1677,7 +1824,8 @@ function initializeMap() {
             ga.layer.create('ch.bazl.luftfahrtkarten-icao'),
             tma,
             ctr,
-            vector
+            vector,
+            intersectionLayer
         ],
         crossOrigin: 'null',
 
@@ -1793,12 +1941,19 @@ function submitApplication() {
         dataType: 'json'
     })
         .done(function (json) {
-            console.log(json);
-            $("#icon_loading").hide();
-            if (!checkIntersections())
-                $('#submit_success').modal('show');
+                console.log(json);
+                $("#icon_loading").hide();
+                if (checkIntersections()) {
+                    $('#submit_success').modal('show');
+                }
+                else {
+                    // no need of SUA
+                    $('#modal-success-nosua').modal('show');
 
-        })
+                }
+
+            }
+        )
         .fail(function (jqXHR) {
             $("#icon_loading").hide();
             $('#modal-error').modal('show');
