@@ -467,20 +467,13 @@ function checkIntersections() {
     setLayerVisible(2, true);
     setLayerVisible(3, true);
 
+    cleanUpKml(ctr);
+    cleanUpKml(tma);
+
 
     var ctrZone = ctr.getSource().getFeatures();
     var tmaZone = tma.getSource().getFeatures();
     var features = source.getFeatures();
-
-    /*   var coordinates = [];
-       tmaZone.forEach(function (feature) {
-           feature.getGeometry().getCoordinates()[0].forEach(function (item) {
-               coordinates.push( item.splice(2, 1));
-           });
-           feature.getGeometry().setCoordinates([coordinates]);
-       });
-   */
-
 
     for (var i = 0; i < features.length; i++) {
         var doIntersect = false;
@@ -500,19 +493,17 @@ function checkIntersections() {
 
 function intersectsArea(zone, feature) {
     var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
-//    var polyAltitude = parseKmlElevation(zone);
-
     var figure;
 
     if (feature.getGeometry().getType() === "Polygon") {
         figure = turf.polygon(feature.getGeometry().getCoordinates());
     } else if (feature.getGeometry().getType() === "Circle") {
-        // convert to wgs84
-        var center = ol.proj.transform(feature.getGeometry().getCenter(), 'EPSG:21781', 'EPSG:4326');
-        figure = turf.circle([center[1], center[0]], feature.getGeometry().getRadius() / 1000);
-        // convert back
+
+        var center = lv03toWgs84(feature.getGeometry().getCenter());
+        figure = turf.circle(center, feature.getGeometry().getRadius() / 1000);
+
         figure.geometry.coordinates[0].forEach(function (item, index) {
-            figure.geometry.coordinates[0][index] = ol.proj.transform([item[1], item[0]], 'EPSG:4326', 'EPSG:21781');
+            figure.geometry.coordinates[0][index] = wgs84toLv03(item);
         });
     } else if (feature.getGeometry().getType() === "LineString") {
         figure = turf.lineString(feature.getGeometry().getCoordinates());
@@ -538,8 +529,9 @@ function intersectsAltitude(feature, zone) {
 
     var extent = turf.bbox(featurePoly);
 
-    var min = ol.proj.transform([extent[0], extent[1]], 'EPSG:21781', 'EPSG:4326');
-    var max = ol.proj.transform([extent[2], extent[3]], 'EPSG:21781', 'EPSG:4326');
+    var min = lv03toWgs84([extent[0], extent[1]]);
+
+    var max = lv03toWgs84([extent[2], extent[3]]);
 
     extent[0] = min[1];
     extent[1] = min[0];
@@ -547,8 +539,7 @@ function intersectsAltitude(feature, zone) {
     extent[3] = max[0];
 
     poly1.geometry.coordinates[0].forEach(function (item, index) {
-        var gps = ol.proj.transform([item[0], item[1]], 'EPSG:21781', 'EPSG:4326');
-        poly1.geometry.coordinates[0][index] = [gps[1], gps[0]];
+        poly1.geometry.coordinates[0][index] = lv03toWgs84(item);
     });
 
     var options = {mask: poly1, units: 'kilometers'};
@@ -557,8 +548,7 @@ function intersectsAltitude(feature, zone) {
 
     var doIntersect = false;
     points.features.forEach(function (item) {
-        // convert to LV03
-        coords = ol.proj.transform([item.geometry.coordinates[1], item.geometry.coordinates[0]], 'EPSG:4326', 'EPSG:21781');
+        coords = wgs84toLv03(item.geometry.coordinates);
 
         var featureAltitude;
         var lowerLimit;
@@ -634,6 +624,15 @@ function aglToAmsl(coordinates) {
             errorLog = JSON.stringify(jqXHR.responseJSON);
         });
     return res;
+}
+
+function lv03toWgs84(coordinates) {
+    var tmp = ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:21781', 'EPSG:4326');
+    return [tmp[1], tmp[0]];
+}
+
+function wgs84toLv03(coordinates) {
+    return ol.proj.transform([coordinates[1], coordinates[0]], 'EPSG:4326', 'EPSG:21781');
 }
 
 function feetToMeter(feet) {
@@ -1803,6 +1802,18 @@ function setLayerVisible(layerIndex, isVisible) {
             layer.setVisible(isVisible);
     });
 };
+
+function cleanUpKml(layer) {
+    layer.getSource().getFeatures().forEach(function (feature) {
+        var coordinates = [];
+        feature.getGeometry().getCoordinates()[0].forEach(function(coords) {
+            coords.splice(2,1)
+            coordinates.push(coords);
+        });
+        feature.getGeometry().setCoordinates([coordinates]);
+    });
+}
+
 
 function initializeMap() {
 
