@@ -1148,7 +1148,7 @@ function emptyForm() {
 }
 
 function validateRadius(field) {
-    var isValid = field.val() > 0 && field.val() < 500;
+    var isValid = field.val() > 0 && field.val() <= 500;
     validateField(field, isValid);
     return isValid;
 }

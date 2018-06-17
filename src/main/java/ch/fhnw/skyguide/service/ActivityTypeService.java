@@ -58,9 +58,9 @@ public class ActivityTypeService {
         Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time Until (Local Time)", "HH:MM", false, true);
         Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time Until (Local Time)", "HH:MM", false, false);
 
-        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration in hours (h)", "Duration", true, true);
-        Field durationFieldActive = new Field("field_duration", "duration", "Duration", "HH", false, true);
-        Field durationFieldInactive = new Field("field_duration", "duration", "Duration", "HH", false, false);
+        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", true, true);
+        Field durationFieldActive = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", false, true);
+        Field durationFieldInactive = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", false, false);
 
         Field locationFieldMandatory = new Field("field_location", "location", "Location", "Location", true, true);
         Field locationdeFieldActive = new Field("field_location", "location", "Location", "Location", false, true);
@@ -144,7 +144,7 @@ public class ActivityTypeService {
         defaultSkyLanternActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultSkyLanternActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(payloadAttachedObjFieldActive);
-        defaultSkyLanternActivityType.getFieldList().add(amountFieldActive);
+        defaultSkyLanternActivityType.getFieldList().add(amountFieldMandatory);
         defaultSkyLanternActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultSkyLanternActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultSkyLanternActivityType.getFieldList().add(freeAnswer1FieldInactive);

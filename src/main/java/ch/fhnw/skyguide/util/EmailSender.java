@@ -53,7 +53,7 @@ public class EmailSender {
                     printAttr("Aircraft Type", application.getAircraftType().getName()) +
                     printAttr("Name", application.getName()) +
                     printAttr("Company", application.getCompany()) +
-                    printAttr("Reference", application.getReference()) +
+//                    printAttr("Reference", application.getReference()) +
                     printAttr("Phone", formatPhone(application.getPhone())) +
                     printAttr("Email", application.getEmail()) +
                     printAttr("Callsign", application.getCallsign()) +

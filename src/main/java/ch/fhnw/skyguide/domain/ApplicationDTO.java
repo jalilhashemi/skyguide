@@ -5,7 +5,7 @@ import java.util.List;
 public class ApplicationDTO {
     private String name;
     private String company;
-    private String reference;
+//    private String reference;
     private String phone;
     private String email;
     private String callsign;
@@ -45,13 +45,13 @@ public class ApplicationDTO {
         this.company = company;
     }
 
-    public String getReference() {
-        return reference;
-    }
-
-    public void setReference(String reference) {
-        this.reference = reference;
-    }
+//    public String getReference() {
+//        return reference;
+//    }
+//
+//    public void setReference(String reference) {
+//        this.reference = reference;
+//    }
 
     public String getPhone() {
         return phone;
