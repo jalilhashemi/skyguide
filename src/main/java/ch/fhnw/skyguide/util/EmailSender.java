@@ -54,7 +54,7 @@ public class EmailSender {
                     printAttr("Name", application.getName()) +
                     printAttr("Company", application.getCompany()) +
 //                    printAttr("Reference", application.getReference()) +
-                    printAttr("Phone", formatPhone(application.getPhone())) +
+                    printAttr("Phone", application.getPhone()) +
                     printAttr("Email", application.getEmail()) +
                     printAttr("Callsign", application.getCallsign()) +
                     printAttr("Departure", application.getDeparture()) +
@@ -94,11 +94,6 @@ public class EmailSender {
                 Exception e) {
             return false;
         }
-    }
-
-    public String formatPhone(String number) {
-        return number.substring(0, 3) + " " + number.substring(3, 6) + " "
-                + number.substring(6, 8) + " " + number.substring(8, 10);
     }
 
     public String printAttr(String attrName, String val) {
