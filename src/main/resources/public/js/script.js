@@ -437,7 +437,12 @@ function validateForm() {
         }
     });
 
-    validateDrawings();
+    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon' || $('#type_of_activity').val() === 'Sky Light / Laser') {
+        // no map
+    }
+    else {
+        validateDrawings();
+    }
 
 
     /*  var features1 = ctr.getSource().features;
@@ -859,12 +864,18 @@ function initializeChangeHandlers() {
                     $('#type_of_aircraft').prop('required', true);
                 }
                 else {
+
                     // things showed anytime
                     $('#map-container').removeClass('display-none');
                     $('#add_area_dropdown').removeClass('display-none');
                     $('#draw-instructions').removeClass('display-none');
-
                     $('#altitude_label').removeClass('display-none');
+
+                    if (activityType.label === 'Sky Lantern' || activityType.label === 'Toy Balloon' || activityType.label === 'Sky Light / Laser') {
+                        $('#map-container').addClass('display-none');
+                        $('#add_area_dropdown').addClass('display-none');
+                        $('#draw-instructions').addClass('display-none');
+                    }
                     map.updateSize();
                     // add time button
                     $('#btn-add-time').removeClass('display-none');
