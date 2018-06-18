@@ -60,7 +60,7 @@ public class EmailSender {
                     printAttr("Departure", application.getDeparture()) +
                     printAttr("Destination", application.getDestination()) +
                     printAttr("Date", application.getDateFromUntil()) +
-                    printAttr("Duration", application.getDuration() + " h") +
+                    printAttr("Duration", application.getDuration()) +
                     printAttr("Location", application.getLocation()) +
                     printAttr("Beam direction", application.getBeamDirection()) +
                     printAttr("Payload", application.getPayloadAttachedObj()) +
