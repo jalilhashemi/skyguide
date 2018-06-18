@@ -555,8 +555,6 @@ function intersectsAltitude(feature, zone) {
 }
 
 
-
-
 function intersectsAltitude(feature, zone) {
 
     var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
@@ -744,13 +742,13 @@ function initializeChangeHandlers() {
         event.stopPropagation();
 
         validForm = true;
-        //  if (validateForm()) {
-        submitApplication();
-        /*  }
-          else {
-              $('html,body').scrollTop(0);
-              $('#form-feedback').show();
-          }*/
+        if (validateForm()) {
+            submitApplication();
+        }
+        else {
+            $('html,body').scrollTop(0);
+            $('#form-feedback').show();
+        }
 
     });
 
