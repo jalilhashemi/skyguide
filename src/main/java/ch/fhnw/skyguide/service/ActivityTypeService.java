@@ -415,7 +415,7 @@ public class ActivityTypeService {
         defaultModelRocketActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultModelRocketActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
-        defaultModelRocketActivityType.getFieldList().add(amountFieldActive);
+        defaultModelRocketActivityType.getFieldList().add(amountFieldMandatory);
         defaultModelRocketActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultModelRocketActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultModelRocketActivityType.getFieldList().add(freeAnswer1FieldInactive);
