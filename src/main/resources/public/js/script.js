@@ -742,13 +742,13 @@ function initializeChangeHandlers() {
         event.stopPropagation();
 
         validForm = true;
-        if (validateForm()) {
+      /*  if (validateForm()) {
             submitApplication();
         }
         else {
             $('html,body').scrollTop(0);
             $('#form-feedback').show();
-        }
+        }*/
 
     });
 
@@ -1874,7 +1874,7 @@ function initializeMap() {
         crossOrigin: 'null',
 
         // disable scrolling on map
-        interactions: ol.interaction.defaults({mouseWheelZoom: false})
+       // interactions: ol.interaction.defaults({mouseWheelZoom: false})
 
     });
 
