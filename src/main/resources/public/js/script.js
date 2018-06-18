@@ -1933,7 +1933,7 @@ function submitApplication() {
 
     $('.data').each(
         function (index) {
-            if (!$(this).hasClass('time') && !$(this).hasClass('altitude')) {
+            if (!$(this).hasClass('time') && !$(this).hasClass('altitude')&& !$(this).hasClass('phone')) {
                 var input = $(this);
                 data[input.attr('name')] = input.val();
             }
