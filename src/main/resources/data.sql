@@ -17,7 +17,7 @@ INSERT INTO activity_type (name) VALUES
 ('Photo Flight'),
 ('Police Mission'),
 ('Sky Lantern'),
-('Sky Light / Lase'),
+('Sky Light / Laser'),
 ('Survey Flight'),
 ('TV Relay Flight'),
 ('Taxi Passenger Flight'),
