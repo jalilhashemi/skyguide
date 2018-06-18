@@ -164,10 +164,10 @@ public class ActivityTypeService {
         defaultWeatherBalloonActivityType.getFieldList().add(timeScheduleUntilFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(locationFieldMandatory);
-        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFieldMandatory);
-        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFlRadioActive);
-        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFtGndRadioActive);
-        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioActive);
+        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFieldInactive);
+        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFlRadioInactive);
+        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFtGndRadioInactive);
+        defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);

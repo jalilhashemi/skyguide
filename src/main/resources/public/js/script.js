@@ -437,7 +437,9 @@ function validateForm() {
         }
     });
 
-    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon' || $('#type_of_activity').val() === 'Sky Light / Laser') {
+// dirty hack for types without drawings
+    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
+        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon') {
         // no map
     }
     else {
@@ -871,7 +873,9 @@ function initializeChangeHandlers() {
                     $('#draw-instructions').removeClass('display-none');
                     $('#altitude_label').removeClass('display-none');
 
-                    if (activityType.label === 'Sky Lantern' || activityType.label === 'Toy Balloon' || activityType.label === 'Sky Light / Laser') {
+                    // dirty hack for types without drawings
+                    if (activityType.label === 'Sky Lantern' || activityType.label === 'Toy Balloon'
+                        || activityType.label === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon') {
                         $('#map-container').addClass('display-none');
                         $('#add_area_dropdown').addClass('display-none');
                         $('#draw-instructions').addClass('display-none');
@@ -2013,7 +2017,7 @@ function validateTimes(field) {
         var startDt = new Date(2010, 12, 21, 9, start.val().split(':')[0], start.val().split(':')[1]);
         var endDt = new Date(2010, 12, 21, 9, end.val().split(':')[0], end.val().split(':')[1]);
         if (startDt.getTime() >= endDt.getTime()) {
-            end.parent().find('.invalid-feedback').html("The until time must be after the from time.");
+            end.parent().find('.invalid-feedback').html("The until time must be after the from time. If you want midnight, just provide 23:59");
             validateField(end, false);
             return false;
         }
