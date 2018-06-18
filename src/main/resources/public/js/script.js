@@ -944,7 +944,7 @@ function initializeChangeHandlers() {
     $(document).on('click', '.remove-drawing', function (event) {
         event.preventDefault();
         event.stopPropagation();
-        var drawingDiv = $(this).parent();
+        var drawingDiv = $(this).parent().parent().parent();
         var drawingId = drawingDiv.attr("id");
         if (source.getFeatureById(drawingId))
             source.removeFeature(source.getFeatureById(drawingId));
@@ -1180,7 +1180,11 @@ function addPathDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             // .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Path ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+            .prepend('<div class="row"><div class="col-md-2">' +
+                '<h3>Path ' + drawingIndex + '</h3></div>' +
+                '<div class="col-md-2"><button tabindex="-1" type="button" class="btn btn-primary btn-red-sky mini remove-drawing">' +
+                'Remove</button></div></div>');
+
 
     clone.find('.altitude').addClass('data');
     clone.find('input').prop('required', true);
@@ -1201,7 +1205,10 @@ function addPolygonDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             // .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Polygon ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+            .prepend('<div class="row"><div class="col-md-2">' +
+                '<h3>Polygon ' + drawingIndex + '</h3></div>' +
+                '<div class="col-md-2"><button tabindex="-1" type="button" class="btn btn-primary btn-red-sky mini remove-drawing">' +
+                'Remove</button></div></div>');
     clone.find('.altitude').addClass('data');
     clone.find('input').prop('required', true);
 
@@ -1221,7 +1228,10 @@ function addCircleDrawingDiv() {
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
             //  .attr('data-drawing-index', drawingIndex)
-            .prepend('<h3>Circle ' + drawingIndex + '</h3><a style="color:red;" href="#" class="remove-drawing">Remove</a>');
+            .prepend('<div class="row"><div class="col-md-2">' +
+                '<h3>Circle ' + drawingIndex + '</h3></div>' +
+                '<div class="col-md-2"><button tabindex="-1" type="button" class="btn btn-primary btn-red-sky mini remove-drawing">' +
+                'Remove</button></div></div>');
     clone.find('.altitude').addClass('data');
     clone.find('input').prop('required', true);
 

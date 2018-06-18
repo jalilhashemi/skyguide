@@ -248,3 +248,7 @@ h1 {
     text-decoration: none;
     color: white;
 }
+
+.mini {
+    height: 30px;
+}
