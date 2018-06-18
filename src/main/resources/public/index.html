@@ -182,23 +182,19 @@
             </div>
         </div>
         <!--<div class="form-group">-->
-            <!--<label for="input_applicant_reference">Applicant reference</label>-->
-            <!--<input type="text" class="form-control input-field-sky data" id="input_applicant_reference"-->
-                   <!--placeholder="Applicant reference" name="reference">-->
-            <!--<small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your-->
-                <!--application-->
-            <!--</small>-->
+        <!--<label for="input_applicant_reference">Applicant reference</label>-->
+        <!--<input type="text" class="form-control input-field-sky data" id="input_applicant_reference"-->
+        <!--placeholder="Applicant reference" name="reference">-->
+        <!--<small id="referenceHint" class="form-text text-muted">You can enter your preferred reference for your-->
+        <!--application-->
+        <!--</small>-->
         <!--</div>-->
         <div class="form-group">
             <label for="input_applicant_phone">Applicant Phone*</label>
             <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
                    placeholder="+41321234567"
-                   pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{1,2})$"
                    name="phone"
                    required>
-            <div class="invalid-feedback">
-                Please provide an international phone number.
-            </div>
         </div>
         <div class="form-group">
             <label for="input_applicant_email">Applicant Email*</label>
@@ -265,7 +261,7 @@
                     <input type="text" class="form-control input-field-sky data activity-data"
                            id="field_duration"
                            name="duration" pattern="^([0-1]?[0-9]?[0-9]):[0-5][0-9]$">
-                    <div class="invalid-feedback">Please provide a valid time in the format HHH:MM.
+                    <div class="invalid-feedback">Please provide a valid time in the format HH:MM up to HHH:MM.
                     </div>
                 </div>
             </div>
@@ -282,7 +278,6 @@
                            id="field_time_schedule_until" name="end[0]" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$">
                     <div class="invalid-feedback">
                         Please provide a valid time in the format HH:MM (24 hours).
-
                     </div>
                 </div>
                 <div class="form-group col-md-1 display-none btn_add" id="btn-add-time">

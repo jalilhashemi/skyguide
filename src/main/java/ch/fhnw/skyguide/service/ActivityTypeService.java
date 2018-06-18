@@ -58,9 +58,9 @@ public class ActivityTypeService {
         Field timeScheduleUntilieldActive = new Field("field_time_schedule_until", "timeUntil", "Time Until (Local Time)", "HH:MM", false, true);
         Field timeScheduleUntilFieldInactive = new Field("field_time_schedule_until", "timeUntil", "Time Until (Local Time)", "HH:MM", false, false);
 
-        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", true, true);
-        Field durationFieldActive = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", false, true);
-        Field durationFieldInactive = new Field("field_duration", "duration", "Duration in hours (HH:MM)", "HH:MM", false, false);
+        Field durationFieldMandatory = new Field("field_duration", "duration", "Duration in hours (HHH:MM)", "HHH:MM", true, true);
+        Field durationFieldActive = new Field("field_duration", "duration", "Duration in hours (HHH:MM)", "HHH:MM", false, true);
+        Field durationFieldInactive = new Field("field_duration", "duration", "Duration in hours (HHH:MM)", "HHH:MM", false, false);
 
         Field locationFieldMandatory = new Field("field_location", "location", "Location", "Location", true, true);
         Field locationdeFieldActive = new Field("field_location", "location", "Location", "Location", false, true);
@@ -171,7 +171,7 @@ public class ActivityTypeService {
         defaultWeatherBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
-        defaultWeatherBalloonActivityType.getFieldList().add(amountFieldActive);
+        defaultWeatherBalloonActivityType.getFieldList().add(amountFieldMandatory);
         defaultWeatherBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultWeatherBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultWeatherBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
@@ -198,7 +198,7 @@ public class ActivityTypeService {
         defaultToyBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultToyBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(payloadAttachedObjFieldActive);
-        defaultToyBalloonActivityType.getFieldList().add(amountFieldActive);
+        defaultToyBalloonActivityType.getFieldList().add(amountFieldMandatory);
         defaultToyBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultToyBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultToyBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
@@ -225,7 +225,7 @@ public class ActivityTypeService {
         defaultCaptiveBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioActive);
         defaultCaptiveBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
-        defaultCaptiveBalloonActivityType.getFieldList().add(amountFieldActive);
+        defaultCaptiveBalloonActivityType.getFieldList().add(amountFieldMandatory);
         defaultCaptiveBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultCaptiveBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultCaptiveBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
@@ -252,7 +252,7 @@ public class ActivityTypeService {
         defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
-        defaultHotAirBalloonActivityType.getFieldList().add(amountFieldActive);
+        defaultHotAirBalloonActivityType.getFieldList().add(amountFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultHotAirBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
@@ -279,7 +279,7 @@ public class ActivityTypeService {
         defaultGasBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultGasBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(payloadAttachedObjFieldInactive);
-        defaultGasBalloonActivityType.getFieldList().add(amountFieldActive);
+        defaultGasBalloonActivityType.getFieldList().add(amountFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(gpsCoordFieldActive);
         defaultGasBalloonActivityType.getFieldList().add(selfDeclarationFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(freeAnswer1FieldInactive);
