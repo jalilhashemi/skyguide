@@ -332,6 +332,18 @@ function initializeForm() {
     initializeMap();
     initDrawTool();
 
+    $("#input_applicant_phone").intlTelInput({
+        nationalMode: true,
+        initialCountry: "auto",
+        geoIpLookup: function(callback) {
+            $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+                var countryCode = (resp && resp.country) ? resp.country : "";
+                callback(countryCode);
+            });
+        },
+        utilsScript: "lib/utils.js"
+    });
+
 }
 
 function initializeTooltips() {
@@ -422,6 +434,16 @@ function validateForm() {
             $(this).find('input').each(function () {
                 validateField($(this), isValid);
             });
+        }else if($(this).hasClass('phone')) {
+            if ($.trim($(this).val())) {
+                if ($(this).intlTelInput("isValidNumber")) {
+                    validateField($(this), true);
+                }
+                else {
+                    validateField($(this), false);
+                    formValidate(false);
+                }
+            }
         }
         else {
             isValid = item.checkValidity();
@@ -439,7 +461,10 @@ function validateForm() {
 
 // dirty hack for types without drawings
     if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
-        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon') {
+        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon'
+        || $('#type_of_activity').val() === 'Firework' || $('#type_of_activity').val() === 'Captive Balloon'
+        || $('#type_of_activity').val() === 'Kite' || $('#type_of_activity').val() === 'Model Rocket'
+        || $('#type_of_activity').val() === 'Gas Balloon' || $('#type_of_activity').val() === 'Hot Air Balloon') {
         // no map
     }
     else {
@@ -809,8 +834,9 @@ function initializeChangeHandlers() {
 
         }
     });
+
     $(document).on('focusout', 'input', function () {
-        if (!($(this).hasClass('gps') || $(this).hasClass('radius'))) {
+        if (!($(this).hasClass('gps') || $(this).hasClass('radius') || $(this).hasClass('phone'))) {
             var isValid = $(this)[0].checkValidity();
             validateField($(this), isValid);
             $(this).attr("filled", true);
@@ -821,6 +847,7 @@ function initializeChangeHandlers() {
                 validateField($(this), true);
         }
     });
+
     $(document).on('change', 'select', function () {
         var isValid = $(this)[0].checkValidity();
         validateField($(this), isValid);
@@ -832,6 +859,19 @@ function initializeChangeHandlers() {
             validateField($(this), isValid);
         });
     });
+
+    $(document).on('keyup', '#input_applicant_phone', function() {
+        if ($.trim($(this).val())) {
+            if ($(this).intlTelInput("isValidNumber")) {
+                validateField($(this), true);
+            }
+            else {
+                validateField($(this), false);
+                formValidate(false);
+            }
+        }
+    });
+
 
     $(document).on('change', '#type_of_activity', function () {
         emptyForm();
@@ -874,8 +914,11 @@ function initializeChangeHandlers() {
                     $('#altitude_label').removeClass('display-none');
 
                     // dirty hack for types without drawings
-                    if (activityType.label === 'Sky Lantern' || activityType.label === 'Toy Balloon'
-                        || activityType.label === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon') {
+                    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
+                        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon'
+                        || $('#type_of_activity').val() === 'Firework' || $('#type_of_activity').val() === 'Captive Balloon'
+                        || $('#type_of_activity').val() === 'Kite' || $('#type_of_activity').val() === 'Model Rocket'
+                        || $('#type_of_activity').val() === 'Gas Balloon' || $('#type_of_activity').val() === 'Hot Air Balloon') {
                         $('#map-container').addClass('display-none');
                         $('#add_area_dropdown').addClass('display-none');
                         $('#draw-instructions').addClass('display-none');
@@ -1920,6 +1963,8 @@ function submitApplication() {
 
     data['times'] = times;
     //data['drawings'] = drawings;
+
+    data['phone'] = $('#input_applicant_phone').intlTelInput("getNumber");
 
     var drawings = [];
 

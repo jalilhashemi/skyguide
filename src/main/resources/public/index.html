@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="lib/daterangepicker.css"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/intlTelInput.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -18,6 +19,7 @@
 <script src="lib/loader.js"></script>
 <script src="lib/moment.min.js"></script>
 <script src="lib/daterangepicker.js"></script>
+<script src="lib/intlTelInput.js"></script>
 
 <script src="js/script.js"></script>
 <div id="submit_success" class="modal fade" data-backdrop="static" data-keyboard="false">
@@ -53,20 +55,8 @@
                 <h4>Error!</h4>
                 <p>Internal Server Error</p>
                 <div class="form-row">
-                    <div class="col-md-5">
-                        <button class="btn btn-primary btn-sky" id="btn-try-again"><span>Try again</span></button>
-                    </div>
-                    <div class="col-md-2"></div>
-                    <div class="col-md-5">
-                        <a href="">
-                            <button class="btn btn-primary btn-red-sky"><span>Cancel</span></button>
-                        </a>
-                    </div>
-                </div>
-                <br>
-                <div class="form-row">
                     <div class="col-md-12">
-                        <a id="btn-report" href="#">Report Problem</a>
+                        <button class="btn btn-primary btn-sky" id="btn-report"><span>Report Problem</span></button>
                     </div>
                 </div>
                 <small>If the error occurs again, please contact System Administrator.</small>
@@ -191,10 +181,12 @@
         <!--</div>-->
         <div class="form-group">
             <label for="input_applicant_phone">Applicant Phone*</label>
-            <input type="tel" class="form-control input-field-sky data" id="input_applicant_phone"
-                   placeholder="+41321234567"
+            <input type="tel" class="form-control input-field-sky phone" id="input_applicant_phone"
                    name="phone"
                    required>
+            <div class="invalid-feedback">
+                Invalid number.
+            </div>
         </div>
         <div class="form-group">
             <label for="input_applicant_email">Applicant Email*</label>
