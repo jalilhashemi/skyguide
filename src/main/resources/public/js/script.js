@@ -491,67 +491,35 @@ function checkIntersections() {
 
 }
 
-function intersectsAltitude(feature, zone) {
-
+function intersectsArea(zone, feature) {
     var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
-    var featurePoly;
+//    var polyAltitude = parseKmlElevation(zone);
 
-    if (feature.getGeometry().getType() == 'Circle') {
+    var figure;
 
-    } else if (feature.getGeometry().getType() == 'LineString') {
-
-    } else {
-        featurePoly = turf.polygon(feature.getGeometry().getCoordinates());
+    if (feature.getGeometry().getType() === "Polygon") {
+        figure = turf.polygon(feature.getGeometry().getCoordinates());
+    } else if (feature.getGeometry().getType() === "Circle") {
+        // convert to wgs84
+        var center = ol.proj.transform(feature.getGeometry().getCenter(), 'EPSG:21781', 'EPSG:4326');
+        figure = turf.circle([center[1], center[0]], feature.getGeometry().getRadius() / 1000);
+        // convert back
+        figure.geometry.coordinates[0].forEach(function (item, index) {
+            figure.geometry.coordinates[0][index] = ol.proj.transform([item[1], item[0]], 'EPSG:4326', 'EPSG:21781');
+        });
+    } else if (feature.getGeometry().getType() === "LineString") {
+        figure = turf.lineString(feature.getGeometry().getCoordinates());
     }
 
-    //  if circle or line error
+
+    // check if intersect
+    var intersection = turf.lineIntersect(poly1, figure);
+    if (intersection)
+        return true;
+    //  if (intersectsAltitude(feature, zone))
 
 
-    var extent = turf.bbox(featurePoly);
-
-    var min = lv03toWgs84([extent[0], extent[1]]);
-
-    var max = lv03toWgs84([extent[2], extent[3]]);
-
-    extent[0] = min[0];
-    extent[1] = min[1];
-    extent[2] = max[0];
-    extent[3] = max[1];
-
-    poly1.geometry.coordinates[0].forEach(function (item, index) {
-        poly1.geometry.coordinates[0][index] = lv03toWgs84(item);
-    });
-
-    var options = {mask: poly1, units: 'kilometers'};
-    // ca 10 m raster
-    var points = turf.pointGrid(extent, 0.01, options);
-
-    var doIntersect = false;
-    points.features.forEach(function (item) {
-        coords = wgs84toLv03(item.geometry.coordinates);
-
-        var featureAltitude;
-        var lowerLimit;
-        var upperLimit;
-
-        var lowerType = zone.getProperties().lowerLimitType;
-        var lowerValue = zone.getProperties().lowerLimitValue;
-
-        var upperType = zone.getProperties().upperLimitType;
-        var upperValue = zone.getProperties().upperLimitValue;
-
-        featureAltitude = toMeterAmsl(feature, coords);
-        lowerLimit = getLimit(lowerType, lowerValue, coords);
-        upperLimit = getLimit(upperType, upperValue, coords);
-
-        if (featureAltitude > lowerLimit && featureAltitude < upperLimit) {
-            doIntersect = true;
-            console.log("altitude intersection: " + zone.getProperties().name);
-        }
-
-    });
-
-    return doIntersect;
+    return false;
 }
 
 
@@ -742,13 +710,13 @@ function initializeChangeHandlers() {
         event.stopPropagation();
 
         validForm = true;
-      /*  if (validateForm()) {
+        if (validateForm()) {
             submitApplication();
         }
         else {
             $('html,body').scrollTop(0);
             $('#form-feedback').show();
-        }*/
+        }
 
     });
 
@@ -1826,7 +1794,6 @@ function fillDrawingCircleDiv(feature, drawingId) {
     drawingDiv.find('.radius').val(radius);
     validateRadius(drawingDiv.find('.radius'));
     validateCoordinate(drawingDiv.find('.gps'));
-
 }
 
 function setLayerVisible(layerIndex, isVisible) {
@@ -1874,7 +1841,7 @@ function initializeMap() {
         crossOrigin: 'null',
 
         // disable scrolling on map
-       // interactions: ol.interaction.defaults({mouseWheelZoom: false})
+        // interactions: ol.interaction.defaults({mouseWheelZoom: false})
 
     });
 
@@ -1954,7 +1921,7 @@ function submitApplication() {
 
         $(this).find('.gps').each(function (index) {
 
-            var coord = $(this).val().split(', ');
+            var coord = lv03toWgs84(validateCoordinate($(this)));
             drawing['coordinates'][index] = {
                 'lat': coord[0],
                 'lon': coord[1]
