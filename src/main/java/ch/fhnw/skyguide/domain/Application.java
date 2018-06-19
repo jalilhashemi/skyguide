@@ -37,6 +37,7 @@ public class Application {
     private String freeAnswer2;
     private String freeAnswer3;
     private String freeAnswer4;
+    private String filltime;
 
 
     public Application() {
@@ -227,6 +228,14 @@ public class Application {
 
     public void setFreeAnswer4(String freeAnswer4) {
         this.freeAnswer4 = freeAnswer4;
+    }
+
+    public String getFilltime() {
+        return filltime;
+    }
+
+    public void setFilltime(String filltime) {
+        this.filltime = filltime;
     }
 
     @ManyToOne

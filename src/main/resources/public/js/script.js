@@ -4,6 +4,7 @@
  */
 let measureTooltipElement;
 
+var  startTime
 
 /**
  * Overlay to show the measurement.
@@ -115,6 +116,8 @@ function createMeasureTooltip() {
 }
 
 $(document).ready(function () {
+
+    startTime = new Date();
 
     $("#icon_loading").hide();
 
@@ -2009,6 +2012,8 @@ function submitApplication() {
 
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
+
+    data['filltime'] = (new Date() - startTime)/1000; // seconds
 
     console.log(data);
 
