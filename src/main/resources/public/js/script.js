@@ -4,7 +4,7 @@
  */
 let measureTooltipElement;
 
-var  startTime
+var startTime
 
 /**
  * Overlay to show the measurement.
@@ -15,7 +15,7 @@ let measureTooltip;
 
 let informationJSON;
 
-let actualAircraftTypeList;
+let aircraftTypes;
 
 /**
  * Openlayer Geo Admin map.
@@ -23,17 +23,19 @@ let actualAircraftTypeList;
  */
 let map;
 
-var intersectionLayer = new ol.layer.Vector({
-    source: new ol.source.Vector()
-});
-
 var restUrl = 'http://localhost:8080';
+
+const heightServiceUrl = 'https://api3.geo.admin.ch/rest/services/height';
+
+const lv03toLv95Url = 'http://geodesy.geo.admin.ch/reframe/lv03tolv95';
+
 var timeIndex = 0;
 var drawingIndex = 0;
 var Modify;
 var Draw;
-var errorLog = "";
 
+// default center position
+const centerPos = [46.81, 8.31];
 /**
  * Vector Source where the drawings are saved.
  * @type {ol.source.Vector}
@@ -96,12 +98,6 @@ const tma = new ol.layer.Vector({
 });
 
 /**
- * Global form validation state.
- * @type {boolean}
- */
-let validForm = true;
-
-/**
  * Creates a new measure tooltip
  */
 function createMeasureTooltip() {
@@ -116,166 +112,11 @@ function createMeasureTooltip() {
 }
 
 $(document).ready(function () {
-
+    // measure the time to fill the application until submit
     startTime = new Date();
 
-    $("#icon_loading").hide();
-
-    // TODO: refactor that
-    // get the url params
-    var url = new URL(window.location.href);
-    var edit = url.searchParams.get("edit");
-    var key = url.searchParams.get("key");
-    if (key != null) {
-        console.log('url key: ' + key);
-        console.log('url edit: ' + edit);
-        if (edit != null)
-            showAdminView(key);
-        else
-            showUserView(key);
-    }
-    // standard form view
-    else {
-        initializeForm();
-        initializeChangeHandlers();
-    }
-
-    // prevent enter for submission
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-        }
-    });
+    initializeForm();
 });
-
-function showAdminView(key) {
-    // not implemented yet
-    alert("admin");
-}
-
-function showUserView(key) {
-    disableAllFields();
-    fillAllFields(key);
-
-    initializeMap();
-    $('#map-container').removeClass('display-none');
-    map.updateSize();
-}
-
-function disableAllFields() {
-    $('fieldset').prop('disabled', true);
-}
-
-function fillAllFields(key) {
-    $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/applications/' + key,
-        type: 'GET',
-        dataType: 'json'
-    })
-        .done(function (json) {
-            fillFields(json);
-        })
-        .fail(function (jqXHR) {
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
-        });
-
-}
-
-function fillFields(data) {
-    $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/information',
-        type: 'GET',
-        dataType: 'json'
-    })
-        .done(function (json) {
-            initializeDisabledInputs(json, data.activityType, data.aircraftType, data);
-        })
-        .fail(function (jqXHR) {
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
-        });
-}
-
-//
-function initializeDisabledInputs(information, activityType, aircraftType, data) {
-    $('#type_of_activity').append($('<option>', {
-        text: activityType,
-        selected: true
-    }));
-    if (aircraftType != null) {
-        $('#type_of_aircraft').parent().show();
-        $('#type_of_aircraft').prop('required', true);
-        $('#type_of_aircraft').append($('<option>', {
-            text: aircraftType,
-            selected: true
-        }));
-
-        $.each(information, function (i, infoItem) {
-            if ($('#type_of_activity').val() == infoItem.label) {
-                $.each(infoItem.aircraftTypeList, function (j, aircraftTypeItem) {
-                    if ($('#type_of_aircraft').val() == aircraftTypeItem.label) {
-                        $.each(aircraftTypeItem.fieldList, function (i, field) {
-                            processField(field);
-                        });
-                    }
-                });
-            }
-        });
-
-        $('.data').each(function (index) {
-                var input = $(this);
-                input.val(data[input.attr('name')]);
-            }
-        );
-
-        $('input[name=heightType]').each(function (index) {
-            if ($(this).val() == data["heightType"])
-                $(this).prop('checked', true);
-        });
-
-        var gps = [data["drawings"][0]["coordinates"][0]["lat"], data["drawings"][0]["coordinates"][0]["lon"]];
-
-        $('#field_gps_coord').val(gps[0] + ", "
-            + gps[1]);
-
-        var position = ol.proj.transform(gps, 'EPSG:4326', 'EPSG:21781');
-
-        setView([position[0], position[1]]);
-
-        var feature = new ol.Feature({
-            geometry: new ol.geom.Point(position)
-        });
-        source.addFeature(feature);
-
-        $.each(data["times"], function (i, time) {
-            if (i > 0) {
-                var template = $('#time_template'),
-                    clone = template
-                        .clone()
-                        .removeClass('display-none')
-                        .removeAttr('id')
-                        //.prop('required', true)
-                        .attr('data-time-index', i)
-                        .addClass('time_field')
-                        .insertBefore(template);
-
-                clone
-                    .find('[name="start"]').attr('name', 'start[' + i + ']')
-                    .prop('required', true).end()
-                    .find('[name="end"]').attr('name', 'end[' + i + ']')
-                    .prop('required', true).end();
-            }
-            $('input[name^="start[' + i + ']"]').val(time["start"].substring(0, 5));
-            $('input[name^="end[' + i + ']"]').val(time["end"].substring(0, 5));
-        });
-
-    }
-}
 
 function getFormInformation() {
     asyncRequest('GET', restUrl + '/information',
@@ -284,8 +125,7 @@ function getFormInformation() {
             informationJSON = data;
         },
         function (jqXHR) {
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
+            showErrorModal(jqXHR);
         });
 }
 
@@ -295,28 +135,11 @@ function asyncRequest(type, url, doneFunction, failFunction, data) {
         url: url,
         type: type,
         dataType: 'json',
-        data: data
+        data: data,
+        contentType: "application/json; charset=utf-8"
     })
         .done(doneFunction)
         .fail(failFunction);
-}
-
-
-function initializeDropdowns() {
-    $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/information',
-        type: 'GET',
-        dataType: 'json'
-    })
-        .done(function (json) {
-            appendSelection(json);
-            informationJSON = json;
-        })
-        .fail(function (jqXHR) {
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
-        });
 }
 
 function appendSelection(data) {
@@ -327,36 +150,51 @@ function appendSelection(data) {
     });
 }
 
-function initializeForm() {
-    getFormInformation();
-    // initializeDropdowns();
-    initializeDateRangePicker();
-    initializeTooltips();
-    initializeMap();
-    initDrawTool();
+function hideLoading() {
+    $("#icon_loading").hide();
+}
 
+function initializeForm() {
+
+    hideGeoFields();
+    hideMap();
+    hideAircraftType();
+    hideLoading();
+
+    getFormInformation();
+    initDateRangePicker();
+    initTooltips();
+    initMap();
+    initDrawTool();
+    initTelTool();
+
+    initializeChangeHandlers();
+
+
+}
+
+function initTelTool() {
     $("#input_applicant_phone").intlTelInput({
         nationalMode: true,
         initialCountry: "auto",
-        geoIpLookup: function(callback) {
-            $.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+        geoIpLookup: function (callback) {
+            $.get('https://ipinfo.io', function () {
+            }, "jsonp").always(function (resp) {
                 var countryCode = (resp && resp.country) ? resp.country : "";
                 callback(countryCode);
             });
         },
         utilsScript: "lib/utils.js"
     });
-
 }
 
-function initializeTooltips() {
+function initTooltips() {
     $('[data-toggle="tooltip"]').tooltip();
 }
 
-function initializeDateRangePicker() {
+function initDateRangePicker() {
     $(function () {
         $('input[name="dateFromUntil"]').daterangepicker({
-            //autoUpdateInput: false,
             locale: {
                 format: 'DD.MM.YYYY'
             }
@@ -364,29 +202,51 @@ function initializeDateRangePicker() {
     });
 }
 
-/**
- * Hide all custom fields.
- */
-function hideAllFields() {
-    $('#container_fields').children('div .form-group').addClass('display-none');
-    $('#container_fields').children('div .form-row').children('div .form-group').addClass('display-none');
-    $('#map-container').addClass('display-none');
-    $('#add_area_dropdown').addClass('display-none');
-    $('#draw-instructions').addClass('display-none');
-    $('#altitude_label').addClass('display-none');
-    $('#btn-add-time').addClass('display-none');
-    $('.time_field').addClass('display-none');
-
-    $('.custom-control-input').parent().addClass('display-none');
-    $('.custom-control-input').addClass('display-none');
-    $('.custom-control-input').prop('checked', false);
-    $('.custom-control-input').prop('required', false);
-
-    // empty all fields
+function resetAllInputFields() {
     $('input.data.activity-data').val('');
     $('input.data.activity-data').prop('required', false);
+}
+
+function resetRadio() {
+    $('.height-type-radio').prop('checked', false);
+    $('.height-type-radio').prop('required', false);
+}
+
+function hideGeoFields() {
+    $('.geo').hide();
+    hideMap();
+}
+
+function hideAircraftType() {
+    $('.aircraft-type').hide();
+    $('#type_of_aircraft').prop('required', false);
+    $('#type_of_aircraft').val('');
+}
+
+function hideMap() {
+    $('#map-container').hide();
+}
 
 
+function showGeoFields(fieldList) {
+    // quick hack for types without map
+    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
+        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon'
+        || $('#type_of_activity').val() === 'Firework' || $('#type_of_activity').val() === 'Captive Balloon'
+        || $('#type_of_activity').val() === 'Kite' || $('#type_of_activity').val() === 'Model Rocket'
+        || $('#type_of_activity').val() === 'Gas Balloon' || $('#type_of_activity').val() === 'Hot Air Balloon') {
+        $('.geo-map').hide();
+    } else {
+        $('.geo-map').show();
+    }
+
+    $('.geo-static').show();
+    map.updateSize();
+
+
+    $.each(fieldList, function (i, field) {
+        processField(field);
+    });
 }
 
 /**
@@ -394,7 +254,7 @@ function hideAllFields() {
  * @param field The JSON field object from /information service
  */
 function showField(field) {
-    $('#' + field.id).parent().removeClass('display-none');
+    $('#' + field.id).parent().show();
     $('#' + field.id).parent().children('label').remove();
     $('#' + field.id).parent().prepend('<label for="' + field.id + '">' + field.label + (field.mandatory ? '*' : '') + '</label>\n')
     $('#' + field.id)
@@ -406,12 +266,9 @@ function showField(field) {
 function processField(field) {
     if (field.active) {
         if (field.id.substring(0, 6) === 'radio_') {
-            $('#' + field.id).parent().removeClass('display-none');
-            $('#' + field.id).parent().parent().parent().removeClass('display-none');
+            $('#' + field.id).parent().show();
+            $('#' + field.id).parent().parent().parent().show();
             $('#' + field.id).prop('required', true);
-            // $('#' + field.id).parent().attr('title', field.tooltip);
-            initializeTooltips();
-            $('#btn-add-time').removeClass('display-none');
         }
         else {
             showField(field);
@@ -420,49 +277,43 @@ function processField(field) {
 
 }
 
-function formValidate(isValid) {
-    if (!isValid && validForm) {
-        validForm = false;
-    }
-
+function showSubmitButton() {
+    $('#btn_submit').show();
 }
 
 function validateForm() {
 
+    let isValid = true;
+
     $('.data').each(function (index, item) {
-        var isValid;
+        let validData = true;
         if ($(this).hasClass('heightType')) {
-            isValid = $('input[name=heightType]:checked').val() != undefined;
-            formValidate(isValid);
+            validData = $('input[name=heightType]:checked').val() != undefined;
             $(this).find('input').each(function () {
-                validateField($(this), isValid);
+                validateField($(this), validData);
             });
-        }else if($(this).hasClass('phone')) {
+        } else if ($(this).hasClass('phone')) {
             if ($.trim($(this).val())) {
-                if ($(this).intlTelInput("isValidNumber")) {
-                    validateField($(this), true);
-                }
-                else {
-                    validateField($(this), false);
-                    formValidate(false);
-                }
+                validData = $(this).intlTelInput("isValidNumber")
+                validateField($(this), validData);
             }
         }
         else {
-            isValid = item.checkValidity();
-            validateField($(this), isValid);
-            formValidate(isValid);
+            validData = item.checkValidity();
+            validateField($(this), validData);
             if ($(this).hasClass('time')) {
-                formValidate(validateTimes($(this)));
+                validData = validateTimes($(this));
 
             }
 
             console.log($(this).attr('id') + ": " + isValid);
             console.log($(this));
         }
+        if (!validData)
+            isValid = false;
     });
 
-// dirty hack for types without drawings
+    // quick hack for types without map
     if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
         || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon'
         || $('#type_of_activity').val() === 'Firework' || $('#type_of_activity').val() === 'Captive Balloon'
@@ -471,26 +322,12 @@ function validateForm() {
         // no map
     }
     else {
-        validateDrawings();
+        if (!validateDrawings())
+            isValid = false;
     }
 
 
-    /*  var features1 = ctr.getSource().features;
-      var features2 = source.features;
-
-      for (var i=0; i < features1.length-1; i++){
-          var feature1 = features1[i];
-          for (var j=0; j < features2.length-1; j++){
-              var feature2 = features2[j];
-              if (feature1.geometry.intersects(feature2.geometry)){
-                  console.log("vector features 1 " + i + " intersects vector features 2 " + j);
-              }
-          }
-      }
-  */
-
-
-    return validForm;
+    return isValid;
 }
 
 function checkIntersections() {
@@ -646,26 +483,40 @@ function toMeterAmsl(feature, coordinates) {
 
 function aglToAmsl(coordinates) {
     var res;
-    $.ajax({
-        crossOrigin: true,
-        url: 'https://api3.geo.admin.ch/rest/services/height?easting=' + coordinates[0] + '&northing=' + coordinates[1],
-        type: 'GET',
-        dataType: 'json',
-        async: false
-    })
-        .done(function (pos) {
+    asyncRequest('GET', heightServiceUrl + '?easting=' + coordinates[0] + '&northing=' + coordinates[1],
+        function (pos) {
             res = pos.height;
-        })
-        .fail(function (jqXHR) {
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON);
+        },
+        function (jqXHR) {
+            showErrorModal(jqXHR);
         });
+
+    /* $.ajax({
+         crossOrigin: true,
+         url: 'https://api3.geo.admin.ch/rest/services/height?easting=' + coordinates[0] + '&northing=' + coordinates[1],
+         type: 'GET',
+         dataType: 'json',
+         async: false
+     })
+         .done(function (pos) {
+             res = pos.height;
+         })
+         .fail(function (jqXHR) {
+             $('#modal-error').modal('show');
+             errorLog = JSON.stringify(jqXHR.responseJSON);
+         });*/
     return res;
 }
 
 function lv03toWgs84(coordinates) {
     var tmp = ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:21781', 'EPSG:4326');
     return [tmp[1], tmp[0]];
+}
+
+function listLv03toWgs84(coordinates) {
+    coordinates.forEach(function (item, index) {
+        gps[index] = lv03toWgs84(item);
+    });
 }
 
 function wgs84toLv03(coordinates) {
@@ -685,32 +536,31 @@ function flToMeter(fl) {
 }
 
 function validateDrawings() {
-    var isValid;
+    let isValid = true;
 
     if (source.getFeatures().length) {
 
         $('.drawing').each(function () {
+            let validData = true;
             $(this).find('.gps').each(function (index, item) {
-                formValidate(validateCoordinate($(this)) != null)
+                validData = (validateCoordinate($(this)) != null)
 
             });
-            isValid = $(this).find('.altitude')[0].checkValidity();
-            validateField($('.altitude'), isValid);
-            formValidate(isValid);
+            validData = $(this).find('.altitude')[0].checkValidity();
+            validateField($('.altitude'), validData);
 
 
             if ($(this).find('.radius').length) {
-                isValid = $(this).find('.radius')[0].checkValidity();
-                validateField($('.radius'), isValid);
-                formValidate(isValid);
-
+                validData = $(this).find('.radius')[0].checkValidity();
+                validateField($('.radius'), validData);
             }
+            if (!validData)
+                isValid = false;
         });
-        formValidate(true);
         validateMap(true);
     }
     else {
-        formValidate(false);
+        isValid = false;
         validateMap(false, 'Please draw at least one drawing.');
     }
 }
@@ -727,25 +577,39 @@ function validateMap(isValid, message) {
     }
 }
 
-function showSurvey() {
-    setTimeout(function () {
-        (function (t, e, s, o) {
-            var n, c, l;
-            t.SMCX = t.SMCX || [], e.getElementById(o) || (n = e.getElementsByTagName(s), c = n[n.length - 1], l = e.createElement(s), l.type = "text/javascript", l.async = !0, l.id = o, l.src = ["https:" === location.protocol ? "https://" : "http://", "widget.surveymonkey.com/collect/website/js/tRaiETqnLgj758hTBazgdyWCzZc0WCTHJj5wcZa9Sy55DklTrOQ9l8n_2F2szZz4B9.js"].join(""), c.parentNode.insertBefore(l, c))
-        })
-        (window, document, "script", "smcx-sdk");
-    }, 2000);
+function showAircraftType(activityType) {
+    $('.aircraft-type').show();
+
+    // remove all options and append default text
+    $('#type_of_aircraft').find('option').remove().end().append("<option value>Select the aircraft type</option>");
+
+    // append all aircraft types
+    $.each(activityType.aircraftTypeList, function (i, aircraftType) {
+        $('#type_of_aircraft').append($('<option>', {
+            text: aircraftType.label
+        }));
+    });
+
+    $('#type_of_aircraft').prop('required', true);
 }
 
 function initializeChangeHandlers() {
 
+// prevent enter for submission
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
+    });
 
     $(document).on('click', '#btn_submit', function (event) {
         event.preventDefault();
         event.stopPropagation();
 
-        validForm = true;
         if (validateForm()) {
+            $('#form-feedback').hide();
             submitApplication();
         }
         else {
@@ -753,11 +617,6 @@ function initializeChangeHandlers() {
             $('#form-feedback').show();
         }
 
-    });
-
-    $(document).on('click', '#btn-try-again', function () {
-        $('#modal-error').modal('hide');
-        submitApplication();
     });
 
     $(document).on('change', '#check-layer-icao', function () {
@@ -790,25 +649,6 @@ function initializeChangeHandlers() {
         }
     });
 
-    $(document).on('click', '.btn-another-entry', function () {
-        $('#modal-success-nosua').modal('hide');
-        $('#submit_success').modal('hide');
-        $('#type_of_activity').val("");
-        $('#textfield_remark').val("");
-        $('#type_of_aircraft').parent().hide()
-        $('#type_of_aircraft').prop('required', false);
-        $('#type_of_aircraft').val('');
-        $('#type_of_activity').removeClass('is-invalid');
-        $('#type_of_activity').removeClass('is-valid');
-        $('#textfield_remark').removeClass('is-invalid');
-        $('#textfield_remark').removeClass('is-valid');
-        $('#type_of_aircraft').removeClass('is-invalid');
-        $('#type_of_aircraft').removeClass('is-valid');
-        hideAllFields();
-        emptyForm();
-    });
-
-
     $(document).on('click', '#btn-send-altitude', function () {
         if ($('#input-altitude')[0].checkValidity()) {
             $('#drawing' + drawingIndex).find('.altitude').val($('#input-altitude').val());
@@ -823,7 +663,7 @@ function initializeChangeHandlers() {
         $(location).attr('href', 'mailto:marco.ghilardelli@students.fhnw.ch?subject='
             + encodeURIComponent("Report Problem: Skyguide Web Application")
             + "&body="
-            + encodeURIComponent(errorLog)
+            + encodeURIComponent($('#btn-report').attr('error-log'))
         );
     });
 
@@ -834,7 +674,6 @@ function initializeChangeHandlers() {
             if ($(this).hasClass('time')) {
                 validateTimes($(this));
             }
-
         }
     });
 
@@ -863,14 +702,13 @@ function initializeChangeHandlers() {
         });
     });
 
-    $(document).on('keyup', '#input_applicant_phone', function() {
+    $(document).on('keyup', '#input_applicant_phone', function () {
         if ($.trim($(this).val())) {
             if ($(this).intlTelInput("isValidNumber")) {
                 validateField($(this), true);
             }
             else {
                 validateField($(this), false);
-                formValidate(false);
             }
         }
     });
@@ -878,61 +716,20 @@ function initializeChangeHandlers() {
 
     $(document).on('change', '#type_of_activity', function () {
         emptyForm();
-        hideAllFields();
-
-
-        // and hide the aircraft type selection and empty value
-        $('#type_of_aircraft').parent().hide()
-        $('#type_of_aircraft').prop('required', false);
-        $('#type_of_aircraft').val('');
+        hideGeoFields();
+        hideAircraftType();
 
         $.each(informationJSON, function (j, activityType) {
             if ($('#type_of_activity').val() == activityType.label) {
                 // it's a activity type with multiple aircraft type
                 if (activityType.aircraftTypeList.length > 1) {
-                    actualAircraftTypeList = activityType.aircraftTypeList;
-
-                    // show the dropdown
-                    $('#type_of_aircraft').parent().show();
-
-
-                    // remove all options and append default text
-                    $('#type_of_aircraft').find('option').remove().end().append("<option value>Select the aircraft type</option>");
-
-                    // append all aircraft types
-                    $.each(activityType.aircraftTypeList, function (i, aircraftType) {
-                        $('#type_of_aircraft').append($('<option>', {
-                            text: aircraftType.label
-                        }));
-                    });
-
-                    $('#type_of_aircraft').prop('required', true);
+                    aircraftTypes = activityType.aircraftTypeList;
+                    showAircraftType(activityType);
                 }
                 else {
+                    showGeoFields(activityType.aircraftTypeList[0].fieldList);
 
-                    // things showed anytime
-                    $('#map-container').removeClass('display-none');
-                    $('#add_area_dropdown').removeClass('display-none');
-                    $('#draw-instructions').removeClass('display-none');
-                    $('#altitude_label').removeClass('display-none');
 
-                    // dirty hack for types without drawings
-                    if ($('#type_of_activity').val() === 'Sky Lantern' || $('#type_of_activity').val() === 'Toy Balloon'
-                        || $('#type_of_activity').val() === 'Sky Light / Laser' || $('#type_of_activity').val() === 'Weather Balloon'
-                        || $('#type_of_activity').val() === 'Firework' || $('#type_of_activity').val() === 'Captive Balloon'
-                        || $('#type_of_activity').val() === 'Kite' || $('#type_of_activity').val() === 'Model Rocket'
-                        || $('#type_of_activity').val() === 'Gas Balloon' || $('#type_of_activity').val() === 'Hot Air Balloon') {
-                        $('#map-container').addClass('display-none');
-                        $('#add_area_dropdown').addClass('display-none');
-                        $('#draw-instructions').addClass('display-none');
-                    }
-                    map.updateSize();
-                    // add time button
-                    $('#btn-add-time').removeClass('display-none');
-
-                    $.each(activityType.aircraftTypeList[0].fieldList, function (i, field) {
-                        processField(field);
-                    });
                 }
             }
         });
@@ -940,19 +737,11 @@ function initializeChangeHandlers() {
 
     $(document).on('change', '#type_of_aircraft', function () {
         emptyForm();
-        hideAllFields();
+        hideGeoFields();
 
-        $.each(actualAircraftTypeList, function (i, aircraftType) {
+        $.each(aircraftTypes, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
-                $('#map-container').removeClass('display-none');
-                $('#add_area_dropdown').removeClass('display-none');
-                $('#draw-instructions').removeClass('display-none');
-                $('#altitude_label').removeClass('display-none');
-                map.updateSize();
-                $('#btn-add-time').removeClass('display-none');
-                $.each(aircraftType.fieldList, function (i, field) {
-                    processField(field);
-                });
+                showGeoFields(aircraftType.fieldList);
             }
         });
 
@@ -963,12 +752,11 @@ function initializeChangeHandlers() {
         var template = $('#time_template'),
             clone = template
                 .clone()
-                .removeClass('display-none')
                 .removeAttr('id')
                 //.prop('required', true)
                 .attr('data-time-index', timeIndex)
                 .addClass('time_field')
-                .insertBefore(template);
+                .insertBefore(template.parent());
 
         clone
             .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
@@ -982,8 +770,6 @@ function initializeChangeHandlers() {
 
     $(document).on('click', '.remove_time_button', function () {
         var row = $(this).parents('.form-row');
-
-        // Remove element containing the option
         row.remove();
     });
 
@@ -995,20 +781,20 @@ function initializeChangeHandlers() {
         if (source.getFeatureById(drawingId))
             source.removeFeature(source.getFeatureById(drawingId));
         drawingDiv.remove();
+        resetMap();
     });
 
 
     $(document).on('click', '#add_polygon_btn', function () {
-        addPolygonDrawingDiv();
+        addDrawingDiv('Polygon');
     });
 
     $(document).on('click', '#add_circle_btn', function () {
-        addCircleDrawingDiv();
-
+        addDrawingDiv('Circle');
     });
 
     $(document).on('click', '#add_path_btn', function () {
-        addPathDrawingDiv();
+        addDrawingDiv('Path');
     });
 
     $(document).on('click', '.add_coordinate_path_polygon', function () {
@@ -1090,12 +876,10 @@ function setDrawButtonActive(button, type) {
     });
     button.css("background", "rgba(41, 128, 196, 0.95)");
     if (type != "Modify") {
-        $('#map-instructions-title').text("Drawing " + type + "!");
-        $('#map-instructions-text').text("You can now start drawing by clicking into the map at the desired point.");
+        showInstruction("You can now start drawing by clicking into the map at the desired point.","Drawing " + type + "!");
     }
     else {
-        $('#map-instructions-title').text("Modify!");
-        $('#map-instructions-text').text("Select a drawing you want to modify by clicking on it.");
+        showInstruction("Select a drawing you want to modify by clicking on it.","Modify!");
     }
 }
 
@@ -1179,6 +963,24 @@ function updateDrawings(drawingId, drawingDiv) {
 
 }
 
+function removeTimeFields() {
+    $('.time_field').remove();
+}
+
+function resetMap() {
+    setMapView(centerPos, 400);
+}
+
+function clearMap() {
+    // remove drawings
+    source.clear();
+    $('.drawing').each(function () {
+        $(this).remove();
+    });
+    drawingIndex = 0;
+    resetMap();
+}
+
 function emptyForm() {
     $('#container_fields').find('input').each(function () {
         $(this).removeClass('is-invalid');
@@ -1190,25 +992,10 @@ function emptyForm() {
         }
 
     });
-    // remove times
-    $('.time_field').remove();
-
-    // remove drawings
-    source.clear();
-    $('.drawing').each(function () {
-        $(this).remove();
-    })
-    drawingIndex = 0;
-
-    // set Map projection
-    var lat = 46.81;
-    var lon = 8.31;
-
-    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
-
-    map.getView().setCenter(loc);
-    map.getView().setResolution(400);
+    removeTimeFields();
+    resetMap();
 }
+
 
 function validateRadius(field) {
     var isValid = field.val() > 0 && field.val() <= 500;
@@ -1216,12 +1003,44 @@ function validateRadius(field) {
     return isValid;
 }
 
+function addDrawingDiv(type) {
+    drawingIndex++;
+    var template;
+    if (type === 'Path') {
+        template = $('#path_template');
+    } else if (type === 'Circle') {
+        template = $('#circle_template');
+    } else if (type === 'Polygon') {
+        template = $('#polygon_template');
+    }
+
+    var clone = template
+        .clone()
+        .addClass('drawing')
+        .attr('id', 'drawing' + drawingIndex)
+        //.prop('required', true)
+        // .attr('data-drawing-index', drawingIndex)
+        .prepend('<div class="row"><div class="col-md-2">' +
+            '<h3>' + type + ' ' + drawingIndex + '</h3></div>' +
+            '<div class="col-md-2"><button tabindex="-1" type="button" class="btn btn-primary btn-red-sky mini remove-drawing">' +
+            'Remove</button></div></div>');
+
+
+    clone.find('.altitude').addClass('data');
+    clone.find('input').prop('required', true);
+
+    clone.insertBefore($('#map-container'));
+
+
+    return drawingIndex;
+}
+
+/*
 function addPathDrawingDiv() {
     drawingIndex++;
     var template = $('#path_template'),
         clone = template
             .clone()
-            .removeClass('display-none')
             .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
@@ -1246,7 +1065,6 @@ function addPolygonDrawingDiv() {
     var template = $('#polygon_template'),
         clone = template
             .clone()
-            .removeClass('display-none')
             .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
@@ -1269,7 +1087,6 @@ function addCircleDrawingDiv() {
     var template = $('#circle_template'),
         clone = template
             .clone()
-            .removeClass('display-none')
             .addClass('drawing')
             .attr('id', 'drawing' + drawingIndex)
             //.prop('required', true)
@@ -1284,13 +1101,12 @@ function addCircleDrawingDiv() {
     clone.insertBefore($('#map-container'));
 
     return drawingIndex;
-}
+}*/
 
 function addCoordinateField(drawingDiv) {
     var template = $('#coordinate_path_polygon_template'),
         clone = template
             .clone()
-            .removeClass('display-none')
             .removeAttr('id')
             .insertAfter(drawingDiv.children().last());
 
@@ -1393,7 +1209,6 @@ function validateCoordinate(field) {
         // Match LV95
         if (ol.extent.containsCoordinate(extent, position)) {
             position = roundCoordinates(position);
-
         }
 
         // Match decimal notation EPSG:4326
@@ -1406,44 +1221,42 @@ function validateCoordinate(field) {
                 defaultEpsg);
             if (ol.extent.containsCoordinate(extent, position)) {
                 position = roundCoordinates(position);
-
             }
         }
 
-        // Match LV03 coordinates
-        $.ajax({
-            crossOrigin: true,
-            url: 'http://geodesy.geo.admin.ch/reframe/lv03tolv95?easting=' + position[0] + '&northing=' + position[1],
-            type: 'GET',
-            dataType: 'json'
-        })
-            .done(function (pos) {
+        asyncRequest('GET', lv03toLv95Url + '?easting=' + position[0] + '&northing=' + position[1],
+            function (pos) {
                 if (ol.extent.containsCoordinate(extent, pos)) {
                     position = roundCoordinates(pos);
                 }
-            })
-            .fail(function (jqXHR) {
-
-                $('#modal-error').modal('show');
-                errorLog = JSON.stringify(jqXHR.responseJSON);
-
+            },
+            function (jqXHR) {
+                showErrorModal(jqXHR);
             });
 
+        // Match LV03 coordinates
+        /*  $.ajax({
+              crossOrigin: true,
+              url: 'http://geodesy.geo.admin.ch/reframe/lv03tolv95?easting=' + position[0] + '&northing=' + position[1],
+              type: 'GET',
+              dataType: 'json'
+          })
+              .done(function (pos) {
+                  if (ol.extent.containsCoordinate(extent, pos)) {
+                      position = roundCoordinates(pos);
+                  }
+              })
+              .fail(function (jqXHR) {
+
+                  $('#modal-error').modal('show');
+                  errorLog = JSON.stringify(jqXHR.responseJSON);
+
+              });*/
+
     }
 
-    if (position != null) {
-        field.addClass('is-valid');
-        field.removeClass('is-invalid');
-        //var gps = ol.proj.transform(position, 'EPSG:21781', 'EPSG:4326');
-        //return {"lat": gps[1], "lon": gps[0]};
-        return position;
-
-    }
-    field.addClass('is-invalid');
-    field.removeClass('is-valid');
-
-
-    return null;
+    validateField(field, position != null);
+    return position;
 }
 
 function styleDrawing(feature, id) {
@@ -1519,31 +1332,13 @@ function initDrawTool() {
 
             selectedFeatures.on('remove', function (e) {
                 styleDrawing(e.element, e.element.getId().split('drawing')[1]);
-                $('#map-instructions-text').text("Select a drawing you want to modify by clicking on it.");
+                showInstruction("Select a drawing you want to modify by clicking on it.");
             });
 
-            /*   this.select.on('select', function (evt) {
-                   var selected = evt.selected;
-                   var deselected = evt.deselected;
-
-                   if (selected.length) {
-                       selected.forEach(function (feature) {
-                           console.info(feature);
-                           feature.setStyle(style_modify);
-                       });
-                   }
-                   else {
-                       deselected.forEach(function (feature) {
-                           console.info(feature);
-                           styleDrawing(feature, feature.getId().split('drawing')[1]);
-                       });
-                   }
-
-               })*/
             selectedFeatures.on('add', function (e) {
                 styleModify(e.element);
 
-                $('#map-instructions-text').text("Now you can drag a point. You can add a Point by dragging on a line. Remove a point by only click on it.");
+                showInstruction("Now you can drag a point. You can add a Point by dragging on a line. Remove a point by only click on it.")
 
                 e.element.on('change', function (e) {
 
@@ -1556,23 +1351,14 @@ function initDrawTool() {
 
 
                         if (drawingDiv.hasClass('polygon')) {
-                            geometry[0].forEach(function (item, index) {
-                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
-                            });
+                            listLv03toWgs84(geometry[0]);
 
                             // remove last duplicate of first coordinate
                             gps.splice(gps.length - 1, 1);
                         }
 
-                        else if (drawingDiv.hasClass('path')) {
-                            geometry.forEach(function (item, index) {
-                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
-                            });
-
-                        } else if (drawingDiv.hasClass('circle') && coordinates.length > 0) {
-                            geometry.forEach(function (item, index) {
-                                gps[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
-                            });
+                        else if (drawingDiv.hasClass('path') || drawingDiv.hasClass('circle') && coordinates.length > 0) {
+                            listLv03toWgs84(geometry);
                         }
 
                         while (gps.length > drawingDiv.find('.gps').length)
@@ -1580,7 +1366,7 @@ function initDrawTool() {
 
                         $(drawingDiv).find('.gps').each(function (index) {
                             if (gps[index] != undefined)
-                                $(this).val(parseFloat((gps[index][1]).toFixed(3)) + ', ' + parseFloat((gps[index][0]).toFixed(3)));
+                                $(this).val(parseFloat((gps[index][0]).toFixed(3)) + ', ' + parseFloat((gps[index][1]).toFixed(3)));
                             else if (validateCoordinate($(this)))
                                 removeCoordinateField($(this).parent().parent());
                         });
@@ -1596,7 +1382,6 @@ function initDrawTool() {
     };
 
     Modify.init();
-
 
     Draw = {
         init: function () {
@@ -1628,7 +1413,6 @@ function initDrawTool() {
             source: vector.getSource(),
             type: 'Circle'
         }),
-        // new ol.interaction.DragBox({
         Rectangle: new ol.interaction.Draw({
             source: vector.getSource(),
             type: 'LineString',
@@ -1661,151 +1445,40 @@ function initDrawTool() {
             }
         },
         setEvents: function () {
-            var listener;
             this.Path.on('drawstart', function (evt) {
-                $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point.")
-                createMeasureTooltip();
-                // set sketch
-                sketch = evt.feature;
 
-                /** @type {ol.Coordinate|undefined} */
-                var tooltipCoord = evt.coordinate;
-
-                listener = sketch.getGeometry().on('change', function (evt) {
-                    var geom = evt.target;
-                    var coords = sketch.getGeometry().getCoordinates();
-                    var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
-                    var length = parseInt(line.getLength()) / 1000;
-
-                    tooltipCoord = geom.getLastCoordinate();
-                    measureTooltipElement.innerHTML = length + " km";
-                    measureTooltip.setPosition(tooltipCoord);
-                });
-
+                updateMeasureTooltip(evt.feature, evt.coordinate, 'Path');
+                showInstruction('You can now add as many points as you want by clicking again at a position.\n' +
+                    'To close your drawing, double click at this point.');
             });
             this.Path.on('drawend', function (evt) {
-                var drawingId = addPathDrawingDiv();
-                styleDrawing(evt.feature, drawingId);
-                fillDrawingPathDiv(evt.feature, drawingId);
-                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#input-altitude').removeClass("is-invalid");
-                $('#input-altitude').removeClass("is-valid");
-                $('#input-altitude').val("");
-                $('#input-altitude').trigger('focus');
-                $('#modal-altitude').modal('show');
-                $('#height-type').text($('input[name=heightType]:checked').val());
-                $('#map-instructions-title').text("Created Path!");
-                $('#map-instructions-text').text("You finally added a new Path to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+                addDrawing(evt.feature, 'Path');
             });
             this.Polygon.on('drawstart', function (evt) {
-                $('#map-instructions-text').text("You can now add as many points as you want by clicking again at a position.\nTo close your drawing, double click at this point or click on the start point.")
-                createMeasureTooltip();
-                // set sketch
-                sketch = evt.feature;
-
-                /** @type {ol.Coordinate|undefined} */
-                var tooltipCoord = evt.coordinate;
-
-                listener = sketch.getGeometry().on('change', function (evt) {
-                    var geom = evt.target;
-                    var coords = sketch.getGeometry().getCoordinates()[0];
-                    var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
-                    var length = parseInt(line.getLength()) / 1000;
-
-                    tooltipCoord = geom.getLastCoordinate();
-                    measureTooltipElement.innerHTML = length + " km";
-                    measureTooltip.setPosition(tooltipCoord);
-                });
-
+                updateMeasureTooltip(evt.feature, evt.coordinate, 'Polygon');
+                showInstruction('You can now add as many points as you want by clicking again at a position.\n' +
+                    'To close your drawing, double click at this point.');
             });
             this.Polygon.on('drawend', function (evt) {
-                var drawingId = addPolygonDrawingDiv();
-                styleDrawing(evt.feature, drawingId);
-                fillDrawingPolygonDiv(evt.feature, drawingId);
-                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#input-altitude').removeClass("is-invalid");
-                $('#input-altitude').removeClass("is-valid");
-                $('#input-altitude').val("");
-                $('#height-type').text($('input[name=heightType]:checked').val());
-                $('#modal-altitude').modal('show');
-                $('#map-instructions-title').text("Created Polygon!");
-                $('#map-instructions-text').text("You finally added a new Polygon to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
-
+                addDrawing(evt.feature, 'Polygon');
             });
             this.Circle.on('drawstart', function (evt) {
-
-                $('#map-instructions-text').text("You can now set the Circle's radius .\nTo set it you can click at that position.");
-                createMeasureTooltip();
-                // set sketch
-                sketch = evt.feature;
-
-                /** @type {ol.Coordinate|undefined} */
-                var tooltipCoord = evt.coordinate;
-
-                listener = sketch.getGeometry().on('change', function (evt) {
-                    var geom = evt.target;
-                    var radius = parseInt(sketch.getGeometry().getRadius());
-                    if (radius > 500)
-                        measureTooltipElement.classList.add("radius-invalid");
-                    else
-                        measureTooltipElement.classList.remove("radius-invalid");
-
-                    tooltipCoord = geom.getLastCoordinate();
-                    measureTooltipElement.innerHTML = radius + " m";
-                    measureTooltip.setPosition(tooltipCoord);
-                });
-
+                updateMeasureTooltip(evt.feature, evt.coordinate, 'Circle');
+                showInstruction('Click at the point you want to finish your Circle.');
             });
             this.Circle.on('drawend', function (evt) {
-                var drawingId = addCircleDrawingDiv();
-                styleDrawing(evt.feature, drawingId);
-                fillDrawingCircleDiv(evt.feature, drawingId);
-                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-                $('#input-altitude').removeClass("is-invalid");
-                $('#input-altitude').removeClass("is-valid");
-                $('#input-altitude').val("");
-                $('#height-type').text($('input[name=heightType]:checked').val());
-
-                $('#modal-altitude').modal('show');
-                $('#map-instructions-title').text("Created Circle!");
-                $('#map-instructions-text').text("You finally added a new Circle to your drawings.\nYou can modify it in the fields above.");
+                addDrawing(evt.feature, 'Circle');
             });
             this.Rectangle.on('drawstart', function (evt) {
-                $('#map-instructions-text').text("You can set your Rectangle by clicking at the desired end point.");
-                createMeasureTooltip();
-                // set sketch
-                sketch = evt.feature;
-
-                /** @type {ol.Coordinate|undefined} */
-                var tooltipCoord = evt.coordinate;
-
-                listener = sketch.getGeometry().on('change', function (evt) {
-                    var geom = evt.target;
-                    var area = parseInt(geom.getArea() / 1000) / 1000;
-                    tooltipCoord = geom.getLastCoordinate();
-                    measureTooltipElement.innerHTML = area + " km&sup2;";
-                    measureTooltip.setPosition(tooltipCoord);
-                });
+                updateMeasureTooltip(evt.feature, evt.coordinate, 'Rectangle')
+                showInstruction("You can set your Rectangle by clicking at the desired end point.");
             });
             this.Rectangle.on('drawend', function (evt) {
-                var drawingId = addPolygonDrawingDiv();
-                styleDrawing(evt.feature, drawingId);
-                fillDrawingPolygonDiv(evt.feature, drawingId);
-                measureTooltipElement.parentNode.removeChild(measureTooltipElement);
-
-                $('#input-altitude').removeClass("is-invalid");
-                $('#input-altitude').removeClass("is-valid");
-                $('#input-altitude').val("");
-                $('#height-type').text($('input[name=heightType]:checked').val());
-
-                $('#modal-altitude').modal('show');
-                $('#map-instructions-title').text("Created Rectangle!");
-                $('#map-instructions-text').text("You finally added a new Rectangle to your drawings.\nYou can modify it with the Modify tool or in the fields above.");
+                addDrawing(evt.feature, 'Polygon');
             });
         }
     };
     Draw.init();
-
 
     Modify.setActive(false);
 
@@ -1815,27 +1488,119 @@ function initDrawTool() {
     map.addInteraction(snap);
 }
 
-function fillDrawingPolygonDiv(feature, drawingId) {
-    feature.setId("drawing" + drawingId);
-    var coordinates = feature.getGeometry().getCoordinates()[0];
-    var drawingDiv = $('#drawing' + drawingId);
+function updateMeasureTooltip(feature, tooltipCoord, type) {
 
-    coordinates.splice(coordinates.length - 1, 1);
+    createMeasureTooltip();
+
+    feature.getGeometry().on('change', function (evt) {
+        var geom = evt.target;
+        let tooltipText;
+        if (type === 'Circle') {
+            var radius = parseInt(feature.getGeometry().getRadius());
+            if (radius > 500)
+                measureTooltipElement.classList.add("radius-invalid");
+            else
+                measureTooltipElement.classList.remove("radius-invalid");
+
+            tooltipText = radius + " m";
+
+        } else if (type === 'Rectangle') {
+            var area = parseInt(geom.getArea() / 1000) / 1000;
+            tooltipText = area + " km&sup2;";
+        } else {
+            var coords;
+            if (type === 'Polygon') {
+                coords = feature.getGeometry().getCoordinates()[0];
+            }
+            else {
+                coords = feature.getGeometry().getCoordinates();
+            }
+
+            var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
+            var length = parseInt(line.getLength()) / 1000;
+
+            tooltipText = length + " km";
+        }
+
+        measureTooltipElement.innerHTML = tooltipText;
+        tooltipCoord = geom.getLastCoordinate();
+        measureTooltip.setPosition(tooltipCoord);
+    });
+}
+
+function showAltitudeModal() {
+    resetInputField($('#input-altitude'));
+    $('#modal-altitude').modal('show');
+    $('#height-type').text($('input[name=heightType]:checked').val());
+}
+
+function resetInputField(field) {
+    resetInputValidation(field);
+    field.val("");
+}
+
+function resetInputValidation(field) {
+    field.removeClass("is-invalid");
+    field.removeClass("is-valid");
+}
+
+function showInstruction(text, title) {
+    $('#map-instructions-text').text(text);
+    if (title !== undefined)
+        $('#map-instructions-title').text(title);
+}
+
+function addDrawing(feature, type) {
+    const drawingId = addDrawingDiv(type);
+    styleDrawing(feature, drawingId);
+    feature.setId("drawing" + drawingId);
+
+    fillDrawingDiv(feature, drawingId, type)
+
+    measureTooltipElement.parentNode.removeChild(measureTooltipElement);
+    showAltitudeModal();
+
+    showInstruction('You finally added a new ' + type + ' to your drawings.\nYou can modify it with the ' +
+        (type !== 'Circle' ? 'Modify tool or ' : '') + 'in the fields above.', 'Created ' + type + '!');
+}
+
+function fillDrawingDiv(feature, drawingId, type) {
+
+    var drawingDiv = $('#drawing' + drawingId);
+    var coordinates;
+    var radius;
+
+    if (type === 'Polygon') {
+        coordinates = feature.getGeometry().getCoordinates()[0];
+        coordinates.splice(coordinates.length - 1, 1);
+    } else if (type === 'Path') {
+        coordinates = feature.getGeometry().getCoordinates();
+    } else if (type === 'Circle') {
+        coordinates = [feature.getGeometry().getCenter()];
+        radius = parseInt(feature.getGeometry().getRadius());
+    }
+
     while (drawingDiv.find('.gps').length < coordinates.length)
         addCoordinateField(drawingDiv);
 
     coordinates.forEach(function (item, index) {
-        coordinates[index] = ol.proj.transform(item, 'EPSG:21781', 'EPSG:4326');
+        coordinates[index] = lv03toWgs84(item);
     });
 
     drawingDiv.find('.gps').each(function (index) {
-        $(this).val(parseFloat((coordinates[index][1]).toFixed(3)) + ', ' + parseFloat((coordinates[index][0]).toFixed(3)));
+        $(this).val(parseFloat((coordinates[index][0]).toFixed(3)) + ', ' + parseFloat((coordinates[index][1]).toFixed(3)));
         validateCoordinate($(this));
     });
+
+    drawingDiv.find('.radius').val(radius);
+    validateRadius(drawingDiv.find('.radius'));
+
+    // return drawingId;
 }
 
+/*
 function fillDrawingPathDiv(feature, drawingId) {
-    feature.setId("drawing" + drawingId);
+    //  feature.setId("drawing" + drawingId);
     var coordinates = feature.getGeometry().getCoordinates();
     var drawingDiv = $('#drawing' + drawingId);
 
@@ -1865,7 +1630,7 @@ function fillDrawingCircleDiv(feature, drawingId) {
     drawingDiv.find('.radius').val(radius);
     validateRadius(drawingDiv.find('.radius'));
     validateCoordinate(drawingDiv.find('.gps'));
-}
+}*/
 
 function setLayerVisible(layerIndex, isVisible) {
     //  map.getLayers()[layerIndex].setVisible(isVisible);
@@ -1886,14 +1651,7 @@ function cleanUpKml(layer) {
     });
 }
 
-function initializeMap() {
-
-    $('#map-instructions').hide();
-    // default center position
-    var lat = 46.81;
-    var lon = 8.31;
-
-    var loc = ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:21781');
+function initMap() {
 
     map = new ga.Map({
 
@@ -1907,7 +1665,6 @@ function initializeMap() {
             tma,
             ctr,
             vector,
-            intersectionLayer
         ],
         crossOrigin: 'null',
 
@@ -1916,35 +1673,32 @@ function initializeMap() {
 
     });
 
-    map.getView().setCenter(loc);
-    map.getView().setResolution(400);
-
+    resetMap();
     setLayerVisible(1, false);
 
 }
 
-function setView(loc) {
-    map.getView().setCenter(loc);
-    map.getView().setResolution(50);
+function setMapView(gps, res) {
+    map.getView().setCenter(wgs84toLv03(gps));
+    map.getView().setResolution(res);
 }
 
-function submitApplication() {
-    $("#icon_loading").show();
-    $('#form-feedback').hide();
-
-    var data = {};
+function getAllInputData() {
+    let arr = {};
 
     $('.data').each(
         function (index) {
-            if (!$(this).hasClass('time') && !$(this).hasClass('altitude')&& !$(this).hasClass('phone')) {
+            if (!$(this).hasClass('time') && !$(this).hasClass('altitude') && !$(this).hasClass('phone')) {
                 var input = $(this);
-                data[input.attr('name')] = input.val();
+                arr[input.attr('name')] = input.val();
             }
         }
     );
 
-    data["heightType"] = $('input[name=heightType]:checked').val();
+    return arr;
+}
 
+function getTimes() {
     // get the time ranges
     var startArray = [];
     var endArray = [];
@@ -1964,11 +1718,10 @@ function submitApplication() {
         times.push({"start": startArray[i], "end": endArray[i]});
     });
 
-    data['times'] = times;
-    //data['drawings'] = drawings;
+    return times;
+}
 
-    data['phone'] = $('#input_applicant_phone').intlTelInput("getNumber");
-
+function getDrawings() {
     var drawings = [];
 
     var i = 1;
@@ -2005,7 +1758,19 @@ function submitApplication() {
 
     });
 
-    data['drawings'] = drawings;
+    return drawings;
+}
+
+function submitApplication() {
+    $("#icon_loading").show();
+    var data = {};
+
+    data = getAllInputData();
+    data['times'] = getTimes();
+    data['drawings'] = getDrawings();
+    data["heightType"] = $('input[name=heightType]:checked').val();
+    data['phone'] = $('#input_applicant_phone').intlTelInput("getNumber", intlTelInputUtils.numberFormat.INTERNATIONAL);
+    data['filltime'] = (new Date() - startTime) / 1000; // seconds
 
     if (data['heightType'] == undefined)
         data['heightType'] = 'none';
@@ -2013,38 +1778,58 @@ function submitApplication() {
     if (data['aircraftType'] == '')
         data['aircraftType'] = 'none';
 
-    data['filltime'] = (new Date() - startTime)/1000; // seconds
-
     console.log(data);
 
-// submit to server
-    $.ajax({
-        crossOrigin: true,
-        url: restUrl + '/applications',
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
-        dataType: 'json'
-    })
-        .done(function (json) {
-                console.log(json);
-                $("#icon_loading").hide();
-                if (checkIntersections()) {
-                    $('#submit_success').modal('show');
-                }
-                else {
-                    // no need of SUA
-                    $('#modal-success-nosua').modal('show');
-
-                }
-
-            }
-        )
-        .fail(function (jqXHR) {
+    asyncRequest('POST', restUrl + '/applications',
+        function (json) {
+            console.log(json);
             $("#icon_loading").hide();
-            $('#modal-error').modal('show');
-            errorLog = JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data);
-        });
+            if (checkIntersections()) {
+                $('#submit_success').modal('show');
+            }
+            else {
+                // no need of SUA
+                $('#modal-success-nosua').modal('show');
+            }
+        },
+        function (jqXHR) {
+            showErrorModal(jqXHR, data);
+        },
+        JSON.stringify(data));
+
+// submit to server
+    /*  $.ajax({
+          crossOrigin: true,
+          url: restUrl + '/applications',
+          type: 'POST',
+          contentType: "application/json; charset=utf-8",
+          data: JSON.stringify(data),
+          dataType: 'json'
+      })
+          .done(function (json) {
+                  console.log(json);
+                  $("#icon_loading").hide();
+                  if (checkIntersections()) {
+                      $('#submit_success').modal('show');
+                  }
+                  else {
+                      // no need of SUA
+                      $('#modal-success-nosua').modal('show');
+
+                  }
+
+              }
+          )
+          .fail(function (jqXHR) {
+              $("#icon_loading").hide();
+              $('#modal-error').modal('show');
+              errorLog = JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data);
+          });*/
+}
+
+function showErrorModal(jqXHR, data) {
+    $('#modal-error').modal('show');
+    $('#btn-report').attr('error-log', JSON.stringify(jqXHR.responseJSON) + "\n" + JSON.stringify(data));
 }
 
 //validate time and its range
