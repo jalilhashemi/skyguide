@@ -245,9 +245,9 @@ public class ActivityTypeService {
         defaultHotAirBalloonActivityType.getFieldList().add(timeScheduleUntilFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultHotAirBalloonActivityType.getFieldList().add(locationFieldMandatory);
-        defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFieldMandatory);
+        defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFieldInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFlRadioInactive);
-        defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioActive);
+        defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeFtGndRadioInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultHotAirBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
@@ -272,9 +272,9 @@ public class ActivityTypeService {
         defaultGasBalloonActivityType.getFieldList().add(timeScheduleUntilFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(durationFieldMandatory);
         defaultGasBalloonActivityType.getFieldList().add(locationFieldMandatory);
-        defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFieldMandatory);
+        defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFieldInactive);
         defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFlRadioInactive);
-        defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioActive);
+        defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFtAmslRadioInactive);
         defaultGasBalloonActivityType.getFieldList().add(heightAltitudeFtGndRadioInactive);
         defaultGasBalloonActivityType.getFieldList().add(heightAltitudeMGndRadioInactive);
         defaultGasBalloonActivityType.getFieldList().add(beamDirectionFieldInactive);
