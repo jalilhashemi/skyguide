@@ -658,7 +658,7 @@ function validateForm() {
         // no map
     }
     else {
-        if (!validateDrawings())
+        if (!validateAllDrawings())
             isValid = false;
     }
 
@@ -666,37 +666,52 @@ function validateForm() {
     return isValid;
 }
 
+
+function validateDrawing(drawingId) {
+    let isValid = true;
+
+    const drawingDiv = $('#' + drawingId);
+
+    let validData = true;
+    drawingDiv.find('.gps').each(function (index, item) {
+        validData = (validateCoordinate($(this)) != null)
+
+    });
+    validData = drawingDiv.find('.altitude')[0].checkValidity();
+    validateField(drawingDiv.find('.altitude'), validData);
+
+
+    if (drawingDiv.find('.radius').length) {
+        validData = drawingDiv.find('.radius')[0].checkValidity();
+        validateField(drawingDiv.find('.radius'), validData);
+    }
+    if (!validData)
+        isValid = false;
+
+
+    return isValid;
+}
+
+
 /**
  * Check the valid state of all drawings.
  */
-function validateDrawings() {
+function validateAllDrawings() {
     let isValid = true;
 
-    if (source.getFeatures().length) {
-
-        $('.drawing').each(function () {
-            let validData = true;
-            $(this).find('.gps').each(function (index, item) {
-                validData = (validateCoordinate($(this)) != null)
-
-            });
-            validData = $(this).find('.altitude')[0].checkValidity();
-            validateField($('.altitude'), validData);
-
-
-            if ($(this).find('.radius').length) {
-                validData = $(this).find('.radius')[0].checkValidity();
-                validateField($('.radius'), validData);
-            }
-            if (!validData)
-                isValid = false;
-        });
-        validateMap(true);
-    }
-    else {
+    if (!source.getFeatures().length) {
         isValid = false;
         validateMap(false, 'Please draw at least one drawing.');
     }
+
+    let validDrawing = true;
+    $('.drawing').each(function () {
+        validDrawing = validateDrawing($(this).attr('id'));
+        if (!validDrawing)
+            isValid = false;
+    });
+    validateMap(isValid);
+
 
     return isValid;
 }
@@ -767,61 +782,60 @@ function validateRadius(field) {
  * @returns {*} LV03 coordinate
  */
 function validateCoordinate(field) {
-    var defaultEpsg = 'EPSG:21781';
+    const defaultEpsg = 'EPSG:21781';
+    const extent = map.getView().getProjection().getExtent();
 
-    var position;
-    var extent = map.getView().getProjection().getExtent();
+    let position;
 
-
-    var query = field.val();
+    const query = field.val();
 
     // source of the search transition code
     // https://github.com/geoadmin/mf-geoadmin3/blob/17ba14f3047bf4692752b36a1295172fa396177d/src/components/search/SearchService.js
 
-    var DMSDegree = '[0-9]{1,2}[°|º]\\s*';
-    var DMSMinute = '[0-9]{1,2}[\'|′]';
-    var DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
+    const DMSDegree = '[0-9]{1,2}[°|º]\\s*';
+    const DMSMinute = '[0-9]{1,2}[\'|′]';
+    const DMSSecond = '(?:\\b[0-9]+(?:\\.[0-9]*)?|\\.' +
         '[0-9]+\\b)("|\'\'|′′|″)';
-    var DMSNorth = '[N]';
-    var DMSEast = '[E]';
-    var regexpDMSN = new RegExp(DMSDegree +
+    const DMSNorth = '[N]';
+    const DMSEast = '[E]';
+    const regexpDMSN = new RegExp(DMSDegree +
         '(' + DMSMinute + ')?\\s*' +
         '(' + DMSSecond + ')?\\s*' +
         DMSNorth, 'g');
-    var regexpDMSE = new RegExp(DMSDegree +
+    const regexpDMSE = new RegExp(DMSDegree +
         '(' + DMSMinute + ')?\\s*' +
         '(' + DMSSecond + ')?\\s*' +
         DMSEast, 'g');
-    var regexpDMSDegree = new RegExp(DMSDegree, 'g');
-    var regexpCoordinate = new RegExp(
+    const regexpDMSDegree = new RegExp(DMSDegree, 'g');
+    const regexpCoordinate = new RegExp(
         '([\\d\\.\']+)[\\s,]+([\\d\\.\']+)' +
         '([\\s,]+([\\d\\.\']+)[\\s,]+([\\d\\.\']+))?');
 
-    var roundCoordinates = function (coords) {
+    const roundCoordinates = function (coords) {
         return [Math.round(coords[0] * 1000) / 1000,
             Math.round(coords[1] * 1000) / 1000];
     };
 
     // Parse degree EPSG:4326 notation
-    var matchDMSN = query.match(regexpDMSN);
-    var matchDMSE = query.match(regexpDMSE);
+    const matchDMSN = query.match(regexpDMSN);
+    const matchDMSE = query.match(regexpDMSE);
     if (matchDMSN && matchDMSN.length === 1 &&
         matchDMSE && matchDMSE.length === 1) {
-        var northing = parseFloat(matchDMSN[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
-        var easting = parseFloat(matchDMSE[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
-        var minuteN = matchDMSN[0].match(DMSMinute) ?
+        let northing = parseFloat(matchDMSN[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+        let easting = parseFloat(matchDMSE[0].match(regexpDMSDegree)[0].replace('°', '').replace('º', ''));
+        const minuteN = matchDMSN[0].match(DMSMinute) ?
             matchDMSN[0].match(DMSMinute)[0] : '0';
         northing = northing +
             parseFloat(minuteN.replace('\'', '').replace('′', '')) / 60;
-        var minuteE = matchDMSE[0].match(DMSMinute) ?
+        const minuteE = matchDMSE[0].match(DMSMinute) ?
             matchDMSE[0].match(DMSMinute)[0] : '0';
         easting = easting +
             parseFloat(minuteE.replace('\'', '').replace('′', '')) / 60;
-        var secondN =
+        const secondN =
             matchDMSN[0].match(DMSSecond) ?
                 matchDMSN[0].match(DMSSecond)[0] : '0';
         northing = northing + parseFloat(secondN.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
-        var secondE = matchDMSE[0].match(DMSSecond) ?
+        const secondE = matchDMSE[0].match(DMSSecond) ?
             matchDMSE[0].match(DMSSecond)[0] : '0';
         easting = easting + parseFloat(secondE.replace('"', '').replace('\'\'', '').replace('′′', '').replace('″', '')) / 3600;
         position = ol.proj.transform([easting, northing],
@@ -832,10 +846,10 @@ function validateCoordinate(field) {
         }
     }
 
-    var match = query.match(regexpCoordinate);
+    const match = query.match(regexpCoordinate);
     if (match) {
-        var left = parseFloat(match[1].replace(/'/g, ''));
-        var right = parseFloat(match[2].replace(/'/g, ''));
+        let left = parseFloat(match[1].replace(/'/g, ''));
+        let right = parseFloat(match[2].replace(/'/g, ''));
         // Old school entries like '600 000 200 000'
         if (match[3] != null) {
             left = parseFloat(match[1].replace(/'/g, '') +
@@ -1114,7 +1128,7 @@ function updateDrawings(drawingId, drawingDiv) {
         }
     }
 
-    validateDrawings();
+    validateDrawing(drawingId);
     Modify.setActive(false);
 }
 
@@ -2265,6 +2279,7 @@ function initializeChangeHandlers() {
      */
     $(document).on('change', '#type_of_activity', function () {
         emptyForm();
+        resetAllInputFields();
         hideGeoFields();
         hideAircraftType();
 
@@ -2287,6 +2302,7 @@ function initializeChangeHandlers() {
      */
     $(document).on('change', '#type_of_aircraft', function () {
         emptyForm();
+        resetAllInputFields();
         hideGeoFields();
 
         $.each(aircraftTypes, function (i, aircraftType) {
