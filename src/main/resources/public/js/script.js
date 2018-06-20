@@ -1,3 +1,19 @@
+// MAIN --------------------------------------------------------------------------------------------------------
+
+/**
+ * Entry point when the Website is ready.
+ */
+$(document).ready(function () {
+    // measure the time to fill the application until submit
+    startTime = new Date();
+
+    initializeForm();
+    // initialize Map
+
+});
+
+
+
 // FORM --------------------------------------------------------------------------------------------------------
 /**
  * Global information JSON data with all the field configurations.
@@ -51,6 +67,381 @@ function initializeForm() {
 }
 
 /**
+ * Initialize all Change Handlers in the Application.
+ */
+function initializeChangeHandlers() {
+
+
+    // submit
+
+
+    /**
+     * Prevent pressing enter from submission.
+     */
+    $(window).keydown(function (event) {
+        if (event.keyCode == 13) {
+            event.preventDefault();
+            event.stopPropagation();
+            return false;
+        }
+    });
+
+
+    /**
+     * Handle clicking the submit button.
+     */
+    $(document).on('click', '#btn_submit', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (validateForm()) {
+            $('#form-feedback').hide();
+            submitApplication();
+        }
+        else {
+            $('html,body').scrollTop(0);
+            $('#form-feedback').show();
+        }
+
+    });
+
+    /**
+     * Handle clicking the report button. Send email.
+     */
+    $(document).on('click', '#btn-report', function () {
+        $(location).attr('href', 'mailto:marco.ghilardelli@students.fhnw.ch?subject='
+            + encodeURIComponent("Report Problem: Skyguide Web Application")
+            + "&body="
+            + encodeURIComponent($('#btn-report').attr('error-log'))
+        );
+    });
+
+    /**
+     * Handle clicking the add time button. Add the time fields.
+     */
+    $(document).on('click', '#btn-add-time', function () {
+        timeIndex++;
+        const template = $('#time_template'),
+            clone = template
+                .clone()
+                .removeAttr('id')
+                //.prop('required', true)
+                .attr('data-time-index', timeIndex)
+                .addClass('time_field')
+                .insertBefore(template.parent());
+
+        clone
+            .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
+            .prop('required', true).end()
+            .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
+            .prop('required', true).end()
+            .find('input').each(function () {
+            $(this).addClass("data");
+        });
+    });
+
+    /**
+     * Handle clicking the remove time button. Remove the time input fields.
+     */
+    $(document).on('click', '.remove_time_button', function () {
+        let row = $(this).parents('.form-row');
+        row.remove();
+    });
+
+    /**
+     * Handle clicking the add polygon drawing button. Add empty fields.
+     */
+    $(document).on('click', '#add_polygon_btn', function () {
+        addDrawingDiv('Polygon');
+    });
+
+    /**
+     * Handle clicking the add circle drawing button. Add empty fields.
+     */
+    $(document).on('click', '#add_circle_btn', function () {
+        addDrawingDiv('Circle');
+    });
+
+    /**
+     * Handle clicking the add path drawing button. Add empty fields.
+     */
+    $(document).on('click', '#add_path_btn', function () {
+        addDrawingDiv('Path');
+    });
+
+    /**
+     * Handle clicking the add coordinate drawing button. Add empty fields.
+     */
+    $(document).on('click', '.add_coordinate_path_polygon', function () {
+        addCoordinateField($(this).parent().parent());
+    });
+
+    // map
+
+
+    /**
+     * Handle the change of the ICAO layer checkbox.
+     */
+    $(document).on('change', '#check-layer-icao', function () {
+        if ($('#check-layer-icao').is(':checked')) {
+            setLayerVisible(1, true);
+        }
+        else {
+            setLayerVisible(1, false);
+        }
+    });
+
+
+    /**
+     * Handle the change of the CTR layer checkbox.
+     */
+    $(document).on('change', '#check-layer-ctr', function () {
+        if ($('#check-layer-ctr').is(':checked')) {
+            setLayerVisible(3, true);
+        }
+        else {
+            setLayerVisible(3, false);
+        }
+    });
+
+
+    /**
+     * Handle the change of the TMA layer checkbox.
+     */
+    $(document).on('change', '#check-layer-tma', function () {
+        if ($('#check-layer-tma').is(':checked')) {
+            setLayerVisible(2, true);
+        }
+        else {
+            setLayerVisible(2, false);
+        }
+    });
+
+    /**
+     * Handle clicking the altitude send button in the altitude modal. Validate and save.
+     */
+    $(document).on('click', '#btn-send-altitude', function () {
+        const altitudeModalInput = $('#input-altitude');
+        const altitudeInput = $('#drawing' + drawingIndex).find('.altitude');
+        if (altitudeModalInput[0].checkValidity()) {
+            altitudeInput.val(altitudeModalInput.val());
+            validateField(altitudeInput, true);
+            $('#modal-altitude').modal('hide');
+        }
+        else {
+            validateField(altitudeInput, false);
+        }
+    });
+
+    /**
+     * Handle clicking the remove drawing button. Remove the drawing input fields.
+     */
+    $(document).on('click', '.remove-drawing', function (event) {
+        //  todo  event.preventDefault();
+        //    event.stopPropagation();
+        const drawingDiv = $(this).parent().parent().parent();
+        const drawingId = drawingDiv.attr("id");
+        if (source.getFeatureById(drawingId))
+            source.removeFeature(source.getFeatureById(drawingId));
+        drawingDiv.remove();
+        resetMap();
+    });
+
+    /**
+     * Handle click the remove coordinate button. Remove coordinate input field.
+     */
+    $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
+        $(this).parent().find('.gps').val("");
+        const drawingId = $(this).parent().parent().attr('id');
+        const drawingDiv = $(this).parent().parent();
+        removeCoordinateField($(this).parent());
+        updateDrawings(drawingId, drawingDiv);
+    });
+
+
+    /**
+     * Handle clicking the draw tool button.
+     */
+    $(document).on('click', '#draw-tool-btn', function () {
+        showInstruction("Please choose your desired drawing type respectively modify.");
+    });
+
+
+    /**
+     * Handle clicking the draw rectangle button. Set Drawing state.
+     */
+    $(document).on('click', '#btn_draw_rectangle', function () {
+        const type = 'Rectangle';
+        Draw.setActive(true, type);
+        Modify.setActive(false);
+        setDrawButtonActive($(this), type);
+    });
+
+    /**
+     * Handle clicking the draw polygon button. Set Drawing state.
+     */
+    $(document).on('click', '#btn_draw_polygon', function () {
+        const type = 'Polygon';
+        Draw.setActive(true, type);
+        Modify.setActive(false);
+        setDrawButtonActive($(this), type);
+    });
+
+    /**
+     * Handle clicking the draw circle button. Set Drawing state.
+     */
+    $(document).on('click', '#btn_draw_circle', function () {
+        const type = 'Circle';
+        Draw.setActive(true, type);
+        Modify.setActive(false);
+        setDrawButtonActive($(this), type);
+        //createMeasureTooltip();
+    });
+
+    /**
+     * Handle clicking the draw path button. Set Drawing state.
+     */
+    $(document).on('click', '#btn_draw_path', function () {
+        const type = 'Path';
+        Draw.setActive(true, type);
+        Modify.setActive(false);
+        setDrawButtonActive($(this), type);
+    });
+
+    /**
+     * Handle clicking the modify button. Set Modify state.
+     */
+    $(document).on('click', '#btn_draw_modify', function () {
+        const type = 'Modify';
+        Draw.setActive(false);
+        Modify.setActive(true);
+        setDrawButtonActive($(this), type);
+    });
+
+
+    // validation
+
+    /**
+     * Handle pressed key on all input fields.
+     */
+    $(document).on('keyup', 'input', function () {
+        if ($(this).attr('filled')) {
+            const isValid = $(this)[0].checkValidity();
+            validateField($(this), isValid);
+            if ($(this).hasClass('time')) {
+                validateTimes($(this));
+            }
+        }
+    });
+
+    /**
+     * Handle if an input field is leaved. Validate.
+     */
+    $(document).on('focusout', 'input', function () {
+        if (!($(this).hasClass('gps') || $(this).hasClass('radius') || $(this).hasClass('phone'))) {
+            const isValid = $(this)[0].checkValidity();
+            validateField($(this), isValid);
+            $(this).attr("filled", true);
+            if ($(this).hasClass('time')) {
+                validateTimes($(this));
+            }
+            if ($(this).is($('#field_date_from_until')))
+                validateField($(this), true);
+        }
+    });
+
+    /**
+     * Handle the change of the select fields. Validate.
+     */
+    $(document).on('change', 'select', function () {
+        const isValid = $(this)[0].checkValidity();
+        validateField($(this), isValid);
+    });
+
+    /**
+     * Handle the change of the height type radio button. Validate.
+     */
+    $(document).on('change', 'input[name=heightType]:checked', function () {
+        isValid = $('input[name=heightType]:checked').val() != undefined;
+        $(this).parent().parent().parent().find('input').each(function () {
+            validateField($(this), isValid);
+        });
+    });
+
+    /**
+     * Handle if the phone input is leaved. Validate.
+     */
+    $(document).on('keyup', '#input_applicant_phone', function () {
+        if ($.trim($(this).val())) {
+            if ($(this).intlTelInput("isValidNumber")) {
+                validateField($(this), true);
+            }
+            else {
+                validateField($(this), false);
+            }
+        }
+    });
+
+    /**
+     * Handle the change of the activity type dropdown. Reset the form.
+     */
+    $(document).on('change', '#type_of_activity', function () {
+        emptyForm();
+        resetAllInputFields();
+        hideGeoFields();
+        hideAircraftType();
+
+        $.each(informationJSON, function (j, activityType) {
+            if ($('#type_of_activity').val() == activityType.label) {
+                // it's a activity type with multiple aircraft type
+                if (activityType.aircraftTypeList.length > 1) {
+                    aircraftTypes = activityType.aircraftTypeList;
+                    showAircraftType(activityType);
+                }
+                else {
+                    showGeoFields(activityType.aircraftTypeList[0].fieldList);
+                }
+            }
+        });
+    });
+
+    /**
+     * Handle the change of the aircraft type dropdown. Reset the form.
+     */
+    $(document).on('change', '#type_of_aircraft', function () {
+        emptyForm();
+        resetAllInputFields();
+        hideGeoFields();
+
+        $.each(aircraftTypes, function (i, aircraftType) {
+            if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
+                showGeoFields(aircraftType.fieldList);
+            }
+        });
+
+    });
+
+    /**
+     * Handle leaving the gps input field. Update drawings.
+     */
+    $(document).on('keyup', '.gps', function () {
+        updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
+    });
+
+    /**
+     * Handle leaving the radius input field. Update drawings.
+     */
+    $(document).on('keyup', '.radius', function () {
+        if (validateRadius($(this))) {
+            if ($(this).parent().parent().parent().find('.gps').val() != "")
+                updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
+        }
+    });
+
+
+}
+
+/**
  * Initialize the phone library.
  */
 function initTelTool() {
@@ -60,7 +451,7 @@ function initTelTool() {
         geoIpLookup: function (callback) {
             $.get('https://ipinfo.io', function () {
             }, "jsonp").always(function (resp) {
-                var countryCode = (resp && resp.country) ? resp.country : "";
+                const countryCode = (resp && resp.country) ? resp.country : "";
                 callback(countryCode);
             });
         },
@@ -302,7 +693,7 @@ function showField(field) {
  * @param drawingDiv
  */
 function addCoordinateField(drawingDiv) {
-    var template = $('#coordinate_path_polygon_template'),
+    const template = $('#coordinate_path_polygon_template'),
         clone = template
             .clone()
             .removeAttr('id')
@@ -343,7 +734,7 @@ function processField(field) {
  */
 function addDrawingDiv(type) {
     drawingIndex++;
-    var template;
+    let template;
     if (type === 'Path') {
         template = $('#path_template');
     } else if (type === 'Circle') {
@@ -352,7 +743,7 @@ function addDrawingDiv(type) {
         template = $('#polygon_template');
     }
 
-    var clone = template
+    const clone = template
         .clone()
         .addClass('drawing')
         .attr('id', 'drawing' + drawingIndex)
@@ -453,7 +844,7 @@ function getAllInputData() {
     $('.data').each(
         function (index) {
             if (!$(this).hasClass('time') && !$(this).hasClass('altitude') && !$(this).hasClass('phone')) {
-                var input = $(this);
+                const input = $(this);
                 arr[input.attr('name')] = input.val();
             }
         }
@@ -468,9 +859,9 @@ function getAllInputData() {
  */
 function getTimes() {
     // get the time ranges
-    var startArray = [];
-    var endArray = [];
-    var times = [];
+    let startArray = [];
+    let endArray = [];
+    let times = [];
 
     $.each($('input[name^="start"]'), function (i, time) {
         if ($(this).val() != "")
@@ -494,12 +885,12 @@ function getTimes() {
  * @returns {Array}
  */
 function getDrawings() {
-    var drawings = [];
+    let drawings = [];
 
-    var i = 1;
+    let i = 1;
     $('.drawing').each(function () {
 
-        var drawing = {};
+        let drawing = {};
 
         drawing['altitude'] = $(this).find('.altitude').val();
 
@@ -519,7 +910,7 @@ function getDrawings() {
 
         $(this).find('.gps').each(function (index) {
 
-            var coord = lv03toWgs84(validateCoordinate($(this)));
+            const coord = lv03toWgs84(validateCoordinate($(this)));
             drawing['coordinates'][index] = {
                 'lat': coord[0],
                 'lon': coord[1]
@@ -538,7 +929,7 @@ function getDrawings() {
  */
 function submitApplication() {
     $("#icon_loading").show();
-    var data = {};
+    let data = {};
 
     data = getAllInputData();
     data['times'] = getTimes();
@@ -666,7 +1057,11 @@ function validateForm() {
     return isValid;
 }
 
-
+/**
+ * Validate the drawing with id.
+ * @param drawingId
+ * @returns {boolean}
+ */
 function validateDrawing(drawingId) {
     let isValid = true;
 
@@ -739,8 +1134,8 @@ function validateMap(isValid, message) {
  * @returns {boolean}
  */
 function validateTimes(field) {
-    var type = field.attr("name").split('[')[0];
-    var end, start;
+    const type = field.attr("name").split('[')[0];
+    let end, start;
 
     if (type == "start") {
         start = field;
@@ -751,8 +1146,8 @@ function validateTimes(field) {
         start = end.parent().parent().find($('input[name^="start"]'));
     }
     if (start[0].checkValidity() && end[0].checkValidity()) {
-        var startDt = new Date(2010, 12, 21, 9, start.val().split(':')[0], start.val().split(':')[1]);
-        var endDt = new Date(2010, 12, 21, 9, end.val().split(':')[0], end.val().split(':')[1]);
+        const startDt = new Date(2010, 12, 21, 9, start.val().split(':')[0], start.val().split(':')[1]);
+        const endDt = new Date(2010, 12, 21, 9, end.val().split(':')[0], end.val().split(':')[1]);
         if (startDt.getTime() >= endDt.getTime()) {
             end.parent().find('.invalid-feedback').html("The until time must be after the from time. If you want midnight, just provide 23:59");
             validateField(end, false);
@@ -1057,10 +1452,10 @@ function clearMap() {
  * @param drawingDiv
  */
 function updateDrawings(drawingId, drawingDiv) {
-    var coordinates = [];
+    let coordinates = [];
 
     drawingDiv.find('.gps').each(function (index, item) {
-        var gps = validateCoordinate($(this));
+        const gps = validateCoordinate($(this));
         if (gps) {
             coordinates.push(gps);
         }
@@ -1075,7 +1470,7 @@ function updateDrawings(drawingId, drawingDiv) {
             map.getView().fitExtent(source.getFeatureById(drawingId).getGeometry().getExtent(), map.getSize());
         }
         else {
-            var feature = new ol.Feature({
+            let feature = new ol.Feature({
                 geometry: new ol.geom.Polygon([coordinates])
             });
             feature.setId(drawingId);
@@ -1096,7 +1491,7 @@ function updateDrawings(drawingId, drawingDiv) {
 
         }
         else {
-            var feature = new ol.Feature({
+            let feature = new ol.Feature({
                 geometry: new ol.geom.LineString(coordinates)
             });
             feature.setId(drawingId);
@@ -1110,14 +1505,14 @@ function updateDrawings(drawingId, drawingDiv) {
     } else if (drawingDiv.hasClass('circle') && coordinates.length > 0 && drawingDiv.find('.radius')[0].checkValidity()) {
         console.log("circle " + coordinates);
 
-        var radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
+        const radius = calculateRadius(drawingDiv.find('.radius').val(), coordinates[0]);
         if (source.getFeatureById(drawingId) != null) {
             source.getFeatureById(drawingId).getGeometry().setCenterAndRadius(coordinates[0], radius);
             map.getView().fitExtent(source.getFeatureById(drawingId).getGeometry().getExtent(), map.getSize());
         }
         else {
 
-            var feature = new ol.Feature({
+            let feature = new ol.Feature({
                 geometry: new ol.geom.Circle(coordinates[0], radius)
             });
             feature.setId(drawingId);
@@ -1139,11 +1534,11 @@ function updateDrawings(drawingId, drawingDiv) {
  * @returns {number}
  */
 function calculateRadius(value, coordinate) {
-    var view = map.getView();
-    var projection = view.getProjection();
-    var resolutionAtEquator = view.getResolution();
-    var pointResolution = projection.getPointResolution(resolutionAtEquator, coordinate);
-    var resolutionFactor = resolutionAtEquator / pointResolution;
+    const view = map.getView();
+    const projection = view.getProjection();
+    const resolutionAtEquator = view.getResolution();
+    const pointResolution = projection.getPointResolution(resolutionAtEquator, coordinate);
+    const resolutionFactor = resolutionAtEquator / pointResolution;
 
     return (value / ol.proj.METERS_PER_UNIT.m) * resolutionFactor;
 }
@@ -1167,7 +1562,7 @@ function setLayerVisible(layerIndex, isVisible) {
  */
 function cleanUpKml(layer) {
     layer.getSource().getFeatures().forEach(function (feature) {
-        var coordinates = [];
+        let coordinates = [];
         feature.getGeometry().getCoordinates()[0].forEach(function (coords) {
             coords.splice(2, 1)
             coordinates.push(coords);
@@ -1227,9 +1622,9 @@ function setMapView(gps, res) {
  */
 function fillDrawingDiv(feature, drawingId, type) {
 
-    var drawingDiv = $('#drawing' + drawingId);
-    var coordinates;
-    var radius;
+    const drawingDiv = $('#drawing' + drawingId);
+    let coordinates;
+    let radius;
 
     if (type === 'Polygon') {
         coordinates = feature.getGeometry().getCoordinates()[0];
@@ -1347,7 +1742,7 @@ function initDrawTool() {
             this.setEvents();
         },
         setEvents: function () {
-            var selectedFeatures = this.select.getFeatures();
+            let selectedFeatures = this.select.getFeatures();
 
             this.select.on('change:active', function () {
                 selectedFeatures.forEach(selectedFeatures.remove, selectedFeatures);
@@ -1365,12 +1760,12 @@ function initDrawTool() {
 
                 e.element.on('change', function (e) {
 
-                    var drawingId = $(this)[0].getId();
-                    var drawingDiv = $('#' + drawingId);
+                    const drawingId = $(this)[0].getId();
+                    const drawingDiv = $('#' + drawingId);
 
                     if (!drawingDiv.hasClass('circle')) {
-                        var geometry = $(this)[0].getGeometry().getCoordinates();
-                        var gps = [];
+                        const geometry = $(this)[0].getGeometry().getCoordinates();
+                        let gps = [];
 
 
                         if (drawingDiv.hasClass('polygon')) {
@@ -1443,8 +1838,8 @@ function initDrawTool() {
                 if (!geometry) {
                     geometry = new ol.geom.Polygon(null);
                 }
-                var start = coordinates[0];
-                var end = coordinates[1];
+                const start = coordinates[0];
+                const end = coordinates[1];
                 geometry.setCoordinates([
                     [start, [start[0], end[1]], end, [end[0], start[1]], start]
                 ]);
@@ -1505,7 +1900,7 @@ function initDrawTool() {
 
     Modify.setActive(false);
 
-    var snap = new ol.interaction.Snap({
+    const snap = new ol.interaction.Snap({
         source: vector.getSource()
     });
     map.addInteraction(snap);
@@ -1522,10 +1917,10 @@ function updateMeasureTooltip(feature, tooltipCoord, type) {
     createMeasureTooltip();
 
     feature.getGeometry().on('change', function (evt) {
-        var geom = evt.target;
+        const geom = evt.target;
         let tooltipText;
         if (type === 'Circle') {
-            var radius = parseInt(feature.getGeometry().getRadius());
+            const radius = parseInt(feature.getGeometry().getRadius());
             if (radius > 500)
                 measureTooltipElement.classList.add("radius-invalid");
             else
@@ -1534,10 +1929,10 @@ function updateMeasureTooltip(feature, tooltipCoord, type) {
             tooltipText = radius + " m";
 
         } else if (type === 'Rectangle') {
-            var area = parseInt(geom.getArea() / 1000) / 1000;
+            const area = parseInt(geom.getArea() / 1000) / 1000;
             tooltipText = area + " km&sup2;";
         } else {
-            var coords;
+            let coords;
             if (type === 'Polygon') {
                 coords = feature.getGeometry().getCoordinates()[0];
             }
@@ -1545,8 +1940,8 @@ function updateMeasureTooltip(feature, tooltipCoord, type) {
                 coords = feature.getGeometry().getCoordinates();
             }
 
-            var line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
-            var length = parseInt(line.getLength()) / 1000;
+            const line = new ol.geom.LineString([coords[coords.length - 2], coords[coords.length - 1]]);
+            const length = parseInt(line.getLength()) / 1000;
 
             tooltipText = length + " km";
         }
@@ -1595,17 +1990,17 @@ function checkIntersections() {
     cleanUpKml(tma);
 
 
-    var ctrZone = ctr.getSource().getFeatures();
-    var tmaZone = tma.getSource().getFeatures();
-    var features = source.getFeatures();
+    const ctrZone = ctr.getSource().getFeatures();
+    const tmaZone = tma.getSource().getFeatures();
+    const features = source.getFeatures();
 
-    for (var i = 0; i < features.length; i++) {
-        var doIntersect = false;
-        for (var j = 0; j < tmaZone.length; j++) {
+    for (let i = 0; i < features.length; i++) {
+        let doIntersect = false;
+        for (let j = 0; j < tmaZone.length; j++) {
             if (intersectsArea(tmaZone[j], features[i]))
                 doIntersect = true;
         }
-        for (var j = 0; j < ctrZone.length; j++) {
+        for (let j = 0; j < ctrZone.length; j++) {
             if (intersectsArea(ctrZone[j], features[i]))
                 doIntersect = true;
         }
@@ -1621,16 +2016,14 @@ function checkIntersections() {
  * @returns {boolean}
  */
 function intersectsArea(zone, feature) {
-    var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
-//    var polyAltitude = parseKmlElevation(zone);
-
-    var figure;
+    const poly1 = turf.polygon(zone.getGeometry().getCoordinates());
+    let figure;
 
     if (feature.getGeometry().getType() === "Polygon") {
         figure = turf.polygon(feature.getGeometry().getCoordinates());
     } else if (feature.getGeometry().getType() === "Circle") {
         // convert to wgs84
-        var center = ol.proj.transform(feature.getGeometry().getCenter(), 'EPSG:21781', 'EPSG:4326');
+        const center = ol.proj.transform(feature.getGeometry().getCenter(), 'EPSG:21781', 'EPSG:4326');
         figure = turf.circle([center[1], center[0]], feature.getGeometry().getRadius() / 1000);
         // convert back
         figure.geometry.coordinates[0].forEach(function (item, index) {
@@ -1642,7 +2035,7 @@ function intersectsArea(zone, feature) {
 
 
     // check if intersect
-    var intersection = turf.lineIntersect(poly1, figure);
+    const intersection = turf.lineIntersect(poly1, figure);
     if (intersection)
         return true;
     //  if (intersectsAltitude(feature, zone))
@@ -1659,15 +2052,15 @@ function intersectsArea(zone, feature) {
  */
 function intersectsAltitude(feature, zone) {
 
-    var poly1 = turf.polygon(zone.getGeometry().getCoordinates());
+    const poly1 = turf.polygon(zone.getGeometry().getCoordinates());
     //  if circle error
-    var featurePoly = turf.polygon(feature.getGeometry().getCoordinates());
+    const featurePoly = turf.polygon(feature.getGeometry().getCoordinates());
 
-    var extent = turf.bbox(featurePoly);
+    const extent = turf.bbox(featurePoly);
 
-    var min = lv03toWgs84([extent[0], extent[1]]);
+    const min = lv03toWgs84([extent[0], extent[1]]);
 
-    var max = lv03toWgs84([extent[2], extent[3]]);
+    const max = lv03toWgs84([extent[2], extent[3]]);
 
     extent[0] = min[1];
     extent[1] = min[0];
@@ -1678,23 +2071,23 @@ function intersectsAltitude(feature, zone) {
         poly1.geometry.coordinates[0][index] = lv03toWgs84(item);
     });
 
-    var options = {mask: poly1, units: 'kilometers'};
+    const options = {mask: poly1, units: 'kilometers'};
     // ca 10 m raster
-    var points = turf.pointGrid(extent, 0.01, options);
+    const points = turf.pointGrid(extent, 0.01, options);
 
-    var doIntersect = false;
+    let doIntersect = false;
     points.features.forEach(function (item) {
         coords = wgs84toLv03(item.geometry.coordinates);
 
-        var featureAltitude;
-        var lowerLimit;
-        var upperLimit;
+        let featureAltitude;
+        let lowerLimit;
+        let upperLimit;
 
-        var lowerType = zone.getProperties().lowerLimitType;
-        var lowerValue = zone.getProperties().lowerLimitValue;
+        const lowerType = zone.getProperties().lowerLimitType;
+        const lowerValue = zone.getProperties().lowerLimitValue;
 
-        var upperType = zone.getProperties().upperLimitType;
-        var upperValue = zone.getProperties().upperLimitValue;
+        const upperType = zone.getProperties().upperLimitType;
+        const upperValue = zone.getProperties().upperLimitValue;
 
         featureAltitude = toMeterAmsl(feature, coords);
         lowerLimit = getLimit(lowerType, lowerValue, coords);
@@ -1717,7 +2110,7 @@ function intersectsAltitude(feature, zone) {
  */
 function getLimit(limitType, value, coordinates) {
     if (limitType === 'AGL') {
-        var agl = aglToAmsl(coordinates);
+        const agl = aglToAmsl(coordinates);
         value = parseInt(agl) + parseInt(feetToMeter(value));
     } else if (limitType === 'AMSL') {
         value = parseInt(feetToMeter(value));
@@ -1803,7 +2196,7 @@ function styleDrawing(feature, id) {
  * @param feature
  */
 function styleModify(feature) {
-    var id = feature.getId().split('drawing')[1];
+    const id = feature.getId().split('drawing')[1];
     feature.setStyle(new ol.style.Style({
         stroke: new ol.style.Stroke({
             color: '#3E99F7',
@@ -1831,16 +2224,16 @@ function styleModify(feature) {
  * @returns {*}
  */
 function toMeterAmsl(feature, coordinates) {
-    var type = $('input[name=heightType]:checked').val();
-    var value = $('#' + feature.getId()).find('.altitude').val();
+    const type = $('input[name=heightType]:checked').val();
+    let value = $('#' + feature.getId()).find('.altitude').val();
 
     if (type == 'ft AMSL') {
         value = feetToMeter(value);
     } else if (type == 'ft GND') {
-        var agl = aglToAmsl(coordinates);
+        const agl = aglToAmsl(coordinates);
         value = parseInt(agl) + feetToMeter(value);
     } else if (type == 'm GND') {
-        var agl = aglToAmsl(coordinates);
+        const agl = aglToAmsl(coordinates);
         value = parseInt(agl) + parseInt(value);
     } else if (type == 'FL') {
         value = flToMeter(value);
@@ -1857,7 +2250,7 @@ function toMeterAmsl(feature, coordinates) {
  * @returns {*}
  */
 function aglToAmsl(coordinates) {
-    var res;
+    let res;
     asyncRequest('GET', heightServiceUrl + '?easting=' + coordinates[0] + '&northing=' + coordinates[1],
         function (pos) {
             res = pos.height;
@@ -1889,7 +2282,7 @@ function aglToAmsl(coordinates) {
  * @returns {*[]}
  */
 function lv03toWgs84(coordinates) {
-    var tmp = ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:21781', 'EPSG:4326');
+    const tmp = ol.proj.transform([coordinates[0], coordinates[1]], 'EPSG:21781', 'EPSG:4326');
     return [tmp[1], tmp[0]];
 }
 
@@ -1939,396 +2332,4 @@ function meterToFeet(meter) {
  */
 function flToMeter(fl) {
     return fl * 100;
-}
-
-
-// MAIN --------------------------------------------------------------------------------------------------------
-
-
-/**
- * Entry point when the Website is ready.
- */
-$(document).ready(function () {
-    // measure the time to fill the application until submit
-    startTime = new Date();
-
-    initializeForm();
-    // initialize Map
-
-});
-
-
-/**
- * Initialize all Change Handlers in the Application.
- */
-function initializeChangeHandlers() {
-
-
-    // submit
-
-
-    /**
-     * Prevent pressing enter from submission.
-     */
-    $(window).keydown(function (event) {
-        if (event.keyCode == 13) {
-            event.preventDefault();
-            event.stopPropagation();
-            return false;
-        }
-    });
-
-
-    /**
-     * Handle clicking the submit button.
-     */
-    $(document).on('click', '#btn_submit', function (event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (validateForm()) {
-            $('#form-feedback').hide();
-            submitApplication();
-        }
-        else {
-            $('html,body').scrollTop(0);
-            $('#form-feedback').show();
-        }
-
-    });
-
-    /**
-     * Handle clicking the report button. Send email.
-     */
-    $(document).on('click', '#btn-report', function () {
-        $(location).attr('href', 'mailto:marco.ghilardelli@students.fhnw.ch?subject='
-            + encodeURIComponent("Report Problem: Skyguide Web Application")
-            + "&body="
-            + encodeURIComponent($('#btn-report').attr('error-log'))
-        );
-    });
-
-    /**
-     * Handle clicking the add time button. Add the time fields.
-     */
-    $(document).on('click', '#btn-add-time', function () {
-        timeIndex++;
-        var template = $('#time_template'),
-            clone = template
-                .clone()
-                .removeAttr('id')
-                //.prop('required', true)
-                .attr('data-time-index', timeIndex)
-                .addClass('time_field')
-                .insertBefore(template.parent());
-
-        clone
-            .find('[name="start"]').attr('name', 'start[' + timeIndex + ']')
-            .prop('required', true).end()
-            .find('[name="end"]').attr('name', 'end[' + timeIndex + ']')
-            .prop('required', true).end()
-            .find('input').each(function () {
-            $(this).addClass("data");
-        });
-    });
-
-    /**
-     * Handle clicking the remove time button. Remove the time input fields.
-     */
-    $(document).on('click', '.remove_time_button', function () {
-        var row = $(this).parents('.form-row');
-        row.remove();
-    });
-
-    /**
-     * Handle clicking the add polygon drawing button. Add empty fields.
-     */
-    $(document).on('click', '#add_polygon_btn', function () {
-        addDrawingDiv('Polygon');
-    });
-
-    /**
-     * Handle clicking the add circle drawing button. Add empty fields.
-     */
-    $(document).on('click', '#add_circle_btn', function () {
-        addDrawingDiv('Circle');
-    });
-
-    /**
-     * Handle clicking the add path drawing button. Add empty fields.
-     */
-    $(document).on('click', '#add_path_btn', function () {
-        addDrawingDiv('Path');
-    });
-
-    /**
-     * Handle clicking the add coordinate drawing button. Add empty fields.
-     */
-    $(document).on('click', '.add_coordinate_path_polygon', function () {
-        addCoordinateField($(this).parent().parent());
-    });
-
-    // map
-
-
-    /**
-     * Handle the change of the ICAO layer checkbox.
-     */
-    $(document).on('change', '#check-layer-icao', function () {
-        if ($('#check-layer-icao').is(':checked')) {
-            setLayerVisible(1, true);
-        }
-        else {
-            setLayerVisible(1, false);
-        }
-    });
-
-
-    /**
-     * Handle the change of the CTR layer checkbox.
-     */
-    $(document).on('change', '#check-layer-ctr', function () {
-        if ($('#check-layer-ctr').is(':checked')) {
-            setLayerVisible(3, true);
-        }
-        else {
-            setLayerVisible(3, false);
-        }
-    });
-
-
-    /**
-     * Handle the change of the TMA layer checkbox.
-     */
-    $(document).on('change', '#check-layer-tma', function () {
-        if ($('#check-layer-tma').is(':checked')) {
-            setLayerVisible(2, true);
-        }
-        else {
-            setLayerVisible(2, false);
-        }
-    });
-
-    /**
-     * Handle clicking the altitude send button in the altitude modal. Validate and save.
-     */
-    $(document).on('click', '#btn-send-altitude', function () {
-        const altitudeModalInput = $('#input-altitude');
-        const altitudeInput = $('#drawing' + drawingIndex).find('.altitude');
-        if (altitudeModalInput[0].checkValidity()) {
-            altitudeInput.val(altitudeModalInput.val());
-            validateField(altitudeInput, true);
-            $('#modal-altitude').modal('hide');
-        }
-        else {
-            validateField(altitudeInput, false);
-        }
-    });
-
-    /**
-     * Handle clicking the remove drawing button. Remove the drawing input fields.
-     */
-    $(document).on('click', '.remove-drawing', function (event) {
-        //  todo  event.preventDefault();
-        //    event.stopPropagation();
-        const drawingDiv = $(this).parent().parent().parent();
-        const drawingId = drawingDiv.attr("id");
-        if (source.getFeatureById(drawingId))
-            source.removeFeature(source.getFeatureById(drawingId));
-        drawingDiv.remove();
-        resetMap();
-    });
-
-    /**
-     * Handle click the remove coordinate button. Remove coordinate input field.
-     */
-    $(document).on('click', '.remove_coordinate_path_polygon_button', function () {
-        $(this).parent().find('.gps').val("");
-        const drawingId = $(this).parent().parent().attr('id');
-        const drawingDiv = $(this).parent().parent();
-        removeCoordinateField($(this).parent());
-        updateDrawings(drawingId, drawingDiv);
-    });
-
-
-    /**
-     * Handle clicking the draw tool button.
-     */
-    $(document).on('click', '#draw-tool-btn', function () {
-        showInstruction("Please choose your desired drawing type respectively modify.");
-    });
-
-
-    /**
-     * Handle clicking the draw rectangle button. Set Drawing state.
-     */
-    $(document).on('click', '#btn_draw_rectangle', function () {
-        const type = 'Rectangle';
-        Draw.setActive(true, type);
-        Modify.setActive(false);
-        setDrawButtonActive($(this), type);
-    });
-
-    /**
-     * Handle clicking the draw polygon button. Set Drawing state.
-     */
-    $(document).on('click', '#btn_draw_polygon', function () {
-        const type = 'Polygon';
-        Draw.setActive(true, type);
-        Modify.setActive(false);
-        setDrawButtonActive($(this), type);
-    });
-
-    /**
-     * Handle clicking the draw circle button. Set Drawing state.
-     */
-    $(document).on('click', '#btn_draw_circle', function () {
-        const type = 'Circle';
-        Draw.setActive(true, type);
-        Modify.setActive(false);
-        setDrawButtonActive($(this), type);
-        //createMeasureTooltip();
-    });
-
-    /**
-     * Handle clicking the draw path button. Set Drawing state.
-     */
-    $(document).on('click', '#btn_draw_path', function () {
-        const type = 'Path';
-        Draw.setActive(true, type);
-        Modify.setActive(false);
-        setDrawButtonActive($(this), type);
-    });
-
-    /**
-     * Handle clicking the modify button. Set Modify state.
-     */
-    $(document).on('click', '#btn_draw_modify', function () {
-        const type = 'Modify';
-        Draw.setActive(false);
-        Modify.setActive(true);
-        setDrawButtonActive($(this), type);
-    });
-
-
-    // validation
-
-    /**
-     * Handle pressed key on all input fields.
-     */
-    $(document).on('keyup', 'input', function () {
-        if ($(this).attr('filled')) {
-            const isValid = $(this)[0].checkValidity();
-            validateField($(this), isValid);
-            if ($(this).hasClass('time')) {
-                validateTimes($(this));
-            }
-        }
-    });
-
-    /**
-     * Handle if an input field is leaved. Validate.
-     */
-    $(document).on('focusout', 'input', function () {
-        if (!($(this).hasClass('gps') || $(this).hasClass('radius') || $(this).hasClass('phone'))) {
-            const isValid = $(this)[0].checkValidity();
-            validateField($(this), isValid);
-            $(this).attr("filled", true);
-            if ($(this).hasClass('time')) {
-                validateTimes($(this));
-            }
-            if ($(this).is($('#field_date_from_until')))
-                validateField($(this), true);
-        }
-    });
-
-    /**
-     * Handle the change of the select fields. Validate.
-     */
-    $(document).on('change', 'select', function () {
-        const isValid = $(this)[0].checkValidity();
-        validateField($(this), isValid);
-    });
-
-    /**
-     * Handle the change of the height type radio button. Validate.
-     */
-    $(document).on('change', 'input[name=heightType]:checked', function () {
-        isValid = $('input[name=heightType]:checked').val() != undefined;
-        $(this).parent().parent().parent().find('input').each(function () {
-            validateField($(this), isValid);
-        });
-    });
-
-    /**
-     * Handle if the phone input is leaved. Validate.
-     */
-    $(document).on('keyup', '#input_applicant_phone', function () {
-        if ($.trim($(this).val())) {
-            if ($(this).intlTelInput("isValidNumber")) {
-                validateField($(this), true);
-            }
-            else {
-                validateField($(this), false);
-            }
-        }
-    });
-
-    /**
-     * Handle the change of the activity type dropdown. Reset the form.
-     */
-    $(document).on('change', '#type_of_activity', function () {
-        emptyForm();
-        resetAllInputFields();
-        hideGeoFields();
-        hideAircraftType();
-
-        $.each(informationJSON, function (j, activityType) {
-            if ($('#type_of_activity').val() == activityType.label) {
-                // it's a activity type with multiple aircraft type
-                if (activityType.aircraftTypeList.length > 1) {
-                    aircraftTypes = activityType.aircraftTypeList;
-                    showAircraftType(activityType);
-                }
-                else {
-                    showGeoFields(activityType.aircraftTypeList[0].fieldList);
-                }
-            }
-        });
-    });
-
-    /**
-     * Handle the change of the aircraft type dropdown. Reset the form.
-     */
-    $(document).on('change', '#type_of_aircraft', function () {
-        emptyForm();
-        resetAllInputFields();
-        hideGeoFields();
-
-        $.each(aircraftTypes, function (i, aircraftType) {
-            if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
-                showGeoFields(aircraftType.fieldList);
-            }
-        });
-
-    });
-
-    /**
-     * Handle leaving the gps input field. Update drawings.
-     */
-    $(document).on('keyup', '.gps', function () {
-        updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
-    });
-
-    /**
-     * Handle leaving the radius input field. Update drawings.
-     */
-    $(document).on('keyup', '.radius', function () {
-        if (validateRadius($(this))) {
-            if ($(this).parent().parent().parent().find('.gps').val() != "")
-                updateDrawings($(this).parent().parent().parent().attr('id'), $(this).parent().parent().parent());
-        }
-    });
-
-
 }
