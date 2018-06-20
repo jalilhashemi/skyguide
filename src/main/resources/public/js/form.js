@@ -218,8 +218,6 @@ function initializeChangeHandlers() {
      * Handle clicking the remove drawing button. Remove the drawing input fields.
      */
     $(document).on('click', '.remove-drawing', function (event) {
-        //  todo  event.preventDefault();
-        //    event.stopPropagation();
         const drawingDiv = $(this).parent().parent().parent();
         const drawingId = drawingDiv.attr("id");
         if (source.getFeatureById(drawingId))
@@ -360,8 +358,12 @@ function initializeChangeHandlers() {
             else {
                 validateField($(this), false);
             }
-        }
+        }else {
+         validateField($(this), false);
+         }
+
     });
+
 
     /**
      * Handle the change of the activity type dropdown. Reset the form.
@@ -370,6 +372,7 @@ function initializeChangeHandlers() {
         emptyForm();
         resetAllInputFields();
         hideGeoFields();
+        clearMap();
         hideAircraftType();
 
         $.each(informationJSON, function (j, activityType) {
@@ -393,6 +396,7 @@ function initializeChangeHandlers() {
         emptyForm();
         resetAllInputFields();
         hideGeoFields();
+        clearMap();
 
         $.each(aircraftTypes, function (i, aircraftType) {
             if ($('#type_of_aircraft').find('option:selected').text() == aircraftType.label) {
@@ -546,11 +550,13 @@ function emptyForm() {
     $('#container_fields').find('input').each(function () {
         $(this).removeClass('is-invalid');
         $(this).removeClass('is-valid');
+        $(this).attr('required', false);
         if ($(this).attr('name') == 'heightType') {
             $(this).checked = false;
         } else {
             $(this).val("");
         }
+
 
     });
     removeTimeFields();
@@ -615,6 +621,7 @@ function showGeoFields(fieldList) {
 function hideGeoFields() {
     $('.geo').hide();
     hideMap();
+
 }
 
 /**
@@ -640,6 +647,8 @@ function hideMap() {
  */
 function showAircraftType(activityType) {
     $('.aircraft-type').show();
+
+    resetInputField($('#type_of_aircraft'));
 
     // remove all options and append default text
     $('#type_of_aircraft').find('option').remove().end().append("<option value>Select the aircraft type</option>");

@@ -18,6 +18,9 @@ function validateForm() {
             if ($.trim($(this).val())) {
                 validData = $(this).intlTelInput("isValidNumber")
                 validateField($(this), validData);
+            } else {
+                validData = false;
+                validateField($(this), false);
             }
         }
         else {
