@@ -101,7 +101,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">I'll do it later!</button>
-                <button type="button" id="btn-send-altitude" class="btn btn-primary">Send</button>
+                <button type="button" id="btn-send-altitude" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>
@@ -208,7 +208,6 @@
                 Please provide a valid email.
             </div>
         </div>
-
 
 
         <hr>
@@ -486,11 +485,21 @@
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="alert-heading">Geo Data!</h4>
-                <p>You can either add areas by adding it manually with the "Add area" button or you can draw directly in
-                    the map by clicking into the map drawing tool <i class="fa fa-pencil" aria-hidden="true"></i>. Pleas
-                    also don't forget to choose an Altitude Type.</p>
-
+                <h4 class="alert-heading">How to add an area on the map?!</h4>
+                <ul>
+                    <li>
+                        Use your geo date by clicking on <strong>Add area</strong> button then add your data in its
+                        fields.
+                    </li>
+                    <li>
+                        Use drawing tools by clicking on <strong> Draw</strong><i class="fa fa-pencil"
+                                                                                  aria-hidden="true"></i> button then
+                        draw
+                        your activity location on the map.
+                    </li>
+                </ul>
+                <p>By using <strong>modify</strong>, you can change your activity's location and it's area on the map.
+                </p>
             </div>
             <div class="form-row geo geo-map">
                 <div class="form-group col-md-6 dropdown" id="add_area_dropdown">
@@ -510,7 +519,8 @@
                     <div class=" d-inline-block" data-toggle="tooltip" data-placement="top"
                          title="flight level">
                         <label class="custom-control custom-radio geo">
-                            <input class="custom-control-input height-type-radio data" type="radio" name="heightType" id="radio_height_fl"
+                            <input class="custom-control-input height-type-radio data" type="radio" name="heightType"
+                                   id="radio_height_fl"
                                    value="FL">
                             <span class="custom-control-indicator"></span>
                             <span class="custom-control-description">FL</span>
@@ -694,8 +704,9 @@
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-sky btn-lg geo geo-static" id="btn_submit">Submit <i id="icon_loading"
-                                                                                               class="fa fa-circle-o-notch fa-spin"></i>
+        <button type="submit" class="btn btn-primary btn-sky btn-lg geo geo-static" id="btn_submit">Submit <i
+                id="icon_loading"
+                class="fa fa-circle-o-notch fa-spin"></i>
         </button>
     </fieldset>
 </form>
