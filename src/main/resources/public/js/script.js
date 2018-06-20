@@ -976,7 +976,7 @@ let vector = new ol.layer.Vector({
  */
 const ctr = new ol.layer.Vector({
     source: new ol.source.Vector({
-        url: 'ctr.kml',
+        url: 'data/ctr.kml',
         format: new ol.format.KML({
             extractStyles: false,
             projection: 'EPSG:4326'
@@ -999,7 +999,7 @@ const ctr = new ol.layer.Vector({
  */
 const tma = new ol.layer.Vector({
     source: new ol.source.Vector({
-        url: 'tma.kml',
+        url: 'data/tma.kml',
         format: new ol.format.KML({
             extractStyles: false,
             projection: 'EPSG:4326'
