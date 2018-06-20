@@ -208,7 +208,7 @@ h1 {
 
 .tooltip {
     position: relative;
-    background: rgba(0, 0, 0, 0.5);
+    /*background: rgba(0, 0, 0, 0.5);*/
     border-radius: 4px;
     color: white;
     padding: 4px 8px;
@@ -225,7 +225,7 @@ h1 {
 }
 
 .tooltip-measure:before {
-    border-top: 6px solid rgba(0, 0, 0, 0.5);
+    /*border-top: 6px solid rgba(0, 0, 0, 0.5);*/
     border-right: 6px solid transparent;
     border-left: 6px solid transparent;
     content: "";
