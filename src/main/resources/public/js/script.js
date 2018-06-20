@@ -697,6 +697,8 @@ function validateDrawings() {
         isValid = false;
         validateMap(false, 'Please draw at least one drawing.');
     }
+
+    return isValid;
 }
 
 /**
