@@ -46,9 +46,9 @@ public class ActivityTypeService {
         Field destinationFieldActive = new Field("field_destination", "destination", "Destination", "To", false, true);
         Field destinationFieldInactive = new Field("field_destination", "destination", "Destination", "To", false, false);
 
-        Field dateFromUntilFieldMandatory = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", true, true);
-        Field dateFromUntilFieldActive = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", false, true);
-        Field dateFromUntilFieldInactive = new Field("field_date_from_until", "dateFromUntil", "Date from / Until", "DD.MM.YYYY - DD.MM.YYYY", false, false);
+        Field dateFromUntilFieldMandatory = new Field("field_date_from_until", "dateFromUntil", "Date from / until", "DD.MM.YYYY - DD.MM.YYYY", true, true);
+        Field dateFromUntilFieldActive = new Field("field_date_from_until", "dateFromUntil", "Date from / until", "DD.MM.YYYY - DD.MM.YYYY", false, true);
+        Field dateFromUntilFieldInactive = new Field("field_date_from_until", "dateFromUntil", "Date from / until", "DD.MM.YYYY - DD.MM.YYYY", false, false);
 
         Field timeScheduleFromFieldMandatory = new Field("field_time_schedule_from", "timeFrom", "Time From (Local Time)", "HH:MM", true, true);
         Field timeScheduleFromFieldActive = new Field("field_time_schedule_from", "timeFrom", "Time From (Local Time)", "HH:MM", false, true);
@@ -98,9 +98,9 @@ public class ActivityTypeService {
         Field payloadAttachedObjFieldActive = new Field("field_payload_attached_obj", "payloadAttachedObj", "Payload / Attached object", "", false, true);
         Field payloadAttachedObjFieldInactive = new Field("field_payload_attached_obj", "payloadAttachedObj", "Payload / Attached object", "", false, false);
 
-        Field amountFieldMandatory = new Field("field_amount", "amount", "Amount", "", true, true);
-        Field amountFieldActive = new Field("field_amount", "amount", "Amount", "", false, true);
-        Field amountFieldInactive = new Field("field_amount", "amount", "Amount", "", false, false);
+        Field amountFieldMandatory = new Field("field_amount", "amount", "Amount", "Number of baloons, lanterns or model rockets.", true, true);
+        Field amountFieldActive = new Field("field_amount", "amount", "Amount", "Number of baloons, lanterns or model rockets.", false, true);
+        Field amountFieldInactive = new Field("field_amount", "amount", "Amount", "Number of baloons, lanterns or model rockets.", false, false);
 
         Field gpsCoordFieldMandatory = new Field("field_gps_coord", "coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E", true, true);
         Field gpsCoordFieldActive = new Field("field_gps_coord", "coordinates", "Coordinate (latitude, longitude)", "47°09′43.999″ N 7°40′33.646″E", false, true);

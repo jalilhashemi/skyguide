@@ -184,7 +184,7 @@ function initDrawTool() {
             });
             this.Circle.on('drawstart', function (evt) {
                 updateMeasureTooltip(evt.feature, evt.coordinate, 'Circle');
-                showInstruction('Click at the point you want to finish your Circle.');
+                showInstruction('Click on a point to finish your circle.');
             });
             this.Circle.on('drawend', function (evt) {
                 addDrawing(evt.feature, 'Circle');

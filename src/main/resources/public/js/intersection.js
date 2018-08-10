@@ -111,13 +111,12 @@ function intersectsArea(zone, feature) {
     const intersection = turf.lineIntersect(poly1, figure);
     if (intersection)
         return true;
-    //  if (intersectsAltitude(feature, zone))
-
 
     return false;
 }
 
 /**
+ * Not implemented in release version because of time consuming calculation. See documentation.
  * Checks weather a feature intersetcs in the third dimension with a zone feature.
  * @param feature Drawing
  * @param zone Zone of TMA or CTR
