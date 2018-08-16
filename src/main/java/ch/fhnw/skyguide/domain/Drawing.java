@@ -9,6 +9,8 @@ import java.util.Set;
 public class Drawing {
 
     private Integer id;
+    private Integer radius;
+    private Integer altitude;
     private DrawingType drawingType;
     private Set<Coordinate> coordinates;
     private Set<Application> applications;
@@ -25,6 +27,22 @@ public class Drawing {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Integer radius) {
+        this.radius = radius;
+    }
+
+    public Integer getAltitude() {
+        return altitude;
+    }
+
+    public void setAltitude(Integer altitude) {
+        this.altitude = altitude;
     }
 
     @ManyToOne
